@@ -1,0 +1,7 @@
+.vscode
+.mypy_cache
+docker-stack.yml
+.venv
+.idea
+my-dynamodb-dataDD
+env
