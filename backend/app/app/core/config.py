@@ -42,6 +42,9 @@ class Settings(BaseSettings):
     CLOUDFRONT_DOMAIN: str = ""
     CLOUDFRONT_DISTRIBUTION_ID: str = ""
 
+    # MONGODB_URL
+    MONGODB_URL: str = "mongodb://localhost:27017"
+
     class Config:
         case_sensitive = True
 

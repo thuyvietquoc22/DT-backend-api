@@ -1,12 +1,7 @@
-from fastapi import APIRouter, Depends, BackgroundTasks
-from fastapi_cognito import CognitoToken
+from fastapi import APIRouter
 
-from app.domain.auth.auth import (
-    AuthCheckEmailResponseModel,
-    AuthLoginSNSModel
-)
-
-from app.domain.auth.auth import AuthDomain, UserLoginModel, AuthLoginResponseModel, UserSNSModel
+from app.db.mongo_db import users_collection
+from app.domain.auth.auth import AuthDomain, UserLoginModel
 
 
 class AuthRouter:
@@ -17,6 +12,12 @@ class AuthRouter:
     def router(self):
         api_router = APIRouter(prefix='/auth', tags=['Auth'])
 
+        @api_router.post('/register')
+        async def login(user_login_model: UserLoginModel):
+            new_user = await users_collection.insert_one(user_login_model.dict())
 
-       
+            return {
+                'inserted_id': str(new_user.inserted_id),
+            }
+
         return api_router
