@@ -8,8 +8,8 @@ from pydantic import (
 class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     SECRET_KEY: str = 'dt.secret_key'
-    # 60 minutes * 24 hours * 8 days = 8 days
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 5
+    REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7
 
     BACKEND_CORS_ORIGINS: str = ""
 

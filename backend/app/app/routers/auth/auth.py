@@ -1,23 +1,21 @@
 from fastapi import APIRouter
 
-from app.db.mongo_db import users_collection
-from app.domain.auth.auth import AuthDomain, UserLoginModel
+from app.domain.auth.auth import UserLoginModel, AuthLoginResponseModel, UserRegisterModel
+from app.services.auth import auth_service
 
 
 class AuthRouter:
-    def __init__(self, auth_domain: AuthDomain) -> None:
-        self.auth_domain = auth_domain
 
     @property
     def router(self):
         api_router = APIRouter(prefix='/auth', tags=['Auth'])
 
-        @api_router.post('/register')
+        @api_router.post('/login', response_model=AuthLoginResponseModel)
         async def login(user_login_model: UserLoginModel):
-            new_user = await users_collection.insert_one(user_login_model.dict())
+            return auth_service.login(user_login_model)
 
-            return {
-                'inserted_id': str(new_user.inserted_id),
-            }
+        @api_router.post('/register')
+        async def register(user_register: UserRegisterModel):
+            return auth_service.register(user_register)
 
         return api_router
