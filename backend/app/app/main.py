@@ -1,10 +1,12 @@
 import os
+
 import redis
 import uvicorn
 from fastapi import FastAPI
+
 from app.core.config import settings
+from app.exceptions.exception_handler import register_exception_handler
 # from app.db.main import generate_table
-from app.internal.db import initialize_db
 from app.routers.router import api_router
 
 app = FastAPI()
@@ -13,11 +15,7 @@ app = FastAPI()
 # generate_table(db)
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
-
-@app.get('/')
-def index():
-    return 'Hello World!'
-
+register_exception_handler(app)
 
 # Approach #1: Create global variable for redis
 global_cache = redis.Redis(
