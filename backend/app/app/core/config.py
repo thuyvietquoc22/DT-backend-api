@@ -1,5 +1,3 @@
-import secrets
-
 from pydantic import (
     BaseSettings,
 )
@@ -11,7 +9,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 5
     REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7
 
-    BACKEND_CORS_ORIGINS: str = ""
+    BACKEND_CORS_ORIGINS: str = "http://localhost:3000"
 
     ENV: str = "local"
     AWS_DB_ENDPOINT_URL: str = None

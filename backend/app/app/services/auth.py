@@ -1,9 +1,15 @@
-from app.core.security import verify_password, get_password_hash, create_refresh_token, create_access_token
+from app.core.security import verify_password, get_password_hash, create_refresh_token, create_access_token, \
+    extract_jwt_token
 from app.db.mongo_db import users_collection
-from app.domain.auth.auth import UserLoginModel, AuthLoginResponseModel, UserRegisterModel
+from app.domain.auth.auth import UserLoginModel, AuthLoginResponseModel, UserRegisterModel, AuthTokenModel
 
 
 class AuthService:
+
+    @staticmethod
+    def validate_token(token: str):
+        return extract_jwt_token(token)
+
     @staticmethod
     def login(user_login_model: UserLoginModel) -> AuthLoginResponseModel:
 

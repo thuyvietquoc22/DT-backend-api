@@ -1,5 +1,5 @@
 from datetime import timedelta, datetime
-from typing import Any
+from typing import Any, TypeVar
 
 import jwt
 from passlib.context import CryptContext
@@ -33,6 +33,19 @@ def generate_jwt_token(data: dict, expires_delta: timedelta = None, **kwargs) ->
     expire = datetime.utcnow() + expires_delta
     to_encode = {"exp": expire, **data, **kwargs}
     return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=ALGORITHM)
+
+
+T = TypeVar('T')
+
+
+def extract_jwt_token(token: str, response_type: T = Any) -> T:
+    try:
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
+    except jwt.ExpiredSignatureError:
+        raise ValueError("Token is expired")
+    except jwt.InvalidTokenError:
+        raise ValueError("Invalid token")
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:

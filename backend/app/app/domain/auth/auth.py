@@ -16,6 +16,10 @@ class UserRegisterModel(BaseModel):
     phone: Optional[str] = Field(..., example='phone')
 
 
+class AuthTokenModel(BaseModel):
+    token: Optional[str] = Field(..., example='')
+
+
 class AuthLoginResponseModel(BaseModel):
     access_token: Optional[str] = Field(..., example='')
     refresh_token: Optional[str] = Field(..., example='')

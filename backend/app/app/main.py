@@ -4,18 +4,20 @@ import redis
 import uvicorn
 from fastapi import FastAPI
 
-from app.core.config import settings
 from app.exceptions.exception_handler import register_exception_handler
+from app.middlewares import register_middlewares
 # from app.db.main import generate_table
-from app.routers.router import api_router
+from app.routers.router import register_router
 
 app = FastAPI()
 
 # db = initialize_db()
 # generate_table(db)
-app.include_router(api_router, prefix=settings.API_V1_STR)
+
 
 register_exception_handler(app)
+register_middlewares(app)
+register_router(app)
 
 # Approach #1: Create global variable for redis
 global_cache = redis.Redis(
