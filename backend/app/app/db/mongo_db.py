@@ -6,4 +6,6 @@ client = MongoClient(settings.MONGODB_URL)
 
 db = client["digital-twin"]
 
-users_collection = db.get_collection("users")
+account_collection = db.get_collection("account")
+user_collection = db.get_collection("user")
+

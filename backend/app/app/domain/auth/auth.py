@@ -5,15 +5,16 @@ from pydantic import Field
 
 
 class UserLoginModel(BaseModel):
-    username: str = Field(..., example='username')
+    email: str = Field(..., example='email')
     password: str = Field(..., example='password')
 
 
 class UserRegisterModel(BaseModel):
     username: str = Field(..., example='username')
-    email: str = Field(..., example='email')
+    email: str = Field(..., example='user@gmail.com')
     password: str = Field(..., example='password')
-    phone: Optional[str] = Field(..., example='phone')
+    phone: Optional[str] = Field(..., example='0123456789')
+    fullname: Optional[str] = Field(..., example='Nguyen Van Anh')
 
 
 class AuthTokenModel(BaseModel):
@@ -26,8 +27,8 @@ class AuthLoginResponseModel(BaseModel):
     token_type: Optional[str] = Field(..., example='')
 
 
-class AuthCheckEmailResponseModel(BaseModel):
-    is_email_registered: bool = Field(..., example=True)
+class AuthCheckResponseModel(BaseModel):
+    registered: bool = Field(..., example=True)
 
 
 class TokenPayload(BaseModel):

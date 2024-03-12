@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
-from app.domain.auth.auth import UserLoginModel, AuthLoginResponseModel, UserRegisterModel, AuthTokenModel
+from app.domain.auth.auth import UserLoginModel, AuthLoginResponseModel, UserRegisterModel, AuthTokenModel, \
+    AuthCheckResponseModel
 from app.services.auth import auth_service
 
 
@@ -22,4 +23,12 @@ class AuthRouter:
         async def register(user_register: UserRegisterModel):
             return auth_service.register(user_register)
 
+        @api_router.post('/check-email')
+        async def check_exist_email(email: str):
+            result = auth_service.check_exist_email(email)
+            return AuthCheckResponseModel(registered=result)
+
         return api_router
+
+
+auth_router = AuthRouter()

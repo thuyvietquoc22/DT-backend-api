@@ -3,11 +3,12 @@ import json
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 from base64 import b64encode, b64decode
-from app.core.constant import AES
+from pymongo.cursor import Cursor
+
 
 def dict_to_base64(my_dict: dict) -> str:
     if my_dict is None:
-        return  None
+        return None
     # Convert the dictionary to a JSON string
     json_string = json.dumps(my_dict)
 
@@ -46,3 +47,7 @@ def decrypt(ciphertext, key, iv):
     decrypted_text = decryptor.update(ciphertext) + decryptor.finalize()
     return decrypted_text.decode()
 
+
+def convert_cursor_to_list(cursor: Cursor):
+    convert_id = lambda x: {**x, '_id': str(x['_id'])}
+    return [convert_id(x) for x in cursor]
