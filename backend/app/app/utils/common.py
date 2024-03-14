@@ -1,8 +1,11 @@
 import base64
 import json
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from cryptography.hazmat.backends import default_backend
 from base64 import b64encode, b64decode
+from typing import TypeVar, Any, Optional
+
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from pydantic.main import BaseModel, ModelMetaclass
 from pymongo.cursor import Cursor
 
 
@@ -48,6 +51,14 @@ def decrypt(ciphertext, key, iv):
     return decrypted_text.decode()
 
 
-def convert_cursor_to_list(cursor: Cursor):
-    convert_id = lambda x: {**x, '_id': str(x['_id'])}
+R = TypeVar('R', bound=BaseModel)
+
+
+def convert_cursor_to_list(cursor: Cursor, data_type: Optional[R] = None) -> list[R]:
+    def convert_id(x):
+        if data_type is None:
+            return {**x, 'id': str(x['_id'])}
+        else:
+            return data_type(**x, id=str(x['_id']))
+
     return [convert_id(x) for x in cursor]
