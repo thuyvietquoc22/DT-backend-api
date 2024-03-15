@@ -1,6 +1,4 @@
-from pydantic import (
-    BaseSettings,
-)
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
@@ -12,7 +10,7 @@ class Settings(BaseSettings):
     BACKEND_CORS_ORIGINS: str = "http://localhost:3000"
 
     ENV: str = "local"
-    AWS_DB_ENDPOINT_URL: str = None
+    AWS_DB_ENDPOINT_URL: str = ""
     AWS_REGION_NAME: str = "ap-northeast-1"
     AWS_ACCESS_KEY_ID: str = ""
     AWS_SECRET_ACCESS_KEY: str = ""
