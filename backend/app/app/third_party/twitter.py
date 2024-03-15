@@ -1,9 +1,11 @@
-from pydantic import BaseModel, Field
 import base64
+
 import requests
+from fastapi import HTTPException
+from pydantic import BaseModel, Field
+
 from app.core.config import settings
 from app.utils.logging import logger
-from fastapi import HTTPException
 
 
 class UserTwitterResponseModel(BaseModel):
@@ -52,7 +54,7 @@ def get_user_info_twitter(access_token: str):
         "Authorization": f"Bearer {access_token}"
     }
     params = {
-        "user.fields": "created_at,description,id,location,name,profile_image_url,url,username"
+        "moblie.fields": "created_at,description,id,location,name,profile_image_url,url,username"
     }
     response = requests.get(
         f"{API_TWITTER_URL}users/me", headers=headers, params=params
@@ -76,7 +78,7 @@ def get_my_post_twitter(access_token: str, user_id: int, since: str, until: str)
                         'in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,'
                         'reply_settings,source,text,withheld,edit_history_tweet_ids',
         'media.fields': 'duration_ms,height,media_key,preview_image_url,type,url,width,alt_text,variants',
-        'user.fields': 'created_at,id,name,profile_image_url,public_metrics,url,username',
+        'moblie.fields': 'created_at,id,name,profile_image_url,public_metrics,url,username',
         'end_time': until,
     }
     if since:

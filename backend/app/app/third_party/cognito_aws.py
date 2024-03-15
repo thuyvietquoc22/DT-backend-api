@@ -1,12 +1,12 @@
-import boto3
-import hmac
-import hashlib
 import base64
+import hashlib
+import hmac
 from typing import Any
 
-from botocore.errorfactory import BaseClientExceptions
+import boto3
 from botocore.exceptions import ClientError
 from fastapi import HTTPException
+
 from app.core.config import settings
 from app.utils.logging import logger
 
@@ -19,16 +19,16 @@ client: Any = boto3.client(
 
 
 def create_user(username, password, email):
-    logger.info(f'Create user: {settings.COGNITO_USER_POOL_ID}')
-    logger.info(f'Create user: {settings.COGNITO_CLIENT_ID}')
-    logger.info(f'Create user: {settings.AWS_REGION_NAME}')
-    logger.info(f'Create user: {settings.AWS_ACCESS_KEY_ID}')
-    logger.info(f'Create user: {settings.AWS_SECRET_ACCESS_KEY}')
+    logger.info(f'Create moblie: {settings.COGNITO_USER_POOL_ID}')
+    logger.info(f'Create moblie: {settings.COGNITO_CLIENT_ID}')
+    logger.info(f'Create moblie: {settings.AWS_REGION_NAME}')
+    logger.info(f'Create moblie: {settings.AWS_ACCESS_KEY_ID}')
+    logger.info(f'Create moblie: {settings.AWS_SECRET_ACCESS_KEY}')
     if is_email_registered(username):
         raise HTTPException(status_code=400, detail='Username already exists')
     if is_email_registered(email):
         raise HTTPException(status_code=400, detail='Username already exists')
-    # Create a new user with a temporary password and user information.
+    # Create a new moblie with a temporary password and moblie information.
     try:
         response = client.admin_create_user(
             UserPoolId=settings.COGNITO_USER_POOL_ID,
@@ -49,7 +49,7 @@ def create_user(username, password, email):
 
         raise HTTPException(status_code=400, detail=e.response['Error']['Code'])
 
-    # Set up a password for the new user.
+    # Set up a password for the new moblie.
     try:
         client.admin_set_user_password(
             UserPoolId=settings.COGNITO_USER_POOL_ID,
@@ -70,7 +70,7 @@ def create_user(username, password, email):
 
 def is_email_registered(email):
     try:
-        # Call api to get user information
+        # Call api to get moblie information
         response = client.admin_get_user(
             UserPoolId=settings.COGNITO_USER_POOL_ID,
             Username=email
@@ -85,13 +85,13 @@ def is_email_registered(email):
             error = e.response['Error']['Message']
             return {'error': error}
     else:
-        # If email exists, API will return user information
+        # If email exists, API will return moblie information
         return True
 
 
 def get_user_by_email(email):
     try:
-        # Call api to get user information
+        # Call api to get moblie information
         response = client.admin_get_user(
             UserPoolId=settings.COGNITO_USER_POOL_ID,
             Username=email
@@ -106,7 +106,7 @@ def get_user_by_email(email):
             error = e.response['Error']['Message']
             return {'error': error}
     else:
-        # If email exists, API will return user information
+        # If email exists, API will return moblie information
         return response.get('Username')
 
 
@@ -184,9 +184,9 @@ def initiate_auth_with_username_password(username, password):
         if error == 'NotAuthorizedException':
             logger.exception('The username or password is incorrect.')
         elif error == 'UserNotConfirmedException':
-            logger.exception('The user is not confirmed yet.')
+            logger.exception('The moblie is not confirmed yet.')
         elif error == 'PasswordResetRequiredException':
-            logger.exception('The password must be reset before the user can sign in.')
+            logger.exception('The password must be reset before the moblie can sign in.')
         elif error == 'UserNotFoundException':
             logger.exception('The username or password is incorrect.')
         else:

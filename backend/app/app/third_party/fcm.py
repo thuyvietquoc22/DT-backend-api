@@ -1,7 +1,8 @@
-from fastapi import FastAPI, HTTPException, Body
+from fastapi import HTTPException
 from firebase_admin import credentials, messaging, initialize_app
 
 from app.utils.logging import logger
+
 # Khởi tạo Firebase Admin SDK với file cấu hình JSON
 cred = credentials.Certificate("../app/firebase-config.json")
 initialize_app(cred)
@@ -36,7 +37,7 @@ def send_message(message_data: dict):
 # Gửi thông điệp đến nhiều người dùng
 def send_fcm_to_many_users(message_data, tokens):
     try:
-        # tokens: danh sách token user cần gửi message
+        # tokens: danh sách token moblie cần gửi message
         # Kiểm tra nếu không có token
         if not tokens:
             print('No tokens found.')

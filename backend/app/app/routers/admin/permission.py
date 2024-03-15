@@ -3,19 +3,22 @@ from typing import List
 from fastapi import APIRouter
 
 from app.db.mongo_db import permission_collection
-from app.models.permission_model import PermissionModel
-from app.services.role_service import role_service
+from app.domain.admin.permission import PermissionDomain
+from app.models.admin.permission import PermissionModel
 
 
-class RoleRouter:
+class PermissionRouter:
+
+    def __init__(self, domain: PermissionDomain):
+        self.domain = domain
 
     @property
     def router(self):
-        api_router = APIRouter(prefix='/roles', tags=['Role & Permission in system'])
+        api_router = APIRouter(prefix='/permissions', tags=['Permission in system'])
 
         @api_router.get('', response_model=List[PermissionModel])
         async def get_permissions():
-            result = role_service.get_all_permission()
+            result = self.domain.get_all_permission()
             return result
 
         @api_router.post('', response_model=List[PermissionModel])
@@ -24,6 +27,3 @@ class RoleRouter:
                                                       permission in permission])
 
         return api_router
-
-
-role_router = RoleRouter()

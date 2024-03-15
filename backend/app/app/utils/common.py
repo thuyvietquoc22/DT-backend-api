@@ -1,11 +1,11 @@
 import base64
 import json
 from base64 import b64encode, b64decode
-from typing import TypeVar, Any, Optional
+from typing import TypeVar, Optional
 
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from pydantic.main import BaseModel, ModelMetaclass
+from pydantic.main import BaseModel
 from pymongo.cursor import Cursor
 
 

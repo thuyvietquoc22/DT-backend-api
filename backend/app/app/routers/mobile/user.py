@@ -1,22 +1,23 @@
 from fastapi import APIRouter
 
-from app.domain.pagination_response import PaginationResponse as Pagination
-from app.domain.user.user import UserResponse
-from app.services.user_service import user_service
+from app.domain.moblie.user import UserResponse, UserDomain
+from app.models.pagination_model import PaginationResponse, Pageable
 
 
 class UserRouter:
+
+    def __init__(self, user_domain: UserDomain):
+        self.user_domain = user_domain
+
     @property
     def router(self):
         api_router = APIRouter(prefix='/mobile/users', tags=['User'])
 
-        @api_router.get("", response_model=Pagination[UserResponse])
+        @api_router.get("", response_model=PaginationResponse[UserResponse])
         async def get_user(page: int = 1, limit: int = 10, email=None, fullname=None):
-            response, total_page, total_items = user_service.get_user(page=page, limit=limit, email=email,
-                                                                      fullname=fullname)
-            return Pagination.response(response, total_page, total_items, page, limit)
+            pageable = Pageable(page=page, limit=limit)
+            response = self.user_domain.get_user(pageable=pageable, email=email, fullname=fullname)
+
+            return PaginationResponse.response_pageable(data=response, pageable=pageable)
 
         return api_router
-
-
-user_router = UserRouter()

@@ -1,10 +1,9 @@
 from typing import Optional
 
+from bson import ObjectId
 from pydantic import Field
-from pydantic.main import BaseModel
 
 from app.models import BaseMongoModel, PyObjectId
-from bson import ObjectId
 
 
 class SubPermissionModel(BaseMongoModel):
