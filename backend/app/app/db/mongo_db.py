@@ -8,4 +8,4 @@ db = client["digital-twin"]
 
 account_collection = db.get_collection("account")
 user_collection = db.get_collection("user")
-
+permission_collection = db.get_collection("permission")

@@ -1,0 +1,75 @@
+[
+  {
+    "name": "Thông tin về hệ thống camera giao thông",
+    "sub_permissions": [
+      {
+        "name": "Thêm mới camera"
+      },
+      {
+        "name": "Sửa thông tin camera"
+      },
+      {
+        "name": "Xoá camera giao thông"
+      }
+    ]
+  },
+  {
+    "name": "Thông tin về hệ thống đèn tín hiệu giao thông",
+    "sub_permissions": [
+      {
+        "name": "Thêm mới đèn tín hiệu"
+      },
+      {
+        "name": "Sửa thông tin đèn tín hiệu"
+      },
+      {
+        "name": "Xoá đèn tín hiệu giao thông"
+      }
+    ]
+  },
+  {
+    "name": "Thông tin về hệ thống biển báo VMS",
+    "sub_permissions": [
+      {
+        "name": "Thêm mới biển báo"
+      },
+      {
+        "name": "Sửa thông tin biển báo"
+      },
+      {
+        "name": "Xoá biển báo giao thông"
+      }
+    ]
+  }, {
+    "name": "Quản lý người dùng hệ thống",
+    "sub_permissions": [
+      {
+        "name": "Thêm mới người dùng"
+      },
+      {
+        "name": "Sửa thông tin người dùng"
+      },
+      {
+        "name": "Thêm quyền cho người dùng"
+      },
+      {
+        "name": "Xoá người dùng"
+      }
+    ]
+  },
+  {
+    "name": "Sự kiện giao thông"
+  },
+  {
+    "name": "Huấn luyện kiểm thử"
+  },
+  {
+    "name": "Thông tin về hệ thống đèn tín hiệu giao thông"
+  },
+  {
+    "name": "Tổ chức giao thông"
+  },
+  {
+    "name": "Kết nối liên thông với các hệ thống"
+  }
+]
