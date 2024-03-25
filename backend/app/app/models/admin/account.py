@@ -1,4 +1,4 @@
-from app.models import BaseMongoModel
+from app.models import BaseMongoModel, PyObjectId
 
 
 class BaseAccount(BaseMongoModel):
@@ -18,3 +18,9 @@ class AccountUpdate(BaseAccount):
 
 class AccountResponse(BaseAccount):
     username: str
+    role_id: PyObjectId
+    first_login: bool
+
+
+class AccountModel(AccountResponse):
+    password: str

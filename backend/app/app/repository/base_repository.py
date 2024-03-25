@@ -2,9 +2,11 @@ from abc import ABC, abstractmethod
 from math import ceil
 from typing import TypeVar, Generic, Optional
 
+from bson import ObjectId
 from pymongo.collection import Collection
 from pymongo.cursor import Cursor
 
+from app.exceptions.not_found_exception import NotFoundException
 from app.models import BaseMongoModel
 from app.models.pagination_model import Pageable
 
@@ -30,8 +32,11 @@ class BaseRepository(Generic[Model, CreateModel, UpdateModel], ABC):
     def get_all(self):
         return self.collection.find()
 
-    def get_by_id(self, obj_id: str) -> Optional[Model]:
-        return self.collection.find_one({"_id": obj_id})
+    def get_by_id(self, obj_id: str):
+        result = self.collection.find_one({"_id": ObjectId(obj_id)})
+        if not result:
+            raise NotFoundException(f"Not found item has id: {obj_id}")
+        return result
 
     def create(self, obj: CreateModel) -> Cursor:
         inserted = self.collection.insert_one(obj.model_dump(by_alias=True, exclude=["id"]))

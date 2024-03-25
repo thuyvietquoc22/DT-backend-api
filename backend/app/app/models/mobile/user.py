@@ -18,3 +18,4 @@ class UserModelCreate(UserModelBase):
 
 class UserResponse(UserModelBase):
     is_active: bool = False
+    is_locked: bool = False

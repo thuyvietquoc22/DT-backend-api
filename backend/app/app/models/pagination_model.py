@@ -1,5 +1,6 @@
 from typing import TypeVar, Generic, Optional, List, Any
 
+from pydantic import Field
 from pydantic.main import BaseModel
 
 D = TypeVar('D', List, Any)

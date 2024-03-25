@@ -5,6 +5,8 @@ import jwt
 from passlib.context import CryptContext
 
 from app.core.config import settings
+from app.db.mongo_db import refresh_token_collection
+from app.repository.refresh_repository import refresh_token_repository
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -23,10 +25,17 @@ def create_access_token(
 def create_refresh_token(
         username, **kwargs
 ) -> str:
-    return generate_jwt_token(
+    refresh_token = generate_jwt_token(
         data={"username": username, **kwargs},
         expires_delta=timedelta(minutes=settings.REFRESH_TOKEN_EXPIRE_MINUTES)
     )
+
+    inserted = refresh_token_repository.save_refresh_key(username, refresh_token)
+
+    if not inserted:
+        raise ValueError("Cannot insert refresh token")
+
+    return refresh_token
 
 
 def generate_jwt_token(data: dict, expires_delta: timedelta = None, **kwargs) -> str:
@@ -46,5 +55,3 @@ def extract_jwt_token(token: str, response_type: T = Any) -> T:
         raise ValueError("Token is expired")
     except jwt.InvalidTokenError:
         raise ValueError("Invalid token")
-
-

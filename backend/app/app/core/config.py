@@ -39,7 +39,7 @@ class Settings(BaseSettings):
     CLOUDFRONT_DISTRIBUTION_ID: str = ""
 
     # MONGODB_URL
-    MONGODB_URL: str = "mongodb://localhost:27017"
+    MONGODB_URL: str = "mongodb+srv://quocthinhtme:dQ1T85lyamzav2LN@digitaltwin.ln93u1m.mongodb.net/?retryWrites=true&w=majority&appName=DigitalTwin"
 
     class Config:
         case_sensitive = True

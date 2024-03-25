@@ -1,16 +1,23 @@
 from typing import Optional
 
 from bson import ObjectId
-from pydantic import Field
+from pydantic import Field, BaseModel
 
 from app.models import BaseMongoModel, PyObjectId
 
 
-class SubPermissionModel(BaseMongoModel):
-    id: Optional[PyObjectId | ObjectId] = Field(alias="_id", default=ObjectId())
+class SimplePermission(BaseMongoModel):
     name: str
+    keyname: str
 
 
-class PermissionModel(BaseMongoModel):
-    name: str
-    sub_permissions: Optional[list[SubPermissionModel]] = None
+class PermissionBase(SimplePermission):
+    sub_permissions: Optional[list[SimplePermission]] = None
+
+
+class PermissionCreate(PermissionBase):
+    pass
+
+
+class PermissionResponse(PermissionBase):
+    pass

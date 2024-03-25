@@ -1,3 +1,4 @@
+from bson import ObjectId
 from pymongo.collection import Collection
 
 from app.db.mongo_db import user_collection
@@ -29,3 +30,7 @@ class UserRepository(BaseRepository[UserModelCreate, UserModelCreate, UserModelC
         result = self.collection.find(query).skip(pageable.skip).limit(pageable.limit)
 
         return result
+
+    def set_is_banned(self, user_id: str, is_banned: bool = True):
+        self.collection.update_one({"_id": ObjectId(user_id)}, {"$set": {"is_locked": is_banned}})
+        return self.get_by_id(user_id)

@@ -20,4 +20,15 @@ class UserRouter:
 
             return PaginationResponse.response_pageable(data=response, pageable=pageable)
 
+        @api_router.patch("/lock/{user_id}", response_model=UserResponse)
+        async def lock_user(user_id: str):
+            response = self.user_domain.lock_user(user_id=user_id)
+            return response
+
+        @api_router.patch("/unlock/{user_id}", response_model=UserResponse)
+        async def unlock_user(user_id: str):
+            response = self.user_domain.unlock_user(user_id=user_id)
+            return response
+
         return api_router
+

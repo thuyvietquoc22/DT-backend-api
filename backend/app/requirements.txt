@@ -39,5 +39,5 @@ beautifulsoup4==4.12.3
 lxml==5.1.0
 motor==3.3.2
 pymongo==4.6.2
-pydantic-settings=2.2.1
-email-va
+pydantic-settings==2.2.1
+email-validator==2.1.1

@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from app.domain.auth.admin_auth import AccountLogin, AuthLoginResponseModel, AccountRegisterModel, AdminAuthDomain
-from app.models.auth.admin_auth import AuthTokenModel, AuthCheckResponseModel
+from app.models.auth.admin_auth import AuthTokenModel, AuthCheckResponseModel, FirstLoginModel
 
 
 class AdminAuthRouter:
@@ -11,7 +11,7 @@ class AdminAuthRouter:
 
     @property
     def router(self):
-        api_router = APIRouter(prefix='/auth', tags=['Auth'])
+        api_router = APIRouter(prefix='/cms/auth', tags=['Auth'])
 
         @api_router.post('/validate')
         async def validate(request: AuthTokenModel):
@@ -20,6 +20,11 @@ class AdminAuthRouter:
         @api_router.post('/login', response_model=AuthLoginResponseModel)
         async def login(user_login_model: AccountLogin):
             return self.domain.login(user_login_model)
+
+        @api_router.post('/change-password-first-login')
+        async def change_password(request: FirstLoginModel):
+            self.domain.change_password_first_login(request)
+            return {"message": "Change password success"}
 
         @api_router.post('/register')
         async def register(user_register: AccountRegisterModel):
@@ -31,5 +36,3 @@ class AdminAuthRouter:
             return AuthCheckResponseModel(result=result)
 
         return api_router
-
-

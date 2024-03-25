@@ -1,6 +1,6 @@
 from app.core.jwt import create_access_token, create_refresh_token
 from app.core.password_encoder import verify_password, hash_password
-from app.decorator.parser import parse_cursor_as
+from app.decorator.parser import parse_as
 from app.exceptions.authenticate_exception import AuthenticateException
 from app.exceptions.param_invalid_exception import ParamInvalidException
 from app.models.auth.mobile_auth import UserRegisterModel
@@ -40,7 +40,7 @@ class MobileAuthDomain:
             token_type=token_type
         )
 
-    @parse_cursor_as(response_type=UserModelCreate)
+    @parse_as(response_type=UserModelCreate)
     def register(self, register: UserRegisterModel):
 
         exist_user = self.user_repo.find_by_username(register.username)
