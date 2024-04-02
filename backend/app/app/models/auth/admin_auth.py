@@ -10,9 +10,10 @@ class AccountLogin(BaseModel):
 
 class AccountRegisterModel(BaseModel):
     username: str = Field(..., example=['username'])
+    fullname: Optional[str] = Field(..., example=['Nguyen Van Anh'])
     email: str = Field(..., example=['account@gmail.com'])
     password: str = Field(..., example=['password'])
-    fullname: Optional[str] = Field(..., example=['Nguyen Van Anh'])
+    role_id: str = Field(..., example=['admin'])
 
 
 class AuthTokenModel(BaseModel):

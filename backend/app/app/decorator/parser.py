@@ -14,6 +14,8 @@ def parse_as(response_type: type[T]) -> callable:
     def wrapper(func: callable):
         def inner(*args, **kwargs):
             result = func(*args, **kwargs)
+            if result is None:
+                return None
             return TypeAdapter(response_type).validate_python(result)
 
         return inner

@@ -1,3 +1,5 @@
+from bson import ObjectId
+
 from app.core import jwt
 from app.core.jwt import create_refresh_token, create_access_token, extract_jwt_token
 from app.core.password_encoder import verify_password, hash_password
@@ -8,6 +10,7 @@ from app.exceptions.param_invalid_exception import ParamInvalidException
 from app.models.admin.account import AccountCreate, AccountResponse, AccountModel
 from app.models.admin.role import RoleResponse
 from app.models.auth.admin_auth import AccountLogin, AccountRegisterModel, FirstLoginModel
+from app.models.pagination_model import Pageable
 from app.repository.admin.account import AccountRepository
 from app.routers.auth import AuthLoginResponseModel
 
@@ -49,13 +52,18 @@ class AdminAuthDomain:
         exist_account = self.check_exist_email(account_register.email)
 
         if exist_account:
-            raise ParamInvalidException("Username already exist")
+            raise ParamInvalidException("Email này đã được sử dụng")
 
         account_register.password = hash_password(account_register.password)
 
         account = AccountCreate(
-            **account_register.dict(),
-            is_active=False
+            username=account_register.username,
+            fullname=account_register.fullname,
+            email=account_register.email,
+            password=account_register.password,
+            role_id=ObjectId(account_register.role_id),
+            is_active=True,
+            first_login=True
         )
 
         return self.account_repo.create(account)
@@ -76,6 +84,10 @@ class AdminAuthDomain:
         hashed_password = hash_password(request.password)
         user.first_login = False
         self.account_repo.update_first_login(_id=user.id, hash_password=hashed_password)
+
+    def get_accounts(self, pageable: Pageable):
+        result = self.account_repo.find_all(pageable)
+        return result
 
 
 admin_auth_domain = AdminAuthDomain(AccountRepository())
