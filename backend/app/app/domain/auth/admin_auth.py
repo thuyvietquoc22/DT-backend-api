@@ -48,7 +48,7 @@ class AdminAuthDomain:
 
         exist_account = self.check_exist_email(account_register.email)
 
-        if exist_account is not None:
+        if exist_account:
             raise ParamInvalidException("Username already exist")
 
         account_register.password = hash_password(account_register.password)

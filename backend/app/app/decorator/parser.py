@@ -6,8 +6,11 @@ from pymongo.cursor import Cursor
 T = TypeVar('T')
 
 
-# Định nghĩa decorator parse_cursor_as
 def parse_as(response_type: type[T]) -> callable:
+    """
+    Nên dùng trong repository để parse data từ database thành kiểu dữ liệu mong muốn
+    """
+
     def wrapper(func: callable):
         def inner(*args, **kwargs):
             result = func(*args, **kwargs)

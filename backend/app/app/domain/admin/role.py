@@ -12,13 +12,12 @@ class RoleDomain:
         self.role_repo = role_repo
 
     def get_all_role(self):
-        return self.role_repo.get_all_role()
+        result = self.role_repo.get_all_role()
+        return result
 
-    @parse_as(response_type=RoleResponse)
     def create_role(self, permission_create: RoleCreate):
-        valid_permissions = permission_domain.get_all_by_id(permission_create.permission_ids)
-        valid_ids = [ObjectId(i.id) for i in valid_permissions]
-        permission_create.permission_ids = valid_ids
+        permission_create.permission_ids = [ObjectId(permission_id) for permission_id in
+                                            permission_create.permission_ids]
         return self.role_repo.create(permission_create)
 
     def get_permission_by_role_id(self, role_id: str):

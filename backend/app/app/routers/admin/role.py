@@ -4,7 +4,7 @@ from fastapi import APIRouter
 
 from app.domain.admin.role import RoleDomain
 from app.models.admin.permission import PermissionResponse
-from app.models.admin.role import RoleCreate
+from app.models.admin.role import RoleCreate, RoleResponse
 
 
 class RoleRouter:
@@ -16,7 +16,7 @@ class RoleRouter:
     def router(self):
         api_router = APIRouter(prefix='/roles', tags=['Permission & Role'])
 
-        @api_router.get('', response_model=List[PermissionResponse])
+        @api_router.get('', response_model=List[RoleResponse])
         async def get_roles():
             result = self.domain.get_all_role()
             return result
@@ -24,6 +24,8 @@ class RoleRouter:
         @api_router.post("")
         async def create_role(permission_create: RoleCreate):
             result = self.domain.create_role(permission_create)
-            return result
+            return {
+                "message": f"Tạo thành công vai trò \"{permission_create.name}\".",
+            }
 
         return api_router

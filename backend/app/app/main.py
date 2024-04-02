@@ -4,9 +4,9 @@ import redis
 import uvicorn
 from fastapi import FastAPI
 
+from app.core.cloudinary_config import load_cloudinary_config
 from app.exceptions.exception_handler import register_exception_handler
 from app.middlewares import register_middlewares
-# from app.db.main import generate_table
 from app.routers.router import register_router
 
 app = FastAPI()
@@ -14,7 +14,7 @@ app = FastAPI()
 # db = initialize_db()
 # generate_table(db)
 
-
+load_cloudinary_config()
 register_exception_handler(app)
 register_middlewares(app)
 register_router(app)

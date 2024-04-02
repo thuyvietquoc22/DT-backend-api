@@ -36,9 +36,9 @@ class RoleRepository(BaseRepository[RoleResponse, RoleCreate, RoleUpdate]):
     def __get_all_role(self):
         pipeline = [
             {"$lookup": {
-                "from": "permission", "localField": "permission_ids", "foreignField": "_id", "as": "by_parent", }, },
+                "from": "permissions", "localField": "permission_ids", "foreignField": "_id", "as": "by_parent", }, },
             {"$lookup": {
-                "from": "permission",
+                "from": "permissions",
                 "localField": "permission_ids",
                 "foreignField": "sub_permissions._id",
                 "as": "by_child",
@@ -73,4 +73,5 @@ class RoleRepository(BaseRepository[RoleResponse, RoleCreate, RoleUpdate]):
         return self.__filter_permission(self.__get_permission_by_role_by_id(_id))
 
     def get_all_role(self):
-        return [self.__filter_permission(role) for role in self.__get_all_role()]
+        result = [self.__filter_permission(role) for role in self.__get_all_role()]
+        return result

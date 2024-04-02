@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 5
     REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7
 
-    BACKEND_CORS_ORIGINS: str = "http://localhost:3000"
+    BACKEND_CORS_ORIGINS: str = "*"
 
     ENV: str = "local"
     AWS_DB_ENDPOINT_URL: str = ""
@@ -40,6 +40,13 @@ class Settings(BaseSettings):
 
     # MONGODB_URL
     MONGODB_URL: str = "mongodb+srv://quocthinhtme:dQ1T85lyamzav2LN@digitaltwin.ln93u1m.mongodb.net/?retryWrites=true&w=majority&appName=DigitalTwin"
+    # MONGODB_URL: str = "mongodb://localhost:27017"
+
+    # CLOUDINARY
+    CLOUDINARY_CLOUD_NAME: str = "dunezoucn"
+    CLOUDINARY_API_KEY: str = "727316736938961"
+    CLOUDINARY_API_SECRET: str = "dryjjj8kaOZKknQDhcdha29FGKI"
+    CLOUDINARY_URL: str = "CLOUDINARY_URL=cloudinary://727316736938961:dryjjj8kaOZKknQDhcdha29FGKI@dunezoucn"
 
     class Config:
         case_sensitive = True
