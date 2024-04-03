@@ -28,4 +28,18 @@ class RoleRouter:
                 "message": f"Tạo thành công vai trò \"{permission_create.name}\".",
             }
 
+        @api_router.post("/count-usage/{role_id}")
+        async def count_role_usage(role_id: str):
+            result = self.domain.count_role_usage(role_id)
+            return {
+                "count": result,
+            }
+
+        @api_router.delete("/{role_id}")
+        async def delete_role(role_id: str):
+            result = self.domain.delete_role(role_id)
+            return {
+                "message": f"Xóa thành công vai trò.",
+            }
+
         return api_router

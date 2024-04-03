@@ -1,7 +1,7 @@
 from bson import ObjectId
 from pymongo.collection import Collection
 
-from app.db.mongo_db import role_collection
+from app.db.mongo_db import role_collection, account_collection
 from app.decorator.parser import parse_as
 from app.models.admin.role import RoleResponse, RoleCreate, RoleUpdate
 from app.repository.base_repository import BaseRepository
@@ -79,3 +79,15 @@ class RoleRepository(BaseRepository[RoleResponse, RoleCreate, RoleUpdate]):
             query["name"] = {"$regex": f".*{role_name}.*", "$options": "i"}
         result = self.collection.find(query)
         return result
+
+    def count_role_usage(self, _id: str) -> int:
+        pipeline = [
+            {"$match": {"role_id": ObjectId(_id)}},
+            {"$lookup": {
+                "from": "accounts", "localField": "_id", "foreignField": "role_id", "as": "account", }, },
+            {"$count": "count", },
+        ]
+        result = account_collection.aggregate(pipeline)
+        result = list(result)
+        return result[0]["count"] if result else 0
+

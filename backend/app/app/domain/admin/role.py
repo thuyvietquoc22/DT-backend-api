@@ -23,5 +23,11 @@ class RoleDomain:
     def get_permission_by_role_id(self, role_id: str):
         return self.role_repo.get_permission_by_role_by_id(role_id)
 
+    def delete_role(self, role_id):
+        return self.role_repo.delete(role_id)
+
+    def count_role_usage(self, _id: str):
+        return self.role_repo.count_role_usage(_id)
+
 
 role_domain = RoleDomain(RoleRepository())
