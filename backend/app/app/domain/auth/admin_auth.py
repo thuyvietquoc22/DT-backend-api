@@ -89,5 +89,9 @@ class AdminAuthDomain:
         result = self.account_repo.find_all(pageable)
         return result
 
+    def delete_account(self, _id):
+        result = self.account_repo.delete(_id)
+        return result
+
 
 admin_auth_domain = AdminAuthDomain(AccountRepository())

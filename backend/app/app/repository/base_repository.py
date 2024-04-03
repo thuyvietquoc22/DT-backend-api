@@ -61,6 +61,8 @@ class BaseRepository(Generic[Model, CreateModel, UpdateModel], ABC):
         return self.collection.find_one({"_id": inserted.inserted_id})
 
     def update(self, obj_id: str, obj: UpdateModel):
+        if hasattr(obj, "_id"):
+            obj._id = None
 
         # remove attr is None of obj
         obj = obj.dict(exclude_none=True)
@@ -68,7 +70,7 @@ class BaseRepository(Generic[Model, CreateModel, UpdateModel], ABC):
         result = self.collection.update_one({"_id": ObjectId(obj_id)}, {"$set": obj})
 
         if result.modified_count == 0:
-            raise Exception("Update failed")
+            raise Exception("Không có bản ghi nào được cập nhật")
 
         return result
 

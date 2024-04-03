@@ -28,8 +28,14 @@ class AccountRepository(BaseRepository[AccountResponse, AccountCreate, AccountUp
                                           {"$set": {"password": hash_password, "first_login": False}})
 
     @parse_as(response_type=list[AccountResponse])
-    def find_all(self, pageable: Pageable):
+    def find_all(self, pageable: Pageable, name: str, email: str):
+        query = {}
+        if email:
+            query["email"] = {"$regex": f".*{email}.*", "$options": "i"}
+        if name:
+            query["fullname"] = {"$regex": f".*{name}.*", "$options": "i"}
         pipeline = [
+            {'$match': query},
             {'$lookup': {'from': 'role', 'localField': 'role_id', 'foreignField': '_id', 'as': 'role_name'}},
             {'$addFields': {'role_name': {'$arrayElemAt': ['$role_name.name', 0]}}},
             {"$skip": pageable.skip},
@@ -39,4 +45,18 @@ class AccountRepository(BaseRepository[AccountResponse, AccountCreate, AccountUp
         self.get_pageable(pageable, {})
         result = self.collection.aggregate(pipeline)
         return result
+
+    @parse_as(response_type=list[AccountResponse])
+    def get_account_by_id(self, _id):
+        pipeline = [
+            {'$match': {"_id": ObjectId(_id)}},
+            {'$lookup': {'from': 'role', 'localField': 'role_id', 'foreignField': '_id', 'as': 'role_name'}},
+            {'$addFields': {'role_name': {'$arrayElemAt': ['$role_name.name', 0]}}}
+        ]
+        result = self.collection.aggregate(pipeline)
+        return result
+
+    def update_password_by_id(self, _id, hashed):
+        result = self.collection.update_one({"_id": ObjectId(_id)}, {"$set": {"password": hashed}})
+        return result.modified_count == 1
 

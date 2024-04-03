@@ -8,6 +8,7 @@ from app.domain.admin.role import role_domain
 from app.domain.auth.admin_auth import admin_auth_domain
 from app.domain.auth.mobile_auth import mobile_auth_domain
 from app.domain.moblie.user import user_domain
+from app.routers.admin.account import AccountRouter
 from app.routers.admin.assets import AssetsRouter
 from app.routers.admin.model import ModelRouter
 from app.routers.admin.permission import PermissionRouter
@@ -40,5 +41,8 @@ def register_router(app: FastAPI):
 
     model_router = ModelRouter(model_domain).router
     api_router.include_router(model_router)
+
+    account_router = AccountRouter().router
+    api_router.include_router(account_router)
 
     app.include_router(api_router, prefix=settings.API_V1_STR)

@@ -11,3 +11,7 @@ class BaseMongoModel(BaseModel):
         populate_by_name=True,
         arbitrary_types_allowed=True,
     )
+
+
+class StringBody(BaseModel):
+    content: str

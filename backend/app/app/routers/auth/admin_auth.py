@@ -43,4 +43,9 @@ class AdminAuthRouter:
             result = self.domain.check_exist_email(email)
             return AuthCheckResponseModel(result=result)
 
+        @api_router.delete('/accounts/{_id}')
+        async def delete_account(_id: str):
+            self.domain.delete_account(_id)
+            return {"message": "Delete account success"}
+
         return api_router
