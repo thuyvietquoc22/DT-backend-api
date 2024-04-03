@@ -24,7 +24,7 @@ class PermissionDomain:
         else:
             return self.__get_all_by_id_not_group(ids)
 
-    def __get_all_by_id(self, ids: list[str] | None):
+    def __get_all_by_id(self, ids: list[str]):
         result: Cursor = self.repo.get_all()
         return result
 

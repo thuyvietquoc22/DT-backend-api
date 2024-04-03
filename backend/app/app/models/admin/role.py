@@ -9,7 +9,7 @@ from app.models.admin.permission import PermissionResponse
 class RoleBase(BaseMongoModel):
     name: str
     description: Optional[str] = None
-    permission_ids: list[str | PyObjectId] = []
+    permission_ids: list[PyObjectId] = []
 
 
 class RoleCreate(RoleBase):

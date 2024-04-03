@@ -22,13 +22,12 @@ class BaseRepository(Generic[Model, CreateModel, UpdateModel], ABC):
     def collection(self) -> Collection:
         pass
 
-    def is_exists_id(self, id_: str | ObjectId) -> bool:
-        if isinstance(id_, str):
-            id_ = ObjectId(id_)
+    def is_exists_id(self, id_: str) -> bool:
+        id_ = ObjectId(id_)
         return self.collection.count_documents({"_id": id_}) > 0
 
-    def is_exists_ids(self, ids: list[str | ObjectId]) -> bool:
-        ids = [ObjectId(id_) if isinstance(id_, str) else id_ for id_ in ids]
+    def is_exists_ids(self, ids: list[str]) -> bool:
+        ids = [ObjectId(id_) for id_ in ids]
         return self.collection.count_documents({"_id": {"$in": ids}}) == len(ids)
 
     def get_pageable(self, pageable: Pageable, query: Optional[dict] = None) -> Pageable:

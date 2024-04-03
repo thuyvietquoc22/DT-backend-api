@@ -44,4 +44,4 @@ class ModelUpdate(BaseModel):
 
 
 class ModelResponse(ModelBase):
-    asset: AssetsResponse | None = None
+    asset: Optional[AssetsResponse] = None

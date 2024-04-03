@@ -42,7 +42,7 @@ class AccountRepository(BaseRepository[AccountResponse, AccountCreate, AccountUp
             {"$limit": pageable.limit}
         ]
 
-        self.get_pageable(pageable, {})
+        self.get_pageable(pageable, query)
         result = self.collection.aggregate(pipeline)
         return result
 

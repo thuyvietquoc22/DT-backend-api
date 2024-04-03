@@ -18,7 +18,7 @@ class AssetsBase(BaseMongoModel):
 
 
 class AssetsCreate(AssetsBase):
-    group_id: ObjectId | str
+    group_id: str
 
 
 class AssetsUpdate(AssetsBase):
