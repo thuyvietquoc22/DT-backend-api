@@ -21,4 +21,4 @@ class RoleUpdate(RoleBase):
 
 
 class RoleResponse(RoleBase):
-    permissions: list[PermissionResponse]
+    permissions: Optional[list[PermissionResponse]] = None

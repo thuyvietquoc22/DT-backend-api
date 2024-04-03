@@ -2,9 +2,9 @@ from fastapi import APIRouter, Body
 
 from app.domain.admin.account import AccountDomain
 from app.models import StringBody
-from app.models.admin.account import AccountUpdate
+from app.models.admin.account import AccountUpdate, AccountResponse
 from app.models.auth.admin_auth import AccountRegisterModel
-from app.models.pagination_model import Pageable
+from app.models.pagination_model import Pageable, PaginationResponse
 
 
 class AccountRouter:
@@ -17,10 +17,11 @@ class AccountRouter:
     def router(self):
         router = APIRouter(prefix='/accounts', tags=['System Account'])
 
-        @router.get('/')
-        def get_accounts(limit: int = 10, page: int = 1, name: str = None, email: str = None):
+        @router.get('/', response_model=PaginationResponse[AccountResponse])
+        def get_accounts(limit: int = 10, page: int = 1, fullname: str = None, email: str = None):
             pageable = Pageable.of(limit=limit, page=page)
-            return self.account_domain.get_all_accounts(pageable, name, email)
+            response = self.account_domain.get_all_accounts(pageable, fullname, email)
+            return PaginationResponse.response_pageable(response, pageable)
 
         @router.get('/{_id}')
         def get_account_by_id(_id: str):

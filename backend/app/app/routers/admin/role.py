@@ -17,8 +17,8 @@ class RoleRouter:
         api_router = APIRouter(prefix='/roles', tags=['Permission & Role'])
 
         @api_router.get('', response_model=List[RoleResponse])
-        async def get_roles():
-            result = self.domain.get_all_role()
+        async def get_oles(role_name: str = None):
+            result = self.domain.get_all_role(role_name)
             return result
 
         @api_router.post("")

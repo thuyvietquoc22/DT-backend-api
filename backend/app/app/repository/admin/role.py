@@ -72,6 +72,10 @@ class RoleRepository(BaseRepository[RoleResponse, RoleCreate, RoleUpdate]):
     def get_permission_by_role_by_id(self, _id: str):
         return self.__filter_permission(self.__get_permission_by_role_by_id(_id))
 
-    def get_all_role(self):
-        result = [self.__filter_permission(role) for role in self.__get_all_role()]
+    def get_all_role(self, role_name: str = None):
+        # result = [self.__filter_permission(role) for role in self.__get_all_role()]
+        query = {}
+        if role_name not in (None, ""):
+            query["name"] = {"$regex": f".*{role_name}.*", "$options": "i"}
+        result = self.collection.find(query)
         return result

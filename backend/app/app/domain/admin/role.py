@@ -11,8 +11,8 @@ class RoleDomain:
     def __init__(self, role_repo: RoleRepository):
         self.role_repo = role_repo
 
-    def get_all_role(self):
-        result = self.role_repo.get_all_role()
+    def get_all_role(self, role_name: str = None):
+        result = self.role_repo.get_all_role(role_name)
         return result
 
     def create_role(self, permission_create: RoleCreate):
