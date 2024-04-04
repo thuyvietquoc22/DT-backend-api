@@ -7,6 +7,7 @@ from app.models import BaseMongoModel
 
 class GroupAssets(BaseMongoModel):
     name: str  # Tên của group asset
+    keyname: str  # Keyname của group asset
 
 
 class AssetsBase(BaseMongoModel):

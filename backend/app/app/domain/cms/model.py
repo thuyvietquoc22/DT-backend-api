@@ -83,5 +83,8 @@ class ModelDomain:
 
         return assets
 
+    def get_group_by_model_id(self, model_id):
+        return self.repo.get_group_by_model_id(model_id)
+
 
 model_domain = ModelDomain(repo=ModelRepository())

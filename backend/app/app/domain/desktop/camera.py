@@ -31,6 +31,13 @@ class CameraDomain:
         if not model:
             raise ParamInvalidException(f"Không tìm thấy model với id \"{camera.model_id}\"")
 
+        group = self.model_repo.get_group_by_model_id(camera.model_id)
+
+        if not group:
+            raise ParamInvalidException(f"Không xát định được model đang thuộc về nhóm nào")
+        elif group.keyname != "CAMERA":
+            raise ParamInvalidException(f"Model không thuộc nhóm CAMERA")
+
         camera.password = hash_password(camera.password)
         camera.model_id = ObjectId(camera.model_id)
 
@@ -68,6 +75,11 @@ class CameraDomain:
 
     def update_camera(self, camera_id, camera):
         self.camera_repo.update(camera_id, camera)
+
+    def delete_camera(self, camera_id):
+        deleted = self.camera_repo.delete(camera_id)
+        if deleted.deleted_count == 0:
+            raise ParamInvalidException(f"Không tìm thấy camera với id \"{camera_id}\"")
 
 
 camera_domain = CameraDomain()

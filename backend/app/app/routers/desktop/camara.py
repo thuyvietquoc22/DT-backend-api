@@ -19,10 +19,6 @@ class CameraRouter(BaseRouter):
         async def get_all_camera():
             return self.camera_domain.get_all_camera()
 
-        @router.post('')
-        async def create_camera(camera: CameraCreate):
-            return self.camera_domain.create_camera(camera)
-
         @router.get('/{camera_id}')
         async def get_camera_by_id(camera_id: str):
             return self.camera_domain.get_camera_by_id(camera_id)
@@ -31,11 +27,22 @@ class CameraRouter(BaseRouter):
         async def get_camera_nearby(cross_road_id: str):
             return self.camera_domain.get_camera_nearby(cross_road_id)
 
+        @router.post('')
+        async def create_camera(camera: CameraCreate):
+            return self.camera_domain.create_camera(camera)
+
         @router.put('/{camera_id}')
         async def update_camera(camera_id: str, camera: CameraUpdate):
             self.camera_domain.update_camera(camera_id, camera)
             return {
                 "message": "Update camera successfully."
+            }
+
+        @router.delete('/{camera_id}')
+        async def delete_camera(camera_id: str):
+            self.camera_domain.delete_camera(camera_id)
+            return {
+                "messsage": "Camera deleted."
             }
 
         @router.post('/control')

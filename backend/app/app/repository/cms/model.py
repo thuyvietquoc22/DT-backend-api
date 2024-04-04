@@ -3,6 +3,7 @@ from pymongo.collection import Collection
 
 from app.db.mongo_db import model_collection
 from app.decorator.parser import parse_as
+from app.models.cms.assets import GroupAssets
 from app.models.cms.model import ModelUpdate, ModelCreate, ModelResponse, Location
 from app.repository.base_repository import BaseRepository
 
@@ -56,3 +57,16 @@ class ModelRepository(BaseRepository[ModelResponse, ModelCreate, ModelUpdate]):
 
     def delete_by_asset_id(self, asset_id):
         return self.collection.delete_many({"asset_id": ObjectId(asset_id)})
+
+    @parse_as(GroupAssets, True)
+    def get_group_by_model_id(self, model_id):
+        pipeline = [
+            {'$match': {'_id': ObjectId(model_id)}},
+            {'$lookup': {'from': 'assets', 'localField': 'asset_id', 'foreignField': '_id', 'as': 'asset'}},
+            {'$unwind': '$asset'},
+            {'$lookup': {'from': 'group-assets', 'localField': 'asset.group_id', 'foreignField': '_id', 'as': 'group'}},
+            {'$unwind': '$group'},
+            {'$replaceRoot': {'newRoot': '$group'}}
+        ]
+
+        return self.collection.aggregate(pipeline)
