@@ -2,9 +2,8 @@ from typing import List
 
 from fastapi import APIRouter
 
-from app.domain.admin.role import RoleDomain
-from app.models.admin.permission import PermissionResponse
-from app.models.admin.role import RoleCreate, RoleResponse
+from app.domain.cms.role import RoleDomain
+from app.models.cms.role import RoleCreate, RoleResponse
 
 
 class RoleRouter:

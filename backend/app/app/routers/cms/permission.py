@@ -4,8 +4,8 @@ from bson import ObjectId
 from fastapi import APIRouter
 
 from app.db.mongo_db import permission_collection
-from app.domain.admin.permission import PermissionDomain
-from app.models.admin.permission import PermissionResponse
+from app.domain.cms.permission import PermissionDomain
+from app.models.cms.permission import PermissionResponse
 
 
 class PermissionRouter:

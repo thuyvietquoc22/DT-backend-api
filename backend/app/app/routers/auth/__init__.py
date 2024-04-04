@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-from app.models.admin.permission import PermissionResponse
+from app.models.cms.permission import PermissionResponse
 
 
 class AuthLoginResponseModel(BaseModel):

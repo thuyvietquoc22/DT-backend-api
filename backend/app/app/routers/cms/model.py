@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from app.domain.admin.model import ModelDomain
-from app.models.admin.model import ModelCreate, ModelResponse, Location, ModelUpdate, ModelType
+from app.domain.cms.model import ModelDomain
+from app.models.cms.model import ModelCreate, ModelResponse, Location, ModelUpdate
 from app.models.pagination_model import Pageable
 
 

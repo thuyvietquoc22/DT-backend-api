@@ -3,10 +3,10 @@ from cloudinary import uploader
 from fastapi import UploadFile
 
 from app.decorator.parser import parse_as
-from app.models.admin.assets import AssetsCreate, AssetsResponse
+from app.models.cms.assets import AssetsCreate, AssetsResponse
 from app.models.pagination_model import Pageable
-from app.repository.admin.assets import AssetsModelRepository
-from app.repository.admin.model import ModelRepository
+from app.repository.cms.assets import AssetsModelRepository
+from app.repository.cms.model import ModelRepository
 from app.utils.random import random_str
 
 

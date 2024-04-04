@@ -2,8 +2,8 @@ from typing import Annotated
 
 from fastapi import APIRouter, UploadFile, Form, Body
 
-from app.domain.admin.assets import AssetsDomain
-from app.models.admin.assets import AssetsResponse, GroupAssets
+from app.domain.cms.assets import AssetsDomain
+from app.models.cms.assets import AssetsResponse, GroupAssets
 from app.models.pagination_model import Pageable, PaginationResponse
 
 

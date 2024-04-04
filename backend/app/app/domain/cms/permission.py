@@ -1,9 +1,8 @@
 from pymongo.cursor import Cursor
 
-from app.db.mongo_db import permission_collection
 from app.decorator.parser import parse_as
-from app.models.admin.permission import PermissionResponse
-from app.repository.admin.permission import PermissionRepository
+from app.models.cms.permission import PermissionResponse
+from app.repository.cms.permission import PermissionRepository
 
 
 class PermissionDomain:

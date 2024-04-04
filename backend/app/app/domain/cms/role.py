@@ -1,9 +1,7 @@
 from bson import ObjectId
 
-from app.decorator.parser import parse_as
-from app.domain.admin.permission import permission_domain
-from app.models.admin.role import RoleCreate, RoleResponse
-from app.repository.admin.role import RoleRepository
+from app.models.cms.role import RoleCreate
+from app.repository.cms.role import RoleRepository
 
 
 class RoleDomain:

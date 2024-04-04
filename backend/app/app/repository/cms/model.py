@@ -3,7 +3,7 @@ from pymongo.collection import Collection
 
 from app.db.mongo_db import model_collection
 from app.decorator.parser import parse_as
-from app.models.admin.model import ModelUpdate, ModelCreate, ModelResponse, Location
+from app.models.cms.model import ModelUpdate, ModelCreate, ModelResponse, Location
 from app.repository.base_repository import BaseRepository
 
 

@@ -4,7 +4,7 @@ from pymongo.cursor import Cursor
 
 from app.db.mongo_db import account_collection
 from app.decorator.parser import parse_as
-from app.models.admin.account import AccountResponse, AccountUpdate, AccountCreate, AccountModel
+from app.models.cms.account import AccountResponse, AccountUpdate, AccountCreate, AccountModel
 from app.models.pagination_model import Pageable
 from app.repository.base_repository import BaseRepository
 

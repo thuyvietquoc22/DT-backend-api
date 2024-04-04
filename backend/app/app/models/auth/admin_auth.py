@@ -13,7 +13,7 @@ class AccountRegisterModel(BaseModel):
     fullname: Optional[str] = Field(..., example=['Nguyen Van Anh'])
     email: str = Field(..., example=['account@gmail.com'])
     password: str = Field(..., example=['password'])
-    role_id: str = Field(..., example=['admin'])
+    role_id: str = Field(..., example=['cms'])
 
 
 class AuthTokenModel(BaseModel):

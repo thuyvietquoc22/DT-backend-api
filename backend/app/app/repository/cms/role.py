@@ -3,7 +3,7 @@ from pymongo.collection import Collection
 
 from app.db.mongo_db import role_collection, account_collection
 from app.decorator.parser import parse_as
-from app.models.admin.role import RoleResponse, RoleCreate, RoleUpdate
+from app.models.cms.role import RoleResponse, RoleCreate, RoleUpdate
 from app.repository.base_repository import BaseRepository
 
 

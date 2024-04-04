@@ -2,10 +2,10 @@ from bson import ObjectId
 
 from app.core.password_encoder import hash_password
 from app.exceptions.param_invalid_exception import ParamInvalidException
-from app.models.admin.account import AccountCreate, AccountUpdate
 from app.models.auth.admin_auth import AccountRegisterModel
+from app.models.cms.account import AccountCreate, AccountUpdate
 from app.models.pagination_model import Pageable
-from app.repository.admin.account import AccountRepository
+from app.repository.cms.account import AccountRepository
 
 
 class AccountDomain:

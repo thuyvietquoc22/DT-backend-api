@@ -1,9 +1,7 @@
 from typing import Optional
 
-from pydantic import BaseModel
-
 from app.models import BaseMongoModel, PyObjectId
-from app.models.admin.permission import PermissionResponse
+from app.models.cms.permission import PermissionResponse
 
 
 class RoleBase(BaseMongoModel):

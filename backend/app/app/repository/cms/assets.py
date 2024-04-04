@@ -3,7 +3,7 @@ from pymongo.collection import Collection
 
 from app.db.mongo_db import assets_collection, group_assets_collection, model_collection
 from app.decorator.parser import parse_as
-from app.models.admin.assets import AssetsResponse, AssetsCreate, AssetsUpdate, GroupAssets
+from app.models.cms.assets import AssetsResponse, AssetsCreate, AssetsUpdate, GroupAssets
 from app.repository.base_repository import BaseRepository
 
 

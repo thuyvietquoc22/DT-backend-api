@@ -3,15 +3,14 @@ from bson import ObjectId
 from app.core import jwt
 from app.core.jwt import create_refresh_token, create_access_token, extract_jwt_token
 from app.core.password_encoder import verify_password, hash_password
-from app.domain.admin.permission import permission_domain
-from app.domain.admin.role import role_domain
+from app.domain.cms.role import role_domain
 from app.exceptions.authenticate_exception import AuthenticateException
 from app.exceptions.param_invalid_exception import ParamInvalidException
-from app.models.admin.account import AccountCreate, AccountResponse, AccountModel
-from app.models.admin.role import RoleResponse
 from app.models.auth.admin_auth import AccountLogin, AccountRegisterModel, FirstLoginModel
+from app.models.cms.account import AccountCreate, AccountModel
+from app.models.cms.role import RoleResponse
 from app.models.pagination_model import Pageable
-from app.repository.admin.account import AccountRepository
+from app.repository.cms.account import AccountRepository
 from app.routers.auth import AuthLoginResponseModel
 
 

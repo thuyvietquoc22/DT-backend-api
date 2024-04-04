@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Body
+from fastapi import APIRouter
 
-from app.domain.admin.account import AccountDomain
+from app.domain.cms.account import AccountDomain
 from app.models import StringBody
-from app.models.admin.account import AccountUpdate, AccountResponse
 from app.models.auth.admin_auth import AccountRegisterModel
+from app.models.cms.account import AccountUpdate, AccountResponse
 from app.models.pagination_model import Pageable, PaginationResponse
 
 

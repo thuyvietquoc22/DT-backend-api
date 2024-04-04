@@ -2,12 +2,12 @@ from bson import ObjectId
 from click import BadParameter
 
 from app.decorator.parser import parse_as
-from app.domain.admin.assets import assets_domain
+from app.domain.cms.assets import assets_domain
 from app.exceptions.param_invalid_exception import ParamInvalidException
-from app.models.admin.assets import AssetsResponse
-from app.models.admin.model import ModelCreate, ModelResponse, Location, ModelUpdate, ModelType
+from app.models.cms.assets import AssetsResponse
+from app.models.cms.model import ModelCreate, ModelResponse, Location, ModelUpdate, ModelType
 from app.models.pagination_model import Pageable
-from app.repository.admin.model import ModelRepository
+from app.repository.cms.model import ModelRepository
 
 
 class ModelDomain:

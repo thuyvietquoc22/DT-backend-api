@@ -1,8 +1,8 @@
-from typing import Literal, Optional
+from typing import Optional
 
 from bson import ObjectId
 
-from app.models import BaseMongoModel, PyObjectId
+from app.models import BaseMongoModel
 
 
 class GroupAssets(BaseMongoModel):

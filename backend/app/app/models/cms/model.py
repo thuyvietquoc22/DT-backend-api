@@ -1,10 +1,9 @@
 from typing import Literal, Optional
 
-from bson import ObjectId
 from pydantic import BaseModel
 
-from app.models import BaseMongoModel, PyObjectId
-from app.models.admin.assets import AssetsResponse
+from app.models import BaseMongoModel
+from app.models.cms.assets import AssetsResponse
 
 
 class Location(BaseModel):

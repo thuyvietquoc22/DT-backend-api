@@ -1,20 +1,20 @@
 from fastapi import APIRouter, FastAPI
 
 from app.core.config import settings
-from app.domain.admin.assets import assets_domain
-from app.domain.admin.model import model_domain
-from app.domain.admin.permission import permission_domain
-from app.domain.admin.role import role_domain
 from app.domain.auth.admin_auth import admin_auth_domain
 from app.domain.auth.mobile_auth import mobile_auth_domain
+from app.domain.cms.assets import assets_domain
+from app.domain.cms.model import model_domain
+from app.domain.cms.permission import permission_domain
+from app.domain.cms.role import role_domain
 from app.domain.moblie.user import user_domain
-from app.routers.admin.account import AccountRouter
-from app.routers.admin.assets import AssetsRouter
-from app.routers.admin.model import ModelRouter
-from app.routers.admin.permission import PermissionRouter
-from app.routers.admin.role import RoleRouter
 from app.routers.auth.admin_auth import AdminAuthRouter
 from app.routers.auth.mobile_auth import MobileAuthRoute
+from app.routers.cms.account import AccountRouter
+from app.routers.cms.assets import AssetsRouter
+from app.routers.cms.model import ModelRouter
+from app.routers.cms.permission import PermissionRouter
+from app.routers.cms.role import RoleRouter
 from app.routers.mobile.user import UserRouter
 
 
