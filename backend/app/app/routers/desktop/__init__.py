@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 from app.routers import BaseRouter
 from app.routers.desktop.address import DesktopAddressRouter
+from app.routers.desktop.camara import CameraRouter
 from app.routers.desktop.cross_road import CrossRoadRouter
 
 
@@ -13,7 +14,8 @@ class DesktopRouter:
 
         routers: list[BaseRouter] = [
             DesktopAddressRouter(),
-            CrossRoadRouter()
+            CrossRoadRouter(),
+            CameraRouter()
         ]
 
         for router in routers:

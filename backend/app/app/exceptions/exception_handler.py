@@ -1,6 +1,7 @@
 from http import HTTPStatus
 from typing import Type, Optional
 
+from bson.errors import InvalidId
 from fastapi import Request, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware import Middleware
@@ -45,3 +46,13 @@ def register_exception_handler(app: FastAPI):
     @app.exception_handler(Exception)
     def exception_handler(request: Request, ex: Exception):
         return __handle_exception(request, BaseExceptionMixin(message=str(ex)))
+
+    @app.exception_handler(InvalidId)
+    def invalid_id_exception_handler(request: Request, ex: InvalidId):
+        message = str(ex)
+        part = message.split("'")
+        if len(part) == 3 and "is not a valid ObjectId, it must be a 12-byte input or a 24-character hex string" in \
+                part[2]:
+            message = f"Id \"{part[1]}\" không hợp lệ"
+
+        return __handle_exception(request, BaseExceptionMixin(message=message, status=HTTPStatus.BAD_REQUEST))
