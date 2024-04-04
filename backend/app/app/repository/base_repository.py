@@ -56,7 +56,7 @@ class BaseRepository(Generic[Model, CreateModel, UpdateModel], ABC):
         return self.collection.find_one({"_id": ObjectId(obj_id)})
 
     def create(self, obj: CreateModel) -> Cursor:
-        inserted = self.collection.insert_one(obj.model_dump(by_alias=True, exclude=["id"]))
+        inserted = self.collection.insert_one(obj.model_dump(by_alias=True, exclude={"id"}))
         return self.collection.find_one({"_id": inserted.inserted_id})
 
     def update(self, obj_id: str, obj: UpdateModel):
