@@ -20,16 +20,18 @@ class TrafficLightCreate(BaseTrafficLight):
     model_config = {
         "json_schema_extra": {
             "example": {
-                "model_id": "660699f497fbc609d2cdf2f6",
+                "id_model": "660699f497fbc609d2cdf2f6",
                 "traffic_light_code": "TRAFFIC_LIGHT_NHT_XVNT",
                 "resource": "Sở giao thông vận tải",
-                "ip_address": "0.0.0.0"
+                "ip_address": "0.0.0.0",
+                "username": "admin",
+                "password": "admin"
             }}
     }
 
 
 class TrafficLightUpdate(BaseModel):
-    id_model: Optional[PyObjectId] = None
+    # id_model: Optional[PyObjectId] = None
     camera_code: Optional[str] = None
     resource: Optional[str] = None
     ip_address: Optional[str] = Field(pattern=r'\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b', default=None)
@@ -38,3 +40,7 @@ class TrafficLightUpdate(BaseModel):
 
 class TrafficLightResponse(BaseTrafficLight):
     location: Location
+
+
+class TrafficLightControl(BaseModel):
+    pass

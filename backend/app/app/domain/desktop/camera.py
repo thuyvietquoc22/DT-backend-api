@@ -26,12 +26,12 @@ class CameraDomain:
 
     def create_camera(self, camera: CameraCreate):
         # Check model
-        model = self.get_model_by_id(camera.model_id)
+        model = self.get_model_by_id(camera.id_model)
 
         if not model:
-            raise ParamInvalidException(f"Không tìm thấy model với id \"{camera.model_id}\"")
+            raise ParamInvalidException(f"Không tìm thấy model với id \"{camera.id_model}\"")
 
-        group = self.model_repo.get_group_by_model_id(camera.model_id)
+        group = self.model_repo.get_group_by_model_id(camera.id_model)
 
         if not group:
             raise ParamInvalidException(f"Không xát định được model đang thuộc về nhóm nào")
@@ -39,7 +39,7 @@ class CameraDomain:
             raise ParamInvalidException(f"Model không thuộc nhóm CAMERA")
 
         camera.password = hash_password(camera.password)
-        camera.model_id = ObjectId(camera.model_id)
+        camera.id_model = ObjectId(camera.id_model)
 
         self.camera_repo.create(camera)
 

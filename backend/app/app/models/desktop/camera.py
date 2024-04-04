@@ -39,11 +39,22 @@ class CameraCreate(BaseCamera):
 
 
 class CameraUpdate(BaseModel):
-    id_model: Optional[PyObjectId] = None
+    # id_model: Optional[PyObjectId] = None
     camera_code: Optional[str] = None
     resource: Optional[str] = None
     ip_address: Optional[str] = Field(pattern=r'\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b', default=None)
     username: Optional[str] = None
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "camera_code": "CAMERA_NHT_XVNT",
+                "resource": "Sở giao thông vận tải",
+                "ip_address": "0.0.0.0",
+                "username": "admin"
+            }
+        }
+    }
 
 
 class CameraResponse(BaseCamera):
