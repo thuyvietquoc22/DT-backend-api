@@ -7,6 +7,7 @@ from app.models.cms.model import ModelResponse
 from app.models.desktop.camera import CameraCreate
 from app.repository.cms.model import ModelRepository
 from app.repository.desktop.camera import CameraRepository, camera_repo
+from app.repository.desktop.connect_source import connection_source_repo
 from app.repository.desktop.cross_road import CrossRoadRepo, cross_road_repo
 from app.utils.common import calculate_bound
 
@@ -25,6 +26,10 @@ class CameraDomain:
     def cross_road_repo(self) -> CrossRoadRepo:
         return cross_road_repo
 
+    @property
+    def connect_source_repo(self):
+        return connection_source_repo
+
     def create_camera(self, camera: CameraCreate):
         # Check model
         model = self.get_model_by_id(camera.id_model)
@@ -38,6 +43,11 @@ class CameraDomain:
             raise ParamInvalidException(f"Không xát định được model đang thuộc về nhóm nào")
         elif group.keyname != "CAMERA":
             raise ParamInvalidException(f"Model không thuộc nhóm CAMERA")
+
+        # Check connection source is existed
+        connection_source = self.connect_source_repo.find_connection_source_by_keyname(camera.resource)
+        if not connection_source:
+            raise ParamInvalidException("Không tìm thấy Connection Source")
 
         camera.password = hash_password(camera.password)
         camera.id_model = ObjectId(camera.id_model)

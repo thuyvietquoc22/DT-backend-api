@@ -3,6 +3,7 @@ from fastapi import APIRouter
 from app.routers import BaseRouter
 from app.routers.desktop.address import DesktopAddressRouter
 from app.routers.desktop.camara import CameraRouter
+from app.routers.desktop.connection_source import ConnectSourceRouter
 from app.routers.desktop.cross_road import CrossRoadRouter
 from app.routers.desktop.traffic_light import TrafficLightRouter
 from app.routers.desktop.vms_sign import VMSSignRouter
@@ -17,9 +18,10 @@ class DesktopRouter:
         routers: list[BaseRouter] = [
             DesktopAddressRouter(),
             CrossRoadRouter(),
+            ConnectSourceRouter(),
             CameraRouter(),
             TrafficLightRouter(),
-            VMSSignRouter()
+            VMSSignRouter(),
         ]
 
         for router in routers:

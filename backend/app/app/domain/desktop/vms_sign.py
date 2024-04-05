@@ -4,7 +4,9 @@ from app.core.password_encoder import hash_password
 from app.decorator.parser import parse_as
 from app.exceptions.param_invalid_exception import ParamInvalidException
 from app.models.cms.model import ModelResponse
+from app.models.desktop.vms_sign import VMSSignCreate
 from app.repository.cms.model import ModelRepository
+from app.repository.desktop.connect_source import connection_source_repo
 from app.repository.desktop.cross_road import CrossRoadRepo, cross_road_repo
 from app.repository.desktop.vms_sign import VMSSignRepository, vms_sign_repo
 from app.utils.common import calculate_bound
@@ -24,11 +26,15 @@ class VMSSignDomain:
     def cross_road_repo(self) -> CrossRoadRepo:
         return cross_road_repo
 
+    @property
+    def connect_source_repo(self):
+        return connection_source_repo
+
     @parse_as(ModelResponse, True)
     def get_model_by_id(self, model_id: str):
         return self.model_repo.get_by_id(model_id)
 
-    def create_vms_sign(self, vms_sign_create):
+    def create_vms_sign(self, vms_sign_create: VMSSignCreate):
         # Check model is existed
         model_id = vms_sign_create.id_model
         model = self.get_model_by_id(model_id)
@@ -42,6 +48,11 @@ class VMSSignDomain:
             raise ParamInvalidException("Không xát định được nhóm của model")
         elif group.keyname != "VMS_SIGN":
             raise ParamInvalidException("Model không thuộc nhóm VMS Sign")
+
+        # Check connection source is existed
+        connection_source = self.connect_source_repo.find_connection_source_by_keyname(vms_sign_create.resource)
+        if not connection_source:
+            raise ParamInvalidException("Không tìm thấy Connection Source")
 
         vms_sign_create.id_model = ObjectId(model_id)
         vms_sign_create.password = hash_password(vms_sign_create.password)
