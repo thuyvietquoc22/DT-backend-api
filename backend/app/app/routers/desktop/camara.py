@@ -45,11 +45,11 @@ class CameraRouter(BaseRouter):
                 "messsage": "Camera deleted."
             }
 
-        @router.post('/control')
-        async def control_camera(camera_control: CameraControl):
-            # Todo control camera
-            return {
-                "message": "This endpoint not implemented yet."
-            }
+        # @router.post('/control')
+        # async def control_camera(camera_control: CameraControl):
+        #     # Todo control camera
+        #     return {
+        #         "message": "This endpoint not implemented yet."
+        #     }
 
         return router

@@ -23,6 +23,11 @@ class TrafficLightRouter(BaseRouter):
         def get_traffic_light_by_id(traffic_light_id: str):
             return self.traffic_light_domain.get_traffic_light_by_id(traffic_light_id)
 
+        @router.get('/nearby/{cross_road_id}')
+        def get_traffic_light_nearby(cross_road_id: str):
+            return self.traffic_light_domain.get_traffic_light_nearby(cross_road_id)
+
+
         @router.post('')
         def create_traffic_light(traffic_light: TrafficLightCreate):
             self.traffic_light_domain.create_traffic_light(traffic_light)
@@ -36,7 +41,6 @@ class TrafficLightRouter(BaseRouter):
             return {
                 "message": "Updated traffic light"
             }
-
 
         @router.delete('/{traffic_light_id}')
         def delete_traffic_light(traffic_light_id: str):

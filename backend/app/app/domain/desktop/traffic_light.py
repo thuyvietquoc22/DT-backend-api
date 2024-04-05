@@ -1,9 +1,14 @@
 from bson import ObjectId
 
 from app.core.password_encoder import hash_password
+from app.decorator.parser import parse_as
+from app.exceptions.param_invalid_exception import ParamInvalidException
+from app.models.cms.model import ModelResponse
 from app.models.desktop.traffic_light import TrafficLightCreate, TrafficLightUpdate
 from app.repository.cms.model import ModelRepository
+from app.repository.desktop.cross_road import CrossRoadRepo, cross_road_repo
 from app.repository.desktop.traffic_light import TrafficLightRepository, traffic_light_repo
+from app.utils.common import calculate_bound
 
 
 class TrafficLightDomain:
@@ -16,6 +21,11 @@ class TrafficLightDomain:
     def model_repo(self) -> ModelRepository:
         return ModelRepository()
 
+    @property
+    def cross_road_repo(self) -> CrossRoadRepo:
+        return cross_road_repo
+
+    @parse_as(ModelResponse, True)
     def get_model_by_id(self, model_id: str):
         return self.model_repo.get_by_id(model_id)
 
@@ -52,7 +62,17 @@ class TrafficLightDomain:
     def delete_traffic_light(self, traffic_light_id):
         deleted = self.traffic_light_repo.delete(traffic_light_id)
         if not deleted or deleted.deleted_count == 0:
-            raise Exception("Đèn tín hiệu này chưa xoá")
+            raise Exception("Đèn tín hiệu này chưa được xoá")
+
+    def get_traffic_light_nearby(self, cross_road_id, distance=1000):
+        cross_road = self.cross_road_repo.get_cross_road_by_id(cross_road_id)
+
+        if not cross_road:
+            raise ParamInvalidException(f"Không tìm thấy điểm giao nào với id \"{cross_road_id}\"")
+
+        min_lat, max_lat, min_lng, max_lng = calculate_bound(cross_road.location.lat, cross_road.location.lng, distance)
+
+        return self.traffic_light_repo.get_traffic_light_inside_bound(min_lat, max_lat, min_lng, max_lng)
 
 
 traffic_light_domain = TrafficLightDomain()

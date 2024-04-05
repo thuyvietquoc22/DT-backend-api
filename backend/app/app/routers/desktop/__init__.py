@@ -5,6 +5,7 @@ from app.routers.desktop.address import DesktopAddressRouter
 from app.routers.desktop.camara import CameraRouter
 from app.routers.desktop.cross_road import CrossRoadRouter
 from app.routers.desktop.traffic_light import TrafficLightRouter
+from app.routers.desktop.vms_sign import VMSSignRouter
 
 
 class DesktopRouter:
@@ -17,7 +18,8 @@ class DesktopRouter:
             DesktopAddressRouter(),
             CrossRoadRouter(),
             CameraRouter(),
-            TrafficLightRouter()
+            TrafficLightRouter(),
+            VMSSignRouter()
         ]
 
         for router in routers:

@@ -54,11 +54,10 @@ def decrypt(ciphertext, key, iv):
 R = TypeVar('R', bound=BaseModel)
 
 
-def convert_cursor_to_list(cursor: Cursor, data_type: Optional[R] = None) -> list[R]:
-    def convert_id(x):
-        if data_type is None:
-            return {**x, 'id': str(x['_id'])}
-        else:
-            return data_type(**x, id=str(x['_id']))
-
-    return [convert_id(x) for x in cursor]
+def calculate_bound(lat: float, lng: float, distance: int = 1000):
+    return (
+        lat - distance * 0.00001,
+        lat + distance * 0.00001,
+        lng - distance * 0.00001,
+        lng + distance * 0.00001
+    )

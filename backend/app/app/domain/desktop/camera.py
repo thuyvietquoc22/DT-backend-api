@@ -8,6 +8,7 @@ from app.models.desktop.camera import CameraCreate
 from app.repository.cms.model import ModelRepository
 from app.repository.desktop.camera import CameraRepository, camera_repo
 from app.repository.desktop.cross_road import CrossRoadRepo, cross_road_repo
+from app.utils.common import calculate_bound
 
 
 class CameraDomain:
@@ -54,24 +55,15 @@ class CameraDomain:
         return self.camera_repo.get_camera_by_id(camera_id)
 
     def get_camera_nearby(self, cross_road_id):
-        DISTANCE = 1000  # Unit: meters
 
         cross = self.cross_road_repo.get_cross_road_by_id(cross_road_id)
 
         if not cross:
             raise ParamInvalidException(f"Không tìm thấy điểm giao nào với id \"{cross_road_id}\"")
 
-        min_lat, max_lat, min_lng, max_lng = self.calculate_bound(cross.location.lat, cross.location.lng, DISTANCE)
+        min_lat, max_lat, min_lng, max_lng = calculate_bound(cross.location.lat, cross.location.lng)
 
         return self.camera_repo.get_camera_inside_bound(min_lat, max_lat, min_lng, max_lng)
-
-    def calculate_bound(self, lat: float, lng: float, distance: int):
-        return (
-            lat - distance * 0.00001,
-            lat + distance * 0.00001,
-            lng - distance * 0.00001,
-            lng + distance * 0.00001
-        )
 
     def update_camera(self, camera_id, camera):
         self.camera_repo.update(camera_id, camera)
