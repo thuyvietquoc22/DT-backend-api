@@ -61,3 +61,30 @@ def calculate_bound(lat: float, lng: float, distance: int = 1000):
         lng - distance * 0.00001,
         lng + distance * 0.00001
     )
+
+
+def is_in_range(value, min_value, max_value):
+    if min_value is not None and max_value is not None:
+        return True
+    elif min_value and max_value:
+        return min_value <= value <= max_value
+    elif min_value:
+        return value >= min_value
+    elif max_value:
+        return value <= max_value
+    return False
+
+
+F = TypeVar('F', bound=BaseModel)
+T = TypeVar('T', bound=BaseModel)
+
+
+def copy_attr(copy_from: F, to: T) -> T:
+    """Copy instance <copy_from> to instance <to> with the same attribute but if attr is None not copy that attribute"""
+    for key, value in copy_from.dict().items():
+        if value is not None:
+            try:
+                setattr(to, key, value)
+            except ValueError:
+                pass
+    return to

@@ -1,7 +1,10 @@
+from botocore.paginate import PaginatorModel
 from fastapi import APIRouter
 
 from app.domain.desktop.camera import CameraDomain, camera_domain
-from app.models.desktop.camera import CameraCreate, CameraControl, CameraUpdate
+from app.models.desktop.camera import CameraCreate, CameraUpdate
+from app.models.desktop.control.camera import CameraControl, CameraControlRequest
+from app.models.pagination_model import Pageable, PaginationResponse
 from app.routers import BaseRouter
 
 
@@ -45,11 +48,17 @@ class CameraRouter(BaseRouter):
                 "messsage": "Camera deleted."
             }
 
-        # @router.post('/control')
-        # async def control_camera(camera_control: CameraControl):
-        #     # Todo control camera
-        #     return {
-        #         "message": "This endpoint not implemented yet."
-        #     }
+        @router.post('/control')
+        async def control_camera(camera_control: CameraControlRequest):
+            self.camera_domain.control_camera(camera_control)
+            return {
+                "message": "Controlled successfully."
+            }
+
+        @router.get('/control/history/{device_id}', response_model=PaginationResponse[CameraControl])
+        async def get_last_camera_control(device_id: str, page: int = 1, limit=10):
+            pageable = Pageable.of(page, limit)
+            result = self.camera_domain.get_history_control(device_id, pageable)
+            return PaginationResponse.response_pageable(result, pageable)
 
         return router

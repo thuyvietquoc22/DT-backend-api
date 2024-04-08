@@ -1,9 +1,10 @@
 from bson import ObjectId
 from pymongo.collection import Collection
 
-from app.db.mongo_db import camera_collection
+from app.db.mongo_db import camera_collection, controller_collection
 from app.decorator.parser import parse_as
 from app.models.desktop.camera import CameraResponse, CameraCreate, CameraUpdate
+from app.models.desktop.control.camera import CameraControl
 from app.repository.base_repository import BaseRepository
 
 
@@ -11,6 +12,10 @@ class CameraRepository(BaseRepository[CameraResponse, CameraCreate, CameraUpdate
     @property
     def collection(self) -> Collection:
         return camera_collection
+
+    @property
+    def control_collection(self) -> Collection:
+        return controller_collection
 
     @property
     def pipeline_has_location(self):

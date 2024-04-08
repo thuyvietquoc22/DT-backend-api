@@ -2,7 +2,7 @@ from fastapi import APIRouter
 
 from app.routers import BaseRouter
 from app.routers.desktop.address import DesktopAddressRouter
-from app.routers.desktop.camara import CameraRouter
+from app.routers.desktop.camera import CameraRouter
 from app.routers.desktop.connection_source import ConnectSourceRouter
 from app.routers.desktop.cross_road import CrossRoadRouter
 from app.routers.desktop.traffic_light import TrafficLightRouter

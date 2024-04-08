@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from bson import ObjectId
 
 from app.core.password_encoder import hash_password
@@ -5,11 +7,13 @@ from app.decorator.parser import parse_as
 from app.exceptions.param_invalid_exception import ParamInvalidException
 from app.models.cms.model import ModelResponse
 from app.models.desktop.camera import CameraCreate
+from app.models.desktop.control.camera import CameraControl, CameraControlRequest
 from app.repository.cms.model import ModelRepository
 from app.repository.desktop.camera import CameraRepository, camera_repo
 from app.repository.desktop.connect_source import connection_source_repo
+from app.repository.desktop.controller import ControlRepository
 from app.repository.desktop.cross_road import CrossRoadRepo, cross_road_repo
-from app.utils.common import calculate_bound
+from app.utils.common import calculate_bound, is_in_range, copy_attr
 from app.utils.rsa_helper import RSAHelper
 
 
@@ -30,6 +34,10 @@ class CameraDomain:
     @property
     def connect_source_repo(self):
         return connection_source_repo
+
+    @property
+    def control_repo(self):
+        return ControlRepository()
 
     def create_camera(self, camera: CameraCreate):
         # Check model
@@ -83,6 +91,51 @@ class CameraDomain:
         deleted = self.camera_repo.delete(camera_id)
         if deleted.deleted_count == 0:
             raise ParamInvalidException(f"Không tìm thấy camera với id \"{camera_id}\"")
+
+    def control_camera(self, camera_control: CameraControlRequest):
+        # Validate camera control here
+        #     validate in range
+        # Todo get min max value from database
+        is_in_range(camera_control.angle_x, -180, 180)
+        is_in_range(camera_control.angle_y, -180, 180)
+        is_in_range(camera_control.iris, 0, 100)
+        is_in_range(camera_control.zoom, 0, 100)
+        is_in_range(camera_control.focus, 0, 100)
+
+        camera = self.camera_repo.get_camera_by_id(camera_control.camera_id)
+        if camera is None:
+            raise ParamInvalidException(f"Không tìm thấy camera với id \"{camera_control.camera_id}\"")
+
+        # Set prev state
+        prev_control = self.control_repo.get_last_camera_control(device_id=camera_control.camera_id)
+
+        if prev_control is None:
+            prev_control = CameraControl(
+                prev_control=None,
+                time_control=datetime.now(),
+                device_id=ObjectId(camera_control.camera_id),
+                control_type="CAMERA",
+                angle_x=0,
+                angle_y=0,
+                zoom=0,
+                focus=0,
+                iris=0
+            )
+
+        # Set data prev state if field in camera_control is not exist
+        new_control = copy_attr(camera_control, prev_control)
+        new_control.prev_control = ObjectId(prev_control.id) if prev_control.id else None
+        new_control.time_control = datetime.now()
+
+        # Save control to database
+        new_control.id = self.control_repo.create(new_control)
+
+        # Todo Send control to camera
+
+        return new_control
+
+    def get_history_control(self, device_id, pageable):
+        return self.control_repo.get_history_control(device_id, pageable)
 
 
 camera_domain = CameraDomain()

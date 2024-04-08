@@ -35,3 +35,5 @@ vms_sign_collection = __db.get_collection("vms_sign")
 
 connection_source = __db.get_collection("master-connection-source")
 connection_source.create_index('keyname', unique=True)
+
+controller_collection = __db.get_collection("controller")

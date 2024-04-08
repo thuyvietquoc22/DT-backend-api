@@ -16,14 +16,6 @@ class BaseCamera(BaseMongoModel):
     password: str
 
 
-class CameraControl(BaseModel):
-    angle_x: int
-    angle_y: int
-    zoom: float
-    fov: float
-    focal_length: float
-
-
 class CameraCreate(BaseCamera):
     model_config = {
         "json_schema_extra": {
