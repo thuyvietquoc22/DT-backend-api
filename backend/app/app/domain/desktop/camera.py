@@ -10,6 +10,7 @@ from app.repository.desktop.camera import CameraRepository, camera_repo
 from app.repository.desktop.connect_source import connection_source_repo
 from app.repository.desktop.cross_road import CrossRoadRepo, cross_road_repo
 from app.utils.common import calculate_bound
+from app.utils.rsa_helper import RSAHelper
 
 
 class CameraDomain:
@@ -49,7 +50,7 @@ class CameraDomain:
         if not connection_source:
             raise ParamInvalidException("Không tìm thấy Connection Source")
 
-        camera.password = hash_password(camera.password)
+        camera.password = RSAHelper.instance().encrypt_message(camera.password).hex()
         camera.id_model = ObjectId(camera.id_model)
 
         self.camera_repo.create(camera)

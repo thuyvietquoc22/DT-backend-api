@@ -7,7 +7,7 @@ from app.models.cms.assets import AssetsCreate, AssetsResponse
 from app.models.pagination_model import Pageable
 from app.repository.cms.assets import AssetsModelRepository
 from app.repository.cms.model import ModelRepository
-from app.utils.random import random_str
+from app.utils.random_helper import random_str
 
 
 class AssetsDomain:

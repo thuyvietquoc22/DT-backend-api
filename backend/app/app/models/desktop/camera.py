@@ -13,6 +13,7 @@ class BaseCamera(BaseMongoModel):
     resource: str
     ip_address: str = Field(pattern=r'\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b')
     username: str
+    password: str
 
 
 class CameraControl(BaseModel):
@@ -24,11 +25,10 @@ class CameraControl(BaseModel):
 
 
 class CameraCreate(BaseCamera):
-    password: str
     model_config = {
         "json_schema_extra": {
             "example": {
-                "model_id": "660699f497fbc609d2cdf2f6",
+                "id_model": "660699f497fbc609d2cdf2f6",
                 "camera_code": "CAMERA_NHT_XVNT",
                 "resource": "Sở giao thông vận tải",
                 "ip_address": "0.0.0.0",

@@ -10,6 +10,7 @@ from app.repository.desktop.connect_source import connection_source_repo
 from app.repository.desktop.cross_road import CrossRoadRepo, cross_road_repo
 from app.repository.desktop.vms_sign import VMSSignRepository, vms_sign_repo
 from app.utils.common import calculate_bound
+from app.utils.rsa_helper import RSAHelper
 
 
 class VMSSignDomain:
@@ -55,7 +56,7 @@ class VMSSignDomain:
             raise ParamInvalidException("Không tìm thấy Connection Source")
 
         vms_sign_create.id_model = ObjectId(model_id)
-        vms_sign_create.password = hash_password(vms_sign_create.password)
+        vms_sign_create.password = RSAHelper.instance().encrypt_message(vms_sign_create.password).hex()
 
         self.vms_sign_repo.create(vms_sign_create)
 

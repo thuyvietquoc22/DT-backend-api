@@ -2,7 +2,7 @@ from typing import Any, Literal, Union
 
 import boto3
 from botocore.exceptions import ClientError
-from app.utils.logging import logger
+from app.utils.utils_logging import logger
 from app.core.config import settings
 from email.header import Header
 

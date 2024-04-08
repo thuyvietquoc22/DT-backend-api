@@ -13,10 +13,10 @@ class BaseTrafficLight(BaseMongoModel):
     resource: str
     ip_address: str = Field(pattern=r'\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b')
     username: str
+    password: str
 
 
 class TrafficLightCreate(BaseTrafficLight):
-    password: str
     model_config = {
         "json_schema_extra": {
             "example": {

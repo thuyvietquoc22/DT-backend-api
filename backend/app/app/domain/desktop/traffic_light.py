@@ -10,6 +10,7 @@ from app.repository.desktop.connect_source import connection_source_repo
 from app.repository.desktop.cross_road import CrossRoadRepo, cross_road_repo
 from app.repository.desktop.traffic_light import TrafficLightRepository, traffic_light_repo
 from app.utils.common import calculate_bound
+from app.utils.rsa_helper import RSAHelper
 
 
 class TrafficLightDomain:
@@ -55,7 +56,7 @@ class TrafficLightDomain:
             raise ParamInvalidException("Không tìm thấy Connection Source")
 
         traffic_light_create.id_model = ObjectId(model_id)
-        traffic_light_create.password = hash_password(traffic_light_create.password)
+        traffic_light_create.password = RSAHelper.instance().encrypt_message(traffic_light_create.password).hex()
 
         self.traffic_light_repo.create(traffic_light_create)
 

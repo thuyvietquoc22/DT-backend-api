@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from firebase_admin import credentials, messaging, initialize_app
 
-from app.utils.logging import logger
+from app.utils.utils_logging import logger
 
 # Khởi tạo Firebase Admin SDK với file cấu hình JSON
 cred = credentials.Certificate("../app/firebase-config.json")

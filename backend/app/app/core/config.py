@@ -48,6 +48,9 @@ class Settings(BaseSettings):
     CLOUDINARY_API_SECRET: str = "dryjjj8kaOZKknQDhcdha29FGKI"
     CLOUDINARY_URL: str = "CLOUDINARY_URL=cloudinary://727316736938961:dryjjj8kaOZKknQDhcdha29FGKI@dunezoucn"
 
+    # RSA KEY PATH
+    RSA_KEY_PATH: str = "rsa_key/"
+
     class Config:
         case_sensitive = True
 

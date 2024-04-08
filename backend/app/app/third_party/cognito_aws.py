@@ -8,7 +8,7 @@ from botocore.exceptions import ClientError
 from fastapi import HTTPException
 
 from app.core.config import settings
-from app.utils.logging import logger
+from app.utils.utils_logging import logger
 
 client: Any = boto3.client(
     'cognito-idp',
