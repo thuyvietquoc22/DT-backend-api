@@ -12,9 +12,9 @@ class ConnectSourceCreate(ConnectSourceBase):
     pass
 
 
-class ConnectSourceUpdate(ConnectSourceBase):
-    name: Optional[str]
-    keyname: Optional[str]
+class ConnectSourceUpdate(BaseModel):
+    name: Optional[str] = None
+    keyname: Optional[str] = None
 
 
 class ConnectSourceResponse(ConnectSourceBase):
