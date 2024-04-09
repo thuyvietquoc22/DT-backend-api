@@ -2,8 +2,8 @@ from typing import List
 
 from fastapi import APIRouter
 
-from app.domain.desktop.address import address_domain, AddressDomain
-from app.models.desktop.address import ProvinceListResponse, ProvinceResponse
+from app.domain.desktop.master_data.address import address_domain, AddressDomain
+from app.models.desktop.master_data.address import ProvinceListResponse, ProvinceResponse
 from app.routers import BaseRouter
 
 
@@ -15,7 +15,7 @@ class DesktopAddressRouter(BaseRouter):
 
     @property
     def router(self):
-        router = APIRouter(prefix='/address', tags=['Desktop > Address'])
+        router = APIRouter(prefix='/address', tags=['Desktop MasterData > Address'])
 
         @router.get('/provinces', response_model=List[ProvinceListResponse])
         def get_all_provinces(name: str = ""):

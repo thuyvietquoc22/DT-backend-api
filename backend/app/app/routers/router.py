@@ -16,7 +16,6 @@ from app.routers.cms.model import ModelRouter
 from app.routers.cms.permission import PermissionRouter
 from app.routers.cms.role import RoleRouter
 from app.routers.desktop import DesktopRouter
-from app.routers.desktop.address import DesktopAddressRouter
 from app.routers.mobile.user import UserRouter
 
 

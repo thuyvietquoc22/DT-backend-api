@@ -3,6 +3,7 @@ from typing import Type, Optional
 
 from bson.errors import InvalidId
 from fastapi import Request, FastAPI
+from fastapi.exceptions import ResponseValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware import Middleware
 from starlette.responses import JSONResponse
@@ -56,3 +57,10 @@ def register_exception_handler(app: FastAPI):
             message = f"Id \"{part[1]}\" không hợp lệ"
 
         return __handle_exception(request, BaseExceptionMixin(message=message, status=HTTPStatus.BAD_REQUEST))
+
+    @app.exception_handler(ResponseValidationError)
+    def response_validation_error_handler(request: Request, ex: ResponseValidationError):
+        if ex.body is None:
+            return __handle_exception(request, BaseExceptionMixin(message=str("Not found data"),
+                                                                  status=HTTPStatus.NOT_FOUND))
+        raise ex

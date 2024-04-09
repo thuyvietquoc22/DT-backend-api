@@ -1,13 +1,12 @@
 from bson import ObjectId
 
-from app.core.password_encoder import hash_password
 from app.decorator.parser import parse_as
 from app.exceptions.param_invalid_exception import ParamInvalidException
 from app.models.cms.model import ModelResponse
 from app.models.desktop.traffic_light import TrafficLightCreate, TrafficLightUpdate
 from app.repository.cms.model import ModelRepository
-from app.repository.desktop.connect_source import connection_source_repo
-from app.repository.desktop.cross_road import CrossRoadRepo, cross_road_repo
+from app.repository.desktop.master_data.connect_source import connection_source_repo
+from app.repository.desktop.master_data.cross_road import CrossRoadRepo, cross_road_repo
 from app.repository.desktop.traffic_light import TrafficLightRepository, traffic_light_repo
 from app.utils.common import calculate_bound
 from app.utils.rsa_helper import RSAHelper

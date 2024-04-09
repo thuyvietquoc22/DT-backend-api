@@ -1,4 +1,4 @@
-from app.repository.desktop.connect_source import connection_source_repo, ConnectSourceRepository
+from app.repository.desktop.master_data.connect_source import connection_source_repo, ConnectSourceRepository
 
 
 class ConnectSourceDomain:

@@ -1,8 +1,7 @@
 from app.exceptions.param_invalid_exception import ParamInvalidException
-from app.models.desktop.cross_road import CrossRoadCreate
-from app.repository.desktop.address import address_repo, AddressRepo
-from app.repository.desktop.connect_source import connection_source_repo
-from app.repository.desktop.cross_road import cross_road_repo, CrossRoadRepo
+from app.models.desktop.master_data.cross_road import CrossRoadCreate
+from app.repository.desktop.master_data.address import address_repo, AddressRepo
+from app.repository.desktop.master_data.cross_road import cross_road_repo, CrossRoadRepo
 
 
 class CrossRoadDomain:

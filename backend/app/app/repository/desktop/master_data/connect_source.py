@@ -2,7 +2,7 @@ from pymongo.collection import Collection
 
 from app.db.mongo_db import connection_source
 from app.decorator.parser import parse_as
-from app.models.desktop.connect_source import ConnectSourceResponse
+from app.models.desktop.master_data.connect_source import ConnectSourceResponse
 from app.repository.base_repository import BaseRepository
 
 

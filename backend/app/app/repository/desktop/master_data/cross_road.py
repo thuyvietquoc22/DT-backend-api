@@ -3,7 +3,7 @@ from pymongo.collection import Collection
 
 from app.db.mongo_db import cross_road_collection
 from app.decorator.parser import parse_as
-from app.models.desktop.cross_road import CrossRoadResponse, CrossRoadCreate, CrossRoadUpdate
+from app.models.desktop.master_data.cross_road import CrossRoadResponse, CrossRoadCreate, CrossRoadUpdate
 from app.repository.base_repository import BaseRepository
 
 

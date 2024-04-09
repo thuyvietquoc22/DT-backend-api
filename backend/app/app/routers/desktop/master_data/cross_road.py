@@ -1,8 +1,7 @@
 from fastapi import APIRouter
-from pydantic import Field
 
-from app.domain.desktop.cross_road import cross_road_domain, CrossRoadDomain
-from app.models.desktop.cross_road import CrossRoadCreate, CrossRoadResponse
+from app.domain.desktop.master_data.cross_road import cross_road_domain, CrossRoadDomain
+from app.models.desktop.master_data.cross_road import CrossRoadCreate, CrossRoadResponse
 from app.routers import BaseRouter
 
 
@@ -14,7 +13,7 @@ class CrossRoadRouter(BaseRouter):
 
     @property
     def router(self) -> APIRouter:
-        router = APIRouter(prefix='/cross-road', tags=['Desktop > Cross Road'])
+        router = APIRouter(prefix='/cross-road', tags=['Desktop Master Data> Cross Road'])
 
         @router.get('', response_model=list[CrossRoadResponse])
         async def get_all_cross_road():

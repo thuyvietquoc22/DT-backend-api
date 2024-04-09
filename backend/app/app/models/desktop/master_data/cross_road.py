@@ -2,7 +2,7 @@ from typing import Optional
 
 from app.models import BaseMongoModel
 from app.models.cms.model import Location
-from app.models.desktop.address import Province, District
+from app.models.desktop.master_data.address import Province, District
 
 
 class BaseCrossRoad(BaseMongoModel):

@@ -1,4 +1,4 @@
-from app.repository.desktop.address import address_repo, AddressRepo
+from app.repository.desktop.master_data.address import address_repo, AddressRepo
 
 
 class AddressDomain:
