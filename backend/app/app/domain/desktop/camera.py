@@ -133,8 +133,13 @@ class CameraDomain:
 
         return new_control
 
+    @parse_as(response_type=list[CameraControl])
     def get_history_control(self, device_id, pageable):
-        return self.control_repo.get_history_control(device_id, pageable)
+        result = self.control_repo.get_history_control(device_id, pageable)
+        return [control for control in result if control.get("control_type") == "CAMERA"]
+
+    def get_camera_by_model_id(self, model_id):
+        return self.camera_repo.get_camera_by_model_id(model_id)
 
 
 camera_domain = CameraDomain()

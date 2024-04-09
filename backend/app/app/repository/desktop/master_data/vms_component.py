@@ -32,3 +32,7 @@ class VMSComponentRepository(BaseRepository[VMSComponentResponse, VMSComponentCr
 
     def update_url_vms_component_by_id(self, vms_component_id, url):
         self.collection.update_one({"_id": ObjectId(vms_component_id)}, {"$set": {"url": url}})
+
+    @parse_as(response_type=list[VMSComponentResponse])
+    def get_by_ids(self, ids: list[str]):
+        return self.collection.find({"_id": {"$in": [ObjectId(id_) for id_ in ids]}})

@@ -26,6 +26,10 @@ class CameraRouter(BaseRouter):
         async def get_camera_by_id(camera_id: str):
             return self.camera_domain.get_camera_by_id(camera_id)
 
+        @router.get('/model/{model_id}')
+        async def get_camera_by_model_id(model_id: str):
+            return self.camera_domain.get_camera_by_model_id(model_id)
+
         @router.get('/nearby/{cross_road_id}')
         async def get_camera_nearby(cross_road_id: str):
             return self.camera_domain.get_camera_nearby(cross_road_id)

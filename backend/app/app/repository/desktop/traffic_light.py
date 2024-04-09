@@ -36,5 +36,10 @@ class TrafficLightRepository(BaseRepository[TrafficLightResponse, TrafficLightCr
         ]
         return self.collection.aggregate(pipeline)
 
+    @parse_as(TrafficLightResponse, get_first=True)
+    def get_traffic_light_by_model_id(self, model_id):
+        pipeline = self.pipeline_has_location + [{'$match': {'id_model': ObjectId(model_id)}}]
+        return self.collection.aggregate(pipeline)
+
 
 traffic_light_repo = TrafficLightRepository()

@@ -1,34 +1,32 @@
+from datetime import datetime
+
 from bson import ObjectId
 
 from app.decorator.parser import parse_as
 from app.exceptions.param_invalid_exception import ParamInvalidException
 from app.models.cms.model import ModelResponse
+from app.models.desktop.control.vms_sign import VMSSignController, VMSSignRequest
 from app.models.desktop.vms_sign import VMSSignCreate
+from app.models.pagination_model import Pageable
 from app.repository.cms.model import ModelRepository
+from app.repository.desktop.controller import ControlRepository
 from app.repository.desktop.master_data.connect_source import connection_source_repo
-from app.repository.desktop.master_data.cross_road import CrossRoadRepo, cross_road_repo
-from app.repository.desktop.vms_sign import VMSSignRepository, vms_sign_repo
+from app.repository.desktop.master_data.cross_road import cross_road_repo
+from app.repository.desktop.master_data.vms_component import VMSComponentRepository
+from app.repository.desktop.vms_sign import vms_sign_repo
 from app.utils.common import calculate_bound
 from app.utils.rsa_helper import RSAHelper
 
 
 class VMSSignDomain:
 
-    @property
-    def vms_sign_repo(self) -> VMSSignRepository:
-        return vms_sign_repo
-
-    @property
-    def model_repo(self) -> ModelRepository:
-        return ModelRepository()
-
-    @property
-    def cross_road_repo(self) -> CrossRoadRepo:
-        return cross_road_repo
-
-    @property
-    def connect_source_repo(self):
-        return connection_source_repo
+    def __init__(self):
+        self.vms_sign_repo = vms_sign_repo
+        self.cross_road_repo = cross_road_repo
+        self.connect_source_repo = connection_source_repo
+        self.model_repo = ModelRepository()
+        self.control_repo = ControlRepository()
+        self.vms_comp = VMSComponentRepository()
 
     @parse_as(ModelResponse, True)
     def get_model_by_id(self, model_id: str):
@@ -79,6 +77,50 @@ class VMSSignDomain:
 
     def delete_vms_sign(self, vms_sign_id):
         self.vms_sign_repo.delete(vms_sign_id)
+
+    def control_vms_sign(self, vms_sign_id: str, controller: VMSSignRequest):
+        vms_sign = self.vms_sign_repo.get_vms_sign_by_id(vms_sign_id)
+
+        # Check device is existed
+        if not vms_sign:
+            raise ParamInvalidException("Không tìm thấy VMS Sign")
+
+        # Check component is existed
+        component_ids = [component.vms_component_id for component in controller.images]
+        components = self.vms_comp.get_by_ids(component_ids)
+        if len(components) != len(controller.images):
+            missing_ids = set(component_ids) - {component.id for component in components}
+            raise ParamInvalidException(f"Không tìm thấy các component với id {missing_ids}")
+
+        # Set previous state
+        last_control = self.control_repo.get_last_vms_sign_control(vms_sign_id)
+
+        control = VMSSignController(
+            texts=controller.texts,
+            images=controller.images,
+            prev_control="",
+            time_control=datetime.now(),
+            device_id="",
+        )
+        control.device_id = ObjectId(vms_sign_id)
+        control.prev_control = None if last_control is None else ObjectId(last_control.id)
+
+        # Convert id in images to ObjectId
+        for image in control.images:
+            image.vms_component_id = ObjectId(image.vms_component_id)
+
+        # Todo send control to device
+
+        self.control_repo.create(control)
+
+    @parse_as(response_type=list[VMSSignController])
+    def get_history_vms_sign_control(self, vms_sign_id, pageable: Pageable):
+        result = self.control_repo.get_history_control(vms_sign_id, pageable)
+        return [control for control in result if control.get("control_type") == "VMS_SIGN"]
+
+    @parse_as(response_type=list[VMSSignController])
+    def get_vms_sign_by_model_id(self, model_id):
+        return self.vms_sign_repo.get_vms_sign_by_model_id(model_id)
 
 
 vms_sign_domain = VMSSignDomain()

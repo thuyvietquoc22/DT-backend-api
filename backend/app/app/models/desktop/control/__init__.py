@@ -1,8 +1,6 @@
 from datetime import datetime
 from typing import Literal, Optional
 
-from bson import ObjectId
-
 from app.models import BaseMongoModel, PyObjectId
 
 ControlType = Literal['CAMERA', 'TRAFFIC_LIGHT', 'VMS_SIGN']

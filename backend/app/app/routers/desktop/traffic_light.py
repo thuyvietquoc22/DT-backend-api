@@ -23,6 +23,11 @@ class TrafficLightRouter(BaseRouter):
         def get_traffic_light_by_id(traffic_light_id: str):
             return self.traffic_light_domain.get_traffic_light_by_id(traffic_light_id)
 
+        @router.get('/model/{model_id}')
+        def get_traffic_light_by_model_id(model_id: str):
+            return self.traffic_light_domain.get_traffic_light_by_model_id(model_id)
+
+
         @router.get('/nearby/{cross_road_id}')
         def get_traffic_light_nearby(cross_road_id: str):
             return self.traffic_light_domain.get_traffic_light_nearby(cross_road_id)

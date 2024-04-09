@@ -1,7 +1,9 @@
 from fastapi import APIRouter
 
 from app.domain.desktop.vms_sign import vms_sign_domain, VMSSignDomain
+from app.models.desktop.control.vms_sign import VMSSignController, VMSSignRequest
 from app.models.desktop.vms_sign import VMSSignCreate, VMSSignUpdate
+from app.models.pagination_model import Pageable
 from app.routers import BaseRouter
 
 
@@ -23,6 +25,10 @@ class VMSSignRouter(BaseRouter):
         def get_vms_sign_by_id(vms_sign_id: str):
             return self.vms_domain.get_vms_sign_by_id(vms_sign_id)
 
+        @router.get("/model/{model_id}")
+        def get_vms_sign_by_model_id(model_id: str):
+            return self.vms_domain.get_vms_sign_by_model_id(model_id)
+
         @router.get("/nearby/{cross_road_id}")
         def get_vms_sign_nearby(cross_road_id: str):
             return self.vms_domain.get_vms_sign_nearby(cross_road_id)
@@ -41,5 +47,15 @@ class VMSSignRouter(BaseRouter):
         def delete_vms_sign(vms_sign_id: str):
             self.vms_domain.delete_vms_sign(vms_sign_id)
             return {"message": "Deleted vms sign"}
+
+        @router.post("/control/{vms_sign_id}")
+        def delete_vms_sign(vms_sign_id: str, controller: VMSSignRequest):
+            self.vms_domain.control_vms_sign(vms_sign_id, controller)
+            return {"message": "Controlled vms sign"}
+
+        @router.get("/control/history/{vms_sign_id}")
+        def get_last_vms_sign_control(vms_sign_id: str, page: int = 1, limit=10):
+            pageable = Pageable.of(page, limit)
+            return self.vms_domain.get_history_vms_sign_control(vms_sign_id, pageable)
 
         return router

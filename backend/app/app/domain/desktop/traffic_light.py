@@ -84,5 +84,8 @@ class TrafficLightDomain:
 
         return self.traffic_light_repo.get_traffic_light_inside_bound(min_lat, max_lat, min_lng, max_lng)
 
+    def get_traffic_light_by_model_id(self, model_id):
+        return self.traffic_light_repo.get_traffic_light_by_model_id(model_id)
+
 
 traffic_light_domain = TrafficLightDomain()
