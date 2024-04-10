@@ -9,6 +9,7 @@ from app.models.cms.model import Location
 class StreetBase(BaseMongoModel):
     start_location: Location
     end_location: Location
+    name: str
     length: float
     width: float
     max_speed: int

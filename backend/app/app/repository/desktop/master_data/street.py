@@ -1,3 +1,4 @@
+from bson import ObjectId
 from pymongo.collection import Collection
 
 from app.db.mongo_db import street_collection
@@ -21,5 +22,12 @@ class StreetRepository(BaseRepository[StreetResponse, StreetCreate, StreetUpdate
     def find_all_by_district(self, district_id):
         pipeline = self.pipeline + [
             {"$match": {"district_code": district_id}}
+        ]
+        return self.collection.aggregate(pipeline)
+
+    @parse_as(StreetResponse, get_first=True)
+    def find_by_id(self, street_id):
+        pipeline = self.pipeline + [
+            {"$match": {"_id": ObjectId(street_id)}}
         ]
         return self.collection.aggregate(pipeline)

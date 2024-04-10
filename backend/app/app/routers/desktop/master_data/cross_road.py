@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from app.domain.desktop.master_data.cross_road import cross_road_domain, CrossRoadDomain
-from app.models.desktop.master_data.cross_road import CrossRoadCreate, CrossRoadResponse
+from app.models.desktop.master_data.cross_road import CrossRoadCreate, CrossRoadResponse, CrossRoadUpdate
 from app.routers import BaseRouter
 
 
@@ -31,5 +31,10 @@ class CrossRoadRouter(BaseRouter):
         async def create_cross_road(creator_cross_road: CrossRoadCreate):
             self.cross_road_domain.create_cross_road(creator_cross_road)
             return {"message": "create cross road success"}
+
+        @router.put('/{district_id}')
+        async def update_cross_road(district_id: str, cross_road_update: CrossRoadUpdate):
+            self.cross_road_domain.update_cross_road(district_id, cross_road_update)
+            return {"message": "update cross road success"}
 
         return router
