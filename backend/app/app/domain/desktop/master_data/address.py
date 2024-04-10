@@ -1,10 +1,10 @@
-from app.repository.desktop.master_data.address import address_repo, AddressRepo
+from app.repository.desktop.master_data.address import address_repo, AddressRepository
 
 
 class AddressDomain:
 
     @property
-    def address_repo(self) -> AddressRepo:
+    def address_repo(self) -> AddressRepository:
         return address_repo
 
     def get_all_provinces(self, name):

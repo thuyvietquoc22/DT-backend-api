@@ -1,6 +1,6 @@
 from typing import Optional
 
-from app.models import BaseMongoModel
+from app.models import BaseMongoModel, PyObjectId
 from app.models.cms.model import Location
 from app.models.desktop.master_data.address import Province, District
 
@@ -10,6 +10,7 @@ class BaseCrossRoad(BaseMongoModel):
     location: Location
     district_code: int
     province_code: Optional[int] = 0
+    street_ids: list[PyObjectId] = []
 
 
 class CrossRoadCreate(BaseCrossRoad):

@@ -5,7 +5,7 @@ from app.decorator.parser import parse_as
 from app.models.desktop.master_data.address import ProvinceResponse, DistrictResponse
 
 
-class AddressRepo:
+class AddressRepository:
     @property
     def address_collection(self) -> Collection:
         return address_collection
@@ -39,4 +39,4 @@ class AddressRepo:
         return self.address_collection.aggregate(pipeline=pipeline)
 
 
-address_repo = AddressRepo()
+address_repo = AddressRepository()

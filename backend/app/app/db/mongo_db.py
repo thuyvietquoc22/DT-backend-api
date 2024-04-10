@@ -25,7 +25,7 @@ refresh_token_collection = __db.get_collection("refresh-token")
 
 address_collection = __db.get_collection("master-address")
 
-cross_road_collection = __db.get_collection("cross_road")
+cross_road_collection = __db.get_collection("master-cross_road")
 
 camera_collection = __db.get_collection("camera")
 
@@ -39,3 +39,5 @@ connection_source.create_index('keyname', unique=True)
 controller_collection = __db.get_collection("controller")
 
 vms_component_collection = __db.get_collection("master-vms_component")
+
+street_collection = __db.get_collection("master-street")

@@ -1,6 +1,6 @@
 from app.exceptions.param_invalid_exception import ParamInvalidException
 from app.models.desktop.master_data.cross_road import CrossRoadCreate
-from app.repository.desktop.master_data.address import address_repo, AddressRepo
+from app.repository.desktop.master_data.address import address_repo, AddressRepository
 from app.repository.desktop.master_data.cross_road import cross_road_repo, CrossRoadRepo
 
 
@@ -11,7 +11,7 @@ class CrossRoadDomain:
         return cross_road_repo
 
     @property
-    def address_repo(self) -> AddressRepo:
+    def address_repo(self) -> AddressRepository:
         return address_repo
 
     def get_district_code(self, district_code: int):

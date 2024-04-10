@@ -5,6 +5,7 @@ from app.routers.desktop.camera import CameraRouter
 from app.routers.desktop.master_data.address import DesktopAddressRouter
 from app.routers.desktop.master_data.connection_source import ConnectSourceRouter
 from app.routers.desktop.master_data.cross_road import CrossRoadRouter
+from app.routers.desktop.master_data.street import StreetRouter
 from app.routers.desktop.master_data.vms_component import VMSComponentRouter
 from app.routers.desktop.traffic_light import TrafficLightRouter
 from app.routers.desktop.vms_sign import VMSSignRouter
@@ -20,6 +21,8 @@ class DesktopRouter:
             DesktopAddressRouter(),
             CrossRoadRouter(),
             ConnectSourceRouter(),
+            StreetRouter(),
+
             VMSComponentRouter(),
             CameraRouter(),
             TrafficLightRouter(),
