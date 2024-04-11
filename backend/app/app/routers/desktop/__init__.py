@@ -11,7 +11,6 @@ from app.routers.desktop.master_data.vms_component import VMSComponentRouter
 from app.routers.desktop.passage_capacity import PassageCapacityRouter
 from app.routers.desktop.traffic_light import TrafficLightRouter
 from app.routers.desktop.vms_sign import VMSSignRouter
-from app.routers.mock_traffic_data_router import MockTrafficDataRouter
 
 
 class DesktopRouter:
@@ -21,7 +20,6 @@ class DesktopRouter:
         api_router = APIRouter(prefix='/desktop')
 
         routers: list[BaseRouter] = [
-            MockTrafficDataRouter(),
             TrafficDataRouter(),
 
             DesktopAddressRouter(),
