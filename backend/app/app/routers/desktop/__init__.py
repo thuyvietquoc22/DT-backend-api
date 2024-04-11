@@ -26,10 +26,10 @@ class DesktopRouter:
             CrossRoadRouter(),
             ConnectSourceRouter(),
             StreetRouter(),
+            VMSComponentRouter(),
 
             PassageCapacityRouter(),
 
-            VMSComponentRouter(),
             CameraRouter(),
             TrafficLightRouter(),
             VMSSignRouter(),
