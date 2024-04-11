@@ -2,12 +2,14 @@ from bson import ObjectId
 from pymongo.collection import Collection
 
 from app.db.mongo_db import camera_collection, controller_collection
+from app.decorator import signleton
 from app.decorator.parser import parse_as
 from app.models.desktop.camera import CameraResponse, CameraCreate, CameraUpdate
 from app.models.desktop.control.camera import CameraControl
 from app.repository.base_repository import BaseRepository
 
 
+@signleton.singleton
 class CameraRepository(BaseRepository[CameraResponse, CameraCreate, CameraUpdate]):
     @property
     def collection(self) -> Collection:

@@ -6,9 +6,12 @@ from app.routers.desktop.master_data.address import DesktopAddressRouter
 from app.routers.desktop.master_data.connection_source import ConnectSourceRouter
 from app.routers.desktop.master_data.cross_road import CrossRoadRouter
 from app.routers.desktop.master_data.street import StreetRouter
+from app.routers.desktop.master_data.traffic_data import TrafficDataRouter
 from app.routers.desktop.master_data.vms_component import VMSComponentRouter
+from app.routers.desktop.passage_capacity import PassageCapacityRouter
 from app.routers.desktop.traffic_light import TrafficLightRouter
 from app.routers.desktop.vms_sign import VMSSignRouter
+from app.routers.mock_traffic_data_router import MockTrafficDataRouter
 
 
 class DesktopRouter:
@@ -18,10 +21,15 @@ class DesktopRouter:
         api_router = APIRouter(prefix='/desktop')
 
         routers: list[BaseRouter] = [
+            MockTrafficDataRouter(),
+            TrafficDataRouter(),
+
             DesktopAddressRouter(),
             CrossRoadRouter(),
             ConnectSourceRouter(),
             StreetRouter(),
+
+            PassageCapacityRouter(),
 
             VMSComponentRouter(),
             CameraRouter(),

@@ -1,6 +1,6 @@
 from typing import Annotated, Optional
 
-from pydantic import BeforeValidator, Field, ConfigDict, BaseModel
+from pydantic import BeforeValidator, Field, ConfigDict, BaseModel, field_serializer
 
 PyObjectId = Annotated[str, BeforeValidator(str)]
 

@@ -12,55 +12,55 @@ from app.repository.desktop.camera import CameraRepository, camera_repo
 from app.repository.desktop.master_data.connect_source import connection_source_repo
 from app.repository.desktop.controller import ControlRepository
 from app.repository.desktop.master_data.cross_road import CrossRoadRepo, cross_road_repo
+from app.repository.desktop.master_data.street import StreetRepository
 from app.utils.common import calculate_bound, is_in_range, copy_attr
 from app.utils.rsa_helper import RSAHelper
 
 
 class CameraDomain:
 
-    @property
-    def camera_repo(self) -> CameraRepository:
-        return camera_repo
-
-    @property
-    def model_repo(self) -> ModelRepository:
-        return ModelRepository()
-
-    @property
-    def cross_road_repo(self) -> CrossRoadRepo:
-        return cross_road_repo
-
-    @property
-    def connect_source_repo(self):
-        return connection_source_repo
-
-    @property
-    def control_repo(self):
-        return ControlRepository()
+    def __init__(self):
+        self.camera_repo = camera_repo
+        self.cross_road_repo = cross_road_repo
+        self.connect_source_repo = connection_source_repo
+        self.model_repo = ModelRepository()
+        self.control_repo = ControlRepository()
+        self.street_repo = StreetRepository()
 
     def create_camera(self, camera: CameraCreate):
-        # Check model
-        model = self.get_model_by_id(camera.id_model)
+        self.check_model(camera)
 
-        if not model:
-            raise ParamInvalidException(f"Không tìm thấy model với id \"{camera.id_model}\"")
+        self.check_connection_source(camera)
 
-        group = self.model_repo.get_group_by_model_id(camera.id_model)
-
-        if not group:
-            raise ParamInvalidException(f"Không xát định được model đang thuộc về nhóm nào")
-        elif group.keyname != "CAMERA":
-            raise ParamInvalidException(f"Model không thuộc nhóm CAMERA")
-
-        # Check connection source is existed
-        connection_source = self.connect_source_repo.find_connection_source_by_keyname(camera.resource)
-        if not connection_source:
-            raise ParamInvalidException("Không tìm thấy Connection Source")
+        self.check_street_existed(camera)
 
         camera.password = RSAHelper.instance().encrypt_message(camera.password).hex()
         camera.id_model = ObjectId(camera.id_model)
 
         self.camera_repo.create(camera)
+
+    def check_model(self, camera):
+        # Check model
+        model = self.get_model_by_id(camera.id_model)
+        if not model:
+            raise ParamInvalidException(f"Không tìm thấy model với id \"{camera.id_model}\"")
+        group = self.model_repo.get_group_by_model_id(camera.id_model)
+        if not group:
+            raise ParamInvalidException(f"Không xát định được model đang thuộc về nhóm nào")
+        elif group.keyname != "CAMERA":
+            raise ParamInvalidException(f"Model không thuộc nhóm CAMERA")
+
+    def check_connection_source(self, camera):
+        # Check connection source is existed
+        connection_source = self.connect_source_repo.find_connection_source_by_keyname(camera.resource)
+        if not connection_source:
+            raise ParamInvalidException("Không tìm thấy Connection Source")
+
+    def check_street_existed(self, camera):
+        # Check street is existed
+        street = self.street_repo.find_by_id(camera.street_id)
+        if not street:
+            raise ParamInvalidException(f"Không tìm thấy đường đường có id \"{camera.street_id}\"")
 
     @parse_as(ModelResponse, True)
     def get_model_by_id(self, model_id):

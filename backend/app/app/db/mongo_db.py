@@ -41,3 +41,11 @@ controller_collection = __db.get_collection("controller")
 vms_component_collection = __db.get_collection("master-vms_component")
 
 street_collection = __db.get_collection("master-street")
+
+traffic_data_collection = __db.get_collection("traffic_data")
+
+vehicle_type_collection = __db.get_collection("master-vehicle_type")
+vehicle_type_collection.create_index('type', unique=True)
+
+passage_capacity_status_collection = __db.get_collection("master-passage_capacity_status")
+passage_capacity_status_collection.create_index('keyname', unique=True)

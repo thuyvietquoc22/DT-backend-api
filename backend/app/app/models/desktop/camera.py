@@ -14,6 +14,7 @@ class BaseCamera(BaseMongoModel):
     ip_address: str = Field(pattern=r'\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b')
     username: str
     password: str
+    street_id: PyObjectId
 
 
 class CameraCreate(BaseCamera):
@@ -25,7 +26,8 @@ class CameraCreate(BaseCamera):
                 "resource": "Sở giao thông vận tải",
                 "ip_address": "0.0.0.0",
                 "username": "admin",
-                "password": "admin"
+                "password": "admin",
+                "street_id": "660699f497fbc609d2cdf2f6"
             }}
     }
 
