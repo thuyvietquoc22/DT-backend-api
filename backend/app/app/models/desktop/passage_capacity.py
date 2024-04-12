@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Literal
+from typing import Literal, Optional
 
 from billiard.five import values
 from pydantic import BaseModel
@@ -35,8 +35,9 @@ class PassageCapacityValue(BaseModel):
     location: Location
     passage_capacity_current: int
     passage_capacity_ratio: float
-    passage_capacity_status: PassageCapacityStatus
+    passage_capacity_status: Optional[PassageCapacityStatus] = None
     street: StreetResponse
+    at: Optional[datetime]
 
 
 class PassageCapacityResponse(BaseModel):

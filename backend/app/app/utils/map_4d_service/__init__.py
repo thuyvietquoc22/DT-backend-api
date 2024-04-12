@@ -17,7 +17,7 @@ class Map4DService:
     text_search: Map4DTextSearchService = None
 
     def __init__(self):
-        self._config = Map4DConfig(api_key=settings.MAP_4D_API_KEY)
+        self._config = Map4DConfig(api_key=settings.MAP_4D_KEY)
 
         self.geo_code = Map4DGeoCodeService(self._config)
         self.text_search = Map4DTextSearchService(self._config)

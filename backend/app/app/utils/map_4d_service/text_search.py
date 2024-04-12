@@ -37,8 +37,3 @@ class Map4DTextSearchService(BaseMap4DService):
         response = requests.request("GET", api_url).text
 
         return Map4DServiceResponse[TextSearchResponse].model_validate_json(response)
-
-
-a = Map4DTextSearchService(Map4DConfig(api_key="7e24e8dae5b5b72a7d742a9b38444128"))
-b = a.fetch("đường nguyễn sinh sắc, đà nẵng")
-print(b)

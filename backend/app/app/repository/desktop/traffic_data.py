@@ -37,7 +37,7 @@ class TrafficDataRepository(BaseRepository):
 
     def get_current_capacity(self, camera_id):
         # Get current traffic data last 3 minutes
-        __current__ = 3
+        __current__ = 7 * 24 * 60  # 7 Day
 
         traffic_data = self.get_traffic_data_by_camera_id(camera_id, __current__)
 
@@ -52,7 +52,7 @@ class TrafficDataRepository(BaseRepository):
         for data in current_traffic_data.vehicle_count:
             current_capacity += data.count * self.get_size(data.vehicle_type)
 
-        return current_capacity
+        return current_capacity, traffic_data[0].time
 
     def get_size(self, vehicle_type):
         for item in self.all_vehicle_type:
