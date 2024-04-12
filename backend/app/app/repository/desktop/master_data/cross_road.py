@@ -16,7 +16,8 @@ class CrossRoadRepo(BaseRepository[CrossRoadResponse, CrossRoadCreate, CrossRoad
     @property
     def pipeline_has_address(self):
         return [
-            {'$lookup': {'from': 'address', 'localField': 'province_code', 'foreignField': 'code', 'as': 'province'}},
+            {'$lookup': {'from': 'master-address', 'localField': 'province_code', 'foreignField': 'code',
+                         'as': 'province'}},
             {'$addFields': {'province': {'$arrayElemAt': ['$province', 0]}}},
             {'$unwind': '$province.districts'},
             {'$match': {'$expr': {'$eq': ['$province.districts.code', '$district_code']}}},
