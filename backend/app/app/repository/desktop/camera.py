@@ -4,8 +4,7 @@ from pymongo.collection import Collection
 from app.db.mongo_db import camera_collection, controller_collection
 from app.decorator import signleton
 from app.decorator.parser import parse_as
-from app.models.desktop.camera import CameraResponse, CameraCreate, CameraUpdate
-from app.models.desktop.control.camera import CameraControl
+from app.models.desktop.camera import CameraResponse, CameraCreate, CameraUpdate, CameraTrafficDataResponse
 from app.repository.base_repository import BaseRepository
 
 
@@ -47,10 +46,44 @@ class CameraRepository(BaseRepository[CameraResponse, CameraCreate, CameraUpdate
 
         return self.collection.aggregate(pipeline)
 
-    @parse_as(response_type=CameraResponse, get_first=True)
-    def get_camera_by_model_id(self, model_id):
-        pipeline = self.pipeline_has_location + [{'$match': {'id_model': ObjectId(model_id)}}]
+    @parse_as(response_type=list[CameraTrafficDataResponse])
+    def get_last_data_camera_inside_bound(self, min_lat, max_lat, min_lng, max_lng, minute_ago):
+        # Get location
+        pipeline = self.pipeline_has_location
+
+        # Filter
+        pipeline += [{
+            '$match': {
+                'location.lat': {'$gte': min_lat, '$lte': max_lat},
+                'location.lng': {'$gte': min_lng, '$lte': max_lng}
+            }
+        }]
+
+        #  Get street
+        pipeline += [
+            {'$lookup': {'from': 'master-street', 'localField': 'street_id', 'foreignField': '_id', 'as': 'street'}},
+            {'$unwind': '$street'}
+        ]
+
+        pipeline += [
+            {'$lookup': {
+                'from': 'traffic_data',
+                'let': {'camera_id': '$_id'},
+                'pipeline': [
+                    {'$match': {'$expr': {'$eq': ['$camera_id', '$$camera_id']}}},
+                    {'$sort': {'time': -1}},
+                    {'$limit': 1}],
+                'as': 'live_passage_capacity'
+            }}
+        ]
+
         return self.collection.aggregate(pipeline)
+
+
+@parse_as(response_type=CameraResponse, get_first=True)
+def get_camera_by_model_id(self, model_id):
+    pipeline = self.pipeline_has_location + [{'$match': {'id_model': ObjectId(model_id)}}]
+    return self.collection.aggregate(pipeline)
 
 
 camera_repo = CameraRepository()

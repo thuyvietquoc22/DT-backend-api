@@ -4,6 +4,9 @@ from pydantic import Field, BaseModel
 
 from app.models import BaseMongoModel, PyObjectId
 from app.models.cms.model import Location
+from app.models.desktop.master_data.street import StreetResponse
+from app.models.desktop.passage_capacity import PassageCapacityValue
+from app.models.desktop.traffic_data import TrafficDataResponse
 
 
 class BaseCamera(BaseMongoModel):
@@ -53,3 +56,8 @@ class CameraUpdate(BaseModel):
 
 class CameraResponse(BaseCamera):
     location: Location
+
+
+class CameraTrafficDataResponse(CameraResponse):
+    live_passage_capacity: list[TrafficDataResponse]
+    street: StreetResponse

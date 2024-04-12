@@ -1,5 +1,6 @@
+import concurrent.futures
 from app.decorator import signleton
-from app.models.desktop.camera import CameraResponse
+from app.models.desktop.camera import CameraResponse, CameraTrafficDataResponse
 from app.models.desktop.passage_capacity import Bounce, PassageCapacityValue
 from app.repository.desktop.camera import CameraRepository
 from app.repository.desktop.master_data.passage_capacity import PassageCapacityRepository
@@ -25,7 +26,14 @@ class PassageCapacityDomain:
         self.capacity_status = capacity_status
 
     def get_all_passage_capacity(self, bounce: Bounce):
-        cameras = self.get_cameras(bounce)
+        cameras = self.camera_repo.get_last_data_camera_inside_bound(
+            min_lat=bounce.min_lat,
+            max_lat=bounce.max_lat,
+            min_lng=bounce.min_lng,
+            max_lng=bounce.max_lng,
+            minute_ago=7 * 24 * 60  # 7 Day
+        )
+
         if cameras is None or len(cameras) == 0:
             raise Exception("No camera found in this bounce")
 
@@ -34,14 +42,14 @@ class PassageCapacityDomain:
 
         return passage_capacities
 
-    def get_passage_capacity(self, camera: CameraResponse) -> PassageCapacityValue:
+    def get_passage_capacity(self, camera: CameraTrafficDataResponse) -> PassageCapacityValue:
         # Get street by camera id
-        street = self.street_repo.find_by_id(camera.street_id)
+        street = camera.street
         max_passage_capacity = street.passage_capacity
 
         try:
             # Get Current Capacity in camera
-            current_passage_capacity, time = self.traffic_data.get_current_capacity(camera.id)
+            current_passage_capacity, time = self.traffic_data.get_current_capacity(camera)
 
             passage_capacity_ratio = round(current_passage_capacity / max_passage_capacity, 2)
 
@@ -64,15 +72,6 @@ class PassageCapacityDomain:
                 street=street,
                 at=None
             )
-
-    def get_cameras(self, bounce):
-        # Get list camera inside bound
-        return self.camera_repo.get_camera_inside_bound(
-            min_lat=bounce.min_lat,
-            max_lat=bounce.max_lat,
-            min_lng=bounce.min_lng,
-            max_lng=bounce.max_lng
-        )
 
     def get_passage_capacity_status(self, passage_capacity_ratio: float):
         for status in self.capacity_status:
