@@ -51,6 +51,9 @@ class Settings(BaseSettings):
     # RSA KEY PATH
     RSA_KEY_PATH: str = "rsa_key/"
 
+    # MAP 4D KEY
+    MAP_4D_KEY: str = "7e24e8dae5b5b72a7d742a9b38444128"
+
     class Config:
         case_sensitive = True
 
