@@ -38,3 +38,16 @@ def parse_as(
         return inner
 
     return wrapper
+
+
+def parse_val_as(
+        value: any,
+        response_type: type[T],
+        get_first: bool = False,
+        exception_when_none=False,
+        message_exception: str = None) -> T:
+    @parse_as(response_type, get_first, exception_when_none, message_exception)
+    def returner():
+        return value
+
+    return returner()

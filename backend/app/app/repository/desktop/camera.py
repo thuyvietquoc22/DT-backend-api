@@ -26,6 +26,10 @@ class CameraRepository(BaseRepository[CameraResponse, CameraCreate, CameraUpdate
             {'$project': {'model': 0}}
         ]
 
+    @property
+    def root_pipeline(self):
+        return self.pipeline_has_location
+
     @parse_as(response_type=list[CameraResponse])
     def get_all_camera(self):
         return self.collection.aggregate(self.pipeline_has_location)
@@ -79,11 +83,7 @@ class CameraRepository(BaseRepository[CameraResponse, CameraCreate, CameraUpdate
 
         return self.collection.aggregate(pipeline)
 
-
-@parse_as(response_type=CameraResponse, get_first=True)
-def get_camera_by_model_id(self, model_id):
-    pipeline = self.pipeline_has_location + [{'$match': {'id_model': ObjectId(model_id)}}]
-    return self.collection.aggregate(pipeline)
-
-
-camera_repo = CameraRepository()
+    @parse_as(response_type=CameraResponse, get_first=True)
+    def get_camera_by_model_id(self, model_id):
+        pipeline = self.pipeline_has_location + [{'$match': {'id_model': ObjectId(model_id)}}]
+        return self.collection.aggregate(pipeline)

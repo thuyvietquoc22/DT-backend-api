@@ -1,11 +1,11 @@
-from typing import Optional
+from typing import Optional, Literal
 
-from pydantic import Field, BaseModel
+from bson import ObjectId
+from pydantic import Field, BaseModel, field_serializer
 
 from app.models import BaseMongoModel, PyObjectId
 from app.models.cms.model import Location
 from app.models.desktop.master_data.street import StreetResponse
-from app.models.desktop.passage_capacity import PassageCapacityValue
 from app.models.desktop.traffic_data import TrafficDataResponse
 
 
@@ -17,6 +17,7 @@ class BaseCamera(BaseMongoModel):
     ip_address: str = Field(pattern=r'\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b')
     username: str
     password: str
+    direction: Literal[-1, 1]
     street_id: PyObjectId
 
 
@@ -33,6 +34,10 @@ class CameraCreate(BaseCamera):
                 "street_id": "660699f497fbc609d2cdf2f6"
             }}
     }
+
+    @field_serializer("id_model", "street_id")
+    def serializer_id_model(self, value: PyObjectId) -> ObjectId:
+        return ObjectId(value)
 
 
 class CameraUpdate(BaseModel):

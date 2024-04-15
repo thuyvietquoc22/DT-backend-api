@@ -7,6 +7,15 @@ client = MongoClient(settings.MONGODB_URL)
 
 __db = client["digital-twin"]
 
+
+def start_session():
+    return client.start_session()
+
+
+"""
+COLLECTIONS
+"""
+
 account_collection = __db.get_collection("account")
 
 user_collection = __db.get_collection("user")

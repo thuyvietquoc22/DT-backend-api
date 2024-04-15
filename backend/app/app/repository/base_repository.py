@@ -4,6 +4,7 @@ from typing import TypeVar, Generic, Optional
 
 from bson import ObjectId
 from pydantic import BaseModel
+from pymongo.client_session import ClientSession
 from pymongo.collection import Collection
 from pymongo.cursor import Cursor
 
@@ -21,6 +22,10 @@ class BaseRepository(Generic[Model, CreateModel, UpdateModel], ABC):
     @abstractmethod
     def collection(self) -> Collection:
         pass
+
+    @property
+    def root_pipeline(self):
+        return []
 
     def is_exists_id(self, id_: str) -> bool:
         id_ = ObjectId(id_)
@@ -55,9 +60,10 @@ class BaseRepository(Generic[Model, CreateModel, UpdateModel], ABC):
     def get_by_id(self, obj_id: str) -> Optional[Model]:
         return self.collection.find_one({"_id": ObjectId(obj_id)})
 
-    def create(self, obj: CreateModel) -> Cursor:
+    def create(self, obj: CreateModel):
         inserted = self.collection.insert_one(obj.model_dump(by_alias=True, exclude={"id"}))
-        return self.collection.find_one({"_id": inserted.inserted_id})
+        pipeline = [{"$match": {"_id": inserted.inserted_id}}] + self.root_pipeline
+        return self.collection.aggregate(pipeline)
 
     def update(self, obj_id: str, obj: UpdateModel):
         if hasattr(obj, "_id"):

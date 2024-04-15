@@ -1,7 +1,7 @@
 from botocore.paginate import PaginatorModel
 from fastapi import APIRouter
 
-from app.domain.desktop.camera import CameraDomain, camera_domain
+from app.domain.desktop.camera import CameraDomain
 from app.models.desktop.camera import CameraCreate, CameraUpdate
 from app.models.desktop.control.camera import CameraControl, CameraControlRequest
 from app.models.pagination_model import Pageable, PaginationResponse
@@ -12,7 +12,7 @@ class CameraRouter(BaseRouter):
 
     @property
     def camera_domain(self) -> CameraDomain:
-        return camera_domain
+        return CameraDomain()
 
     @property
     def router(self) -> APIRouter:
