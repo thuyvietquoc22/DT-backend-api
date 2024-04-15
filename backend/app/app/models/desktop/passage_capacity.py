@@ -25,6 +25,13 @@ class Bounce(BaseModel):
             }}
     }
 
+    @property
+    def center(self):
+        return {
+            "lat": (self.min_lat + self.max_lat) / 2,
+            "lng": (self.min_lng + self.max_lng) / 2
+        }
+
 
 class PassageCapacityRequest:
     bounce: Bounce

@@ -18,11 +18,18 @@ class PassageCapacityRouter(BaseRouter):
         @router.get("/bounce")
         def get_all_passage_capacity(min_lat: float, max_lat: float, min_lng: float, max_lng: float):
             bounce = Bounce(min_lat=min_lat, max_lat=max_lat, min_lng=min_lng, max_lng=max_lng)
-            return self.passage_capacity_domain.get_all_passage_capacity(bounce)
+            result, new_bounce = self.passage_capacity_domain.get_all_passage_capacity(bounce)
+            return {
+                "values": result,
+                "center": new_bounce.center
+            }
 
         @router.get("/keyword")
         def search_passage_capacity(keyword: str):
-
-            return self.passage_capacity_domain.get_passage_capacity_by_keyword(keyword)
+            result, new_bounce = self.passage_capacity_domain.get_passage_capacity_by_keyword(keyword)
+            return {
+                "values": result,
+                "center": new_bounce.center
+            }
 
         return router

@@ -31,7 +31,7 @@ class PassageCapacityDomain:
             max_lat=bounce.max_lat,
             min_lng=bounce.min_lng,
             max_lng=bounce.max_lng,
-            minute_ago=7 * 24 * 60  # 7 Day
+            minute_ago=7749 * 24 * 60  # 7749 Day
         )
 
         if cameras is None or len(cameras) == 0:
@@ -40,7 +40,7 @@ class PassageCapacityDomain:
         # Get current passage capacity per camera
         passage_capacities = [self.get_passage_capacity(camera) for camera in cameras]
 
-        return passage_capacities
+        return passage_capacities, bounce
 
     def get_passage_capacity(self, camera: CameraTrafficDataResponse) -> PassageCapacityValue:
         # Get street by camera id
