@@ -2,14 +2,14 @@ from typing import List
 
 from fastapi import APIRouter
 
-from app.domain.cms.role import RoleDomain
+from app.sevices.cms.role import RoleService
 from app.models.cms.role import RoleCreate, RoleResponse
 
 
 class RoleRouter:
 
-    def __init__(self, domain: RoleDomain):
-        self.domain = domain
+    def __init__(self):
+        self.role_service = RoleService
 
     @property
     def router(self):
@@ -17,26 +17,26 @@ class RoleRouter:
 
         @api_router.get('', response_model=List[RoleResponse])
         async def get_oles(role_name: str = None):
-            result = self.domain.get_all_role(role_name)
+            result = self.role_service.get_all_role(role_name)
             return result
 
         @api_router.post("")
         async def create_role(permission_create: RoleCreate):
-            result = self.domain.create_role(permission_create)
+            result = self.role_service.create_role(permission_create)
             return {
                 "message": f"Tạo thành công vai trò \"{permission_create.name}\".",
             }
 
         @api_router.post("/count-usage/{role_id}")
         async def count_role_usage(role_id: str):
-            result = self.domain.count_role_usage(role_id)
+            result = self.role_service.count_role_usage(role_id)
             return {
                 "count": result,
             }
 
         @api_router.delete("/{role_id}")
         async def delete_role(role_id: str):
-            result = self.domain.delete_role(role_id)
+            result = self.role_service.delete_role(role_id)
             return {
                 "message": f"Xóa thành công vai trò.",
             }

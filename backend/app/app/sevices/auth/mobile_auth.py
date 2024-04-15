@@ -1,5 +1,6 @@
 from app.core.jwt import create_access_token, create_refresh_token
 from app.core.password_encoder import verify_password, hash_password
+from app.decorator import signleton
 from app.decorator.parser import parse_as
 from app.exceptions.authenticate_exception import AuthenticateException
 from app.exceptions.param_invalid_exception import ParamInvalidException
@@ -9,7 +10,8 @@ from app.repository.mobile.user import UserRepository
 from app.routers.auth import LoginModel, AuthLoginResponseModel
 
 
-class MobileAuthDomain:
+@signleton.singleton
+class MobileAuthService:
 
     def __init__(self, user_repo: UserRepository):
         self.user_repo = user_repo
@@ -57,4 +59,4 @@ class MobileAuthDomain:
         return self.user_repo.create(user)
 
 
-mobile_auth_domain = MobileAuthDomain(UserRepository())
+mobile_auth_service = MobileAuthService(UserRepository())

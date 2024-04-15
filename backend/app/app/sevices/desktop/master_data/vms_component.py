@@ -10,7 +10,7 @@ from app.utils.cloudinary import CloudinaryHelper
 
 
 @signleton.singleton
-class VMSComponentDomain:
+class VMSComponentService:
 
     def __init__(self):
         self.vms_component_repo = VMSComponentRepository()

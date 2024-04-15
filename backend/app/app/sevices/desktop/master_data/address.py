@@ -1,7 +1,7 @@
 from app.repository.desktop.master_data.address import address_repo, AddressRepository
 
 
-class AddressDomain:
+class AddressService:
 
     @property
     def address_repo(self) -> AddressRepository:
@@ -14,4 +14,4 @@ class AddressDomain:
         return self.address_repo.get_province_by_code(code)
 
 
-address_domain = AddressDomain()
+address_service = AddressService()

@@ -8,7 +8,7 @@ from app.models.pagination_model import Pageable
 from app.repository.cms.account import AccountRepository
 
 
-class AccountDomain:
+class AccountService:
 
     @property
     def account_repository(self):

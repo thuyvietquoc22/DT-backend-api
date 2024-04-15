@@ -8,7 +8,7 @@ import random as rd
 
 
 @signleton.singleton
-class TrafficDataDomain:
+class TrafficDataService:
     def __init__(self):
         self.traffic_data_repo = TrafficDataRepository()
 

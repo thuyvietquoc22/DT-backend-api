@@ -5,7 +5,7 @@ from app.models.cms.permission import PermissionResponse
 from app.repository.cms.permission import PermissionRepository
 
 
-class PermissionDomain:
+class PermissionService:
 
     def __init__(self, repo: PermissionRepository):
         self.repo = repo
@@ -32,4 +32,4 @@ class PermissionDomain:
         return self.repo.get_permission_by_id(permission_ids)
 
 
-permission_domain = PermissionDomain(PermissionRepository())
+permission_service = PermissionService(PermissionRepository())

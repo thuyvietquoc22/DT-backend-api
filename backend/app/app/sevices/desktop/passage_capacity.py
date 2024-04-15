@@ -11,7 +11,7 @@ from app.utils.map_4d_service import Map4DService
 
 
 @signleton.singleton
-class PassageCapacityDomain:
+class PassageCapacityService:
 
     def __init__(self):
         self.camera_repo = CameraRepository()

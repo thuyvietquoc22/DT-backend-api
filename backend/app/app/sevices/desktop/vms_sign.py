@@ -18,7 +18,7 @@ from app.utils.common import calculate_bound
 from app.utils.rsa_helper import RSAHelper
 
 
-class VMSSignDomain:
+class VMSSignService:
 
     def __init__(self):
         self.vms_sign_repo = vms_sign_repo
@@ -123,4 +123,4 @@ class VMSSignDomain:
         return self.vms_sign_repo.get_vms_sign_by_model_id(model_id)
 
 
-vms_sign_domain = VMSSignDomain()
+vms_sign_service = VMSSignService()

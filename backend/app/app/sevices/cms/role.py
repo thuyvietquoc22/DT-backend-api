@@ -1,10 +1,12 @@
 from bson import ObjectId
 
+from app.decorator import signleton
 from app.models.cms.role import RoleCreate
 from app.repository.cms.role import RoleRepository
 
 
-class RoleDomain:
+@signleton.singleton
+class RoleService:
 
     def __init__(self, role_repo: RoleRepository):
         self.role_repo = role_repo
@@ -28,4 +30,4 @@ class RoleDomain:
         return self.role_repo.count_role_usage(_id)
 
 
-role_domain = RoleDomain(RoleRepository())
+role_service = RoleService(RoleRepository())

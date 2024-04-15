@@ -6,7 +6,7 @@ from bson import ObjectId
 from app.db.mongo_db import start_session
 from app.decorator import signleton
 from app.decorator.parser import parse_as, parse_val_as
-from app.domain.desktop.traffic_data import TrafficDataDomain
+from app.sevices.desktop.traffic_data import TrafficDataService
 from app.exceptions.param_invalid_exception import ParamInvalidException
 from app.models.cms.model import ModelResponse
 from app.models.desktop.camera import CameraCreate, CameraResponse
@@ -22,7 +22,7 @@ from app.utils.rsa_helper import RSAHelper
 
 
 @signleton.singleton
-class CameraDomain:
+class CameraService:
 
     def __init__(self):
         self.camera_repo = CameraRepository()
@@ -50,7 +50,7 @@ class CameraDomain:
         value = parse_val_as(value, response_type=CameraResponse, get_first=True)
 
         # Todo mock data to camera
-        TrafficDataDomain().mock_camera_data(value.id)
+        TrafficDataService().mock_camera_data(value.id)
         return value
 
     def check_model(self, camera):

@@ -1,8 +1,9 @@
 from bson import ObjectId
 from click import BadParameter
 
+from app.decorator import signleton
 from app.decorator.parser import parse_as
-from app.domain.cms.assets import assets_domain
+from app.sevices.cms.assets import assets_service
 from app.exceptions.param_invalid_exception import ParamInvalidException
 from app.models.cms.assets import AssetsResponse
 from app.models.cms.model import ModelCreate, ModelResponse, Location, ModelUpdate, ModelType
@@ -10,14 +11,15 @@ from app.models.pagination_model import Pageable
 from app.repository.cms.model import ModelRepository
 
 
-class ModelDomain:
+@signleton.singleton
+class ModelService:
     def __init__(self, repo: ModelRepository):
         self.repo = repo
 
     @parse_as(ModelResponse)
     def create_model(self, model: ModelCreate):
 
-        assets: list[AssetsResponse] = assets_domain.find_by_ids([model.asset_id])
+        assets: list[AssetsResponse] = assets_service.find_by_ids([model.asset_id])
 
         # Find Assets
         if not assets or len(assets) != 1:
@@ -58,7 +60,7 @@ class ModelDomain:
 
     @staticmethod
     def validate_asset(model_type: ModelType, asset_ids: list[str]) -> list[AssetsResponse]:
-        assets: list[AssetsResponse] = assets_domain.find_by_ids(asset_ids)
+        assets: list[AssetsResponse] = assets_service.find_by_ids(asset_ids)
 
         # Find Assets
         if not assets or len(assets) != len(asset_ids):
@@ -87,4 +89,4 @@ class ModelDomain:
         return self.repo.get_group_by_model_id(model_id)
 
 
-model_domain = ModelDomain(repo=ModelRepository())
+model_service = ModelService(repo=ModelRepository())

@@ -2,7 +2,7 @@ from typing import List
 
 from fastapi import APIRouter
 
-from app.domain.desktop.master_data.address import address_domain, AddressDomain
+from app.sevices.desktop.master_data.address import address_service, AddressService
 from app.models.desktop.master_data.address import ProvinceListResponse, ProvinceResponse
 from app.routers import BaseRouter
 
@@ -10,8 +10,8 @@ from app.routers import BaseRouter
 class DesktopAddressRouter(BaseRouter):
 
     @property
-    def address_domain(self) -> AddressDomain:
-        return address_domain
+    def address_service(self) -> AddressService:
+        return address_service
 
     @property
     def router(self):
@@ -19,10 +19,10 @@ class DesktopAddressRouter(BaseRouter):
 
         @router.get('/provinces', response_model=List[ProvinceListResponse])
         def get_all_provinces(name: str = ""):
-            return self.address_domain.get_all_provinces(name)
+            return self.address_service.get_all_provinces(name)
 
         @router.get('/provinces/{code}', response_model=ProvinceResponse)
         def get_province_by_id(code: int):
-            return self.address_domain.get_province_by_code(code)
+            return self.address_service.get_province_by_code(code)
 
         return router

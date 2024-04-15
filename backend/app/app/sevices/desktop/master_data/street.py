@@ -4,7 +4,7 @@ from app.repository.desktop.master_data.address import AddressRepository
 from app.repository.desktop.master_data.street import StreetRepository
 
 
-class StreetDomain:
+class StreetService:
     def __init__(self):
         self.street_repo = StreetRepository()
         self.address_repo = AddressRepository()

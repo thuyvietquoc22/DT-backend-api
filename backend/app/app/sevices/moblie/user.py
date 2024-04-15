@@ -5,12 +5,13 @@ from app.exceptions.not_found_exception import NotFoundException
 from app.models.mobile.user import UserResponse
 from app.models.pagination_model import Pageable
 from app.repository.mobile.user import UserRepository
+from app.sevices import BaseService
 
 
-class UserDomain:
+class UserService(BaseService):
 
-    def __init__(self, user_repo: UserRepository):
-        self.user_repo = user_repo
+    def __init__(self):
+        self.user_repo = UserRepository()
 
     @parse_as(response_type=List[UserResponse])
     def get_user(self, email: str, fullname: str, pageable: Pageable):
@@ -25,4 +26,4 @@ class UserDomain:
         return self.user_repo.set_is_banned(user_id, False)
 
 
-user_domain = UserDomain(UserRepository())
+user_service = UserService(UserRepository())

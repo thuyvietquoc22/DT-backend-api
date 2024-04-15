@@ -12,7 +12,7 @@ from app.utils.common import calculate_bound
 from app.utils.rsa_helper import RSAHelper
 
 
-class TrafficLightDomain:
+class TrafficLightService:
 
     @property
     def traffic_light_repo(self) -> TrafficLightRepository:
@@ -88,4 +88,4 @@ class TrafficLightDomain:
         return self.traffic_light_repo.get_traffic_light_by_model_id(model_id)
 
 
-traffic_light_domain = TrafficLightDomain()
+traffic_light_service = TrafficLightService()

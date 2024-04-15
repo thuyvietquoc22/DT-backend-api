@@ -8,7 +8,7 @@ from app.repository.desktop.master_data.cross_road import cross_road_repo, Cross
 from app.repository.desktop.master_data.street import StreetRepository
 
 
-class CrossRoadDomain:
+class CrossRoadService:
 
     def __init__(self):
         self.cross_road_repo = cross_road_repo
@@ -70,4 +70,4 @@ class CrossRoadDomain:
         return self.cross_road_repo.update(district_id, cross_road_update)
 
 
-cross_road_domain = CrossRoadDomain()
+cross_road_service = CrossRoadService()
