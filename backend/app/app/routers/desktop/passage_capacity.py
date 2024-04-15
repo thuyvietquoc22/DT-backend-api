@@ -3,7 +3,6 @@ from fastapi import APIRouter
 from app.sevices.desktop.passage_capacity import PassageCapacityService
 from app.models.desktop.passage_capacity import Bounce
 from app.routers import BaseRouter
-from app.utils.map_4d_service import Map4DService
 
 
 class PassageCapacityRouter(BaseRouter):

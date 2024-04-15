@@ -6,7 +6,7 @@ from app.repository.desktop.master_data.street import StreetRepository
 from app.repository.desktop.traffic_data import TrafficDataRepository
 from app.sevices import BaseService
 from app.utils.common import calculate_bound
-from app.utils.map_4d_service import Map4DService
+from app.sevices.map_4d import Map4DService
 
 
 class PassageCapacityService(BaseService):

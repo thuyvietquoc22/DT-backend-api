@@ -1,4 +1,4 @@
-from app.utils.map_4d_service.config import Map4DConfig
+from app.sevices.map_4d.config import Map4DConfig
 
 
 class Map4DGeoCodeService:
