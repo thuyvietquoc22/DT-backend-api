@@ -1,15 +1,15 @@
 from fastapi import APIRouter
 
-from app.sevices.desktop.traffic_light import TrafficLightService, traffic_light_service
 from app.models.desktop.traffic_light import TrafficLightCreate, TrafficLightUpdate
 from app.routers import BaseRouter
+from app.sevices.desktop.traffic_light import TrafficLightService
 
 
 class TrafficLightRouter(BaseRouter):
 
     @property
     def traffic_light_service(self) -> TrafficLightService:
-        return traffic_light_service
+        return TrafficLightService()
 
     @property
     def router(self) -> APIRouter:

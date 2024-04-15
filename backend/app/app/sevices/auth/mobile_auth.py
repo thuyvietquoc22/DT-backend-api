@@ -13,8 +13,8 @@ from app.routers.auth import LoginModel, AuthLoginResponseModel
 @signleton.singleton
 class MobileAuthService:
 
-    def __init__(self, user_repo: UserRepository):
-        self.user_repo = user_repo
+    def __init__(self):
+        self.user_repo = UserRepository()
 
     def check_email(self, email: str) -> bool:
         exist_user = self.user_repo.find_by_email(email)
@@ -59,4 +59,3 @@ class MobileAuthService:
         return self.user_repo.create(user)
 
 
-mobile_auth_service = MobileAuthService(UserRepository())

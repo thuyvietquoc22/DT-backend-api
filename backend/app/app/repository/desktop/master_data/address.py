@@ -1,10 +1,12 @@
 from pymongo.collection import Collection
 
 from app.db.mongo_db import address_collection
+from app.decorator import signleton
 from app.decorator.parser import parse_as
 from app.models.desktop.master_data.address import ProvinceResponse, DistrictResponse
 
 
+@signleton.singleton
 class AddressRepository:
     @property
     def address_collection(self) -> Collection:
@@ -37,6 +39,3 @@ class AddressRepository:
         ]
 
         return self.address_collection.aggregate(pipeline=pipeline)
-
-
-address_repo = AddressRepository()

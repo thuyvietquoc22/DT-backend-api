@@ -1,16 +1,16 @@
 from fastapi import APIRouter
 
-from app.sevices.desktop.master_data.cross_road import cross_road_service, CrossRoadService
 from app.models.desktop.master_data.cross_road import CrossRoadCreate, CrossRoadResponse, CrossRoadUpdate
 from app.models.pagination_model import Pageable, PaginationResponse
 from app.routers import BaseRouter
+from app.sevices.desktop.master_data.cross_road import CrossRoadService
 
 
 class CrossRoadRouter(BaseRouter):
 
     @property
     def cross_road_service(self) -> CrossRoadService:
-        return cross_road_service
+        return CrossRoadService()
 
     @property
     def router(self) -> APIRouter:

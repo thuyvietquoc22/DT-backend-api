@@ -8,8 +8,8 @@ from app.repository.cms.role import RoleRepository
 @signleton.singleton
 class RoleService:
 
-    def __init__(self, role_repo: RoleRepository):
-        self.role_repo = role_repo
+    def __init__(self):
+        self.role_repo = RoleRepository()
 
     def get_all_role(self, role_name: str = None):
         result = self.role_repo.get_all_role(role_name)
@@ -30,4 +30,3 @@ class RoleService:
         return self.role_repo.count_role_usage(_id)
 
 
-role_service = RoleService(RoleRepository())

@@ -3,9 +3,10 @@ from pymongo.cursor import Cursor
 from app.decorator.parser import parse_as
 from app.models.cms.permission import PermissionResponse
 from app.repository.cms.permission import PermissionRepository
+from app.sevices import BaseService
 
 
-class PermissionService:
+class PermissionService(BaseService):
 
     def __init__(self, repo: PermissionRepository):
         self.repo = repo
@@ -30,6 +31,3 @@ class PermissionService:
     # Lấy danh sách permission theo id truyền vào không phân cấp cha con
     def __get_all_by_id_not_group(self, permission_ids: list[str]):
         return self.repo.get_permission_by_id(permission_ids)
-
-
-permission_service = PermissionService(PermissionRepository())

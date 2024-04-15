@@ -2,16 +2,16 @@ from typing import List
 
 from fastapi import APIRouter
 
-from app.sevices.desktop.master_data.address import address_service, AddressService
 from app.models.desktop.master_data.address import ProvinceListResponse, ProvinceResponse
 from app.routers import BaseRouter
+from app.sevices.desktop.master_data.address import AddressService
 
 
 class DesktopAddressRouter(BaseRouter):
 
     @property
     def address_service(self) -> AddressService:
-        return address_service
+        return AddressService()
 
     @property
     def router(self):

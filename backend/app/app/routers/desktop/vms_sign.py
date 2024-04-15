@@ -1,17 +1,17 @@
 from fastapi import APIRouter
 
-from app.sevices.desktop.vms_sign import vms_sign_service, VMSSignService
-from app.models.desktop.control.vms_sign import VMSSignController, VMSSignRequest
+from app.models.desktop.control.vms_sign import VMSSignRequest
 from app.models.desktop.vms_sign import VMSSignCreate, VMSSignUpdate
 from app.models.pagination_model import Pageable
 from app.routers import BaseRouter
+from app.sevices.desktop.vms_sign import VMSSignService
 
 
 class VMSSignRouter(BaseRouter):
 
     @property
     def vms_service(self) -> VMSSignService:
-        return vms_sign_service
+        return VMSSignService()
 
     @property
     def router(self) -> APIRouter:

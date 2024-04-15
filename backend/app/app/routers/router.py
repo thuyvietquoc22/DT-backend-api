@@ -1,13 +1,6 @@
 from fastapi import APIRouter, FastAPI
 
 from app.core.config import settings
-from app.sevices.auth.admin_auth import admin_auth_service
-from app.sevices.auth.mobile_auth import mobile_auth_service
-from app.sevices.cms.assets import assets_service
-from app.sevices.cms.model import model_service
-from app.sevices.cms.permission import permission_service
-from app.sevices.cms.role import role_service
-from app.sevices.moblie.user import user_service
 from app.routers.auth.admin_auth import AdminAuthRouter
 from app.routers.auth.mobile_auth import MobileAuthRoute
 from app.routers.cms.account import AccountRouter
@@ -28,10 +21,10 @@ def register_router(app: FastAPI):
     mobile_auth_router = MobileAuthRoute().router
     api_router.include_router(mobile_auth_router)
 
-    admin_auth_router = AdminAuthRouter(admin_auth_service).router
+    admin_auth_router = AdminAuthRouter().router
     api_router.include_router(admin_auth_router)
 
-    user_router = UserRouter(user_service).router
+    user_router = UserRouter().router
     api_router.include_router(user_router)
 
     permission_router = PermissionRouter().router

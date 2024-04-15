@@ -1,15 +1,15 @@
 from fastapi import APIRouter
 
-from app.sevices.desktop.master_data.connection_source import ConnectSourceService, connection_source_service
 from app.models.desktop.master_data.connect_source import ConnectSourceCreate, ConnectSourceUpdate
 from app.routers import BaseRouter
+from app.sevices.desktop.master_data.connection_source import ConnectSourceService
 
 
 class ConnectSourceRouter(BaseRouter):
 
     @property
     def connection_source_service(self) -> ConnectSourceService:
-        return connection_source_service
+        return ConnectSourceService()
 
     @property
     def router(self) -> APIRouter:

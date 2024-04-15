@@ -1,7 +1,7 @@
 # Base image
 FROM python:3.9
 
-LABEL agusrichard "nguyen.duc.sang@tanaakk.com"
+LABEL agusrichard = "nguyen.duc.sang@tanaakk.com"
 
 # Set environment varibles
 ENV PYTHONDONTWRITEBYTECODE 1

@@ -2,15 +2,14 @@ from typing import Literal
 
 from fastapi import UploadFile
 
-from app.decorator import signleton
 from app.exceptions.param_invalid_exception import ParamInvalidException
 from app.models.desktop.master_data.vms_component import VMSComponentCreate, VMSComponentUpdate
 from app.repository.desktop.master_data.vms_component import VMSComponentRepository
+from app.sevices import BaseService
 from app.utils.cloudinary import CloudinaryHelper
 
 
-@signleton.singleton
-class VMSComponentService:
+class VMSComponentService(BaseService):
 
     def __init__(self):
         self.vms_component_repo = VMSComponentRepository()

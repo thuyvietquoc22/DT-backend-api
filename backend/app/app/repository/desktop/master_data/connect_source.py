@@ -26,5 +26,3 @@ class ConnectSourceRepository(BaseRepository):
     def delete_by_keyname(self, connection_source_keyname):
         return self.collection.delete_one({"keyname": connection_source_keyname})
 
-
-connection_source_repo = ConnectSourceRepository()

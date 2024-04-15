@@ -1,33 +1,31 @@
 from datetime import datetime
-from turtledemo.forest import start
 
 from bson import ObjectId
 
 from app.db.mongo_db import start_session
-from app.decorator import signleton
 from app.decorator.parser import parse_as, parse_val_as
-from app.sevices.desktop.traffic_data import TrafficDataService
 from app.exceptions.param_invalid_exception import ParamInvalidException
 from app.models.cms.model import ModelResponse
 from app.models.desktop.camera import CameraCreate, CameraResponse
 from app.models.desktop.control.camera import CameraControl, CameraControlRequest
 from app.repository.cms.model import ModelRepository
 from app.repository.desktop.camera import CameraRepository
-from app.repository.desktop.master_data.connect_source import connection_source_repo
 from app.repository.desktop.controller import ControlRepository
-from app.repository.desktop.master_data.cross_road import CrossRoadRepo, cross_road_repo
+from app.repository.desktop.master_data.connect_source import ConnectSourceRepository
+from app.repository.desktop.master_data.cross_road import CrossRoadRepository
 from app.repository.desktop.master_data.street import StreetRepository
+from app.sevices import BaseService
+from app.sevices.desktop.traffic_data import TrafficDataService
 from app.utils.common import calculate_bound, is_in_range, copy_attr
 from app.utils.rsa_helper import RSAHelper
 
 
-@signleton.singleton
-class CameraService:
+class CameraService(BaseService):
 
     def __init__(self):
         self.camera_repo = CameraRepository()
-        self.cross_road_repo = cross_road_repo
-        self.connect_source_repo = connection_source_repo
+        self.cross_road_repo = CrossRoadRepository()
+        self.connect_source_repo = ConnectSourceRepository()
         self.model_repo = ModelRepository()
         self.control_repo = ControlRepository()
         self.street_repo = StreetRepository()

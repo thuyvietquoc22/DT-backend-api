@@ -2,19 +2,18 @@ from bson import ObjectId
 from cloudinary import uploader
 from fastapi import UploadFile
 
-from app.decorator import signleton
 from app.decorator.parser import parse_as
 from app.models.cms.assets import AssetsCreate, AssetsResponse
 from app.models.pagination_model import Pageable
 from app.repository.cms.assets import AssetsModelRepository
 from app.repository.cms.model import ModelRepository
+from app.sevices import BaseService
 from app.utils.random_helper import random_str
 
 
-@signleton.singleton
-class AssetsService:
-    def __init__(self, assets_repo: AssetsModelRepository):
-        self.assets_repo = assets_repo
+class AssetsService(BaseService):
+    def __init__(self):
+        self.assets_repo = AssetsModelRepository()
 
     @parse_as(list[AssetsResponse])
     def get_all_assets(self, pageable: Pageable):
@@ -167,5 +166,3 @@ class AssetsService:
     def count_usage(self, asset_id):
         return self.assets_repo.count_usage(asset_id)
 
-
-assets_service = AssetsService(assets_repo=AssetsModelRepository())

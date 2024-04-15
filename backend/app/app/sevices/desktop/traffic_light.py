@@ -5,14 +5,15 @@ from app.exceptions.param_invalid_exception import ParamInvalidException
 from app.models.cms.model import ModelResponse
 from app.models.desktop.traffic_light import TrafficLightCreate, TrafficLightUpdate
 from app.repository.cms.model import ModelRepository
-from app.repository.desktop.master_data.connect_source import connection_source_repo
-from app.repository.desktop.master_data.cross_road import CrossRoadRepo, cross_road_repo
+from app.repository.desktop.master_data.connect_source import ConnectSourceRepository
+from app.repository.desktop.master_data.cross_road import CrossRoadRepository
 from app.repository.desktop.traffic_light import TrafficLightRepository, traffic_light_repo
+from app.sevices import BaseService
 from app.utils.common import calculate_bound
 from app.utils.rsa_helper import RSAHelper
 
 
-class TrafficLightService:
+class TrafficLightService(BaseService):
 
     @property
     def traffic_light_repo(self) -> TrafficLightRepository:
@@ -23,12 +24,12 @@ class TrafficLightService:
         return ModelRepository()
 
     @property
-    def cross_road_repo(self) -> CrossRoadRepo:
-        return cross_road_repo
+    def cross_road_repo(self) -> CrossRoadRepository:
+        return CrossRoadRepository()
 
     @property
-    def connect_source_repo(self):
-        return connection_source_repo
+    def connect_source_repo(self) -> ConnectSourceRepository:
+        return ConnectSourceRepository()
 
     @parse_as(ModelResponse, True)
     def get_model_by_id(self, model_id: str):
@@ -86,6 +87,3 @@ class TrafficLightService:
 
     def get_traffic_light_by_model_id(self, model_id):
         return self.traffic_light_repo.get_traffic_light_by_model_id(model_id)
-
-
-traffic_light_service = TrafficLightService()

@@ -1,11 +1,11 @@
-from app.repository.desktop.master_data.connect_source import connection_source_repo, ConnectSourceRepository
+from app.repository.desktop.master_data.connect_source import ConnectSourceRepository
 
 
 class ConnectSourceService:
 
     @property
     def connection_source_repo(self) -> ConnectSourceRepository:
-        return connection_source_repo
+        return ConnectSourceRepository()
 
     def get_connection_source(self):
         return self.connection_source_repo.find_all_connection_source()
@@ -25,6 +25,3 @@ class ConnectSourceService:
 
     def delete_connection_source(self, connection_source_keyname):
         self.connection_source_repo.delete_by_keyname(connection_source_keyname)
-
-
-connection_source_service = ConnectSourceService()

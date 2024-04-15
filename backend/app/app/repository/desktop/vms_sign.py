@@ -37,6 +37,3 @@ class VMSSignRepository(BaseRepository[VMSSignResponse, VMSSignCreate, VMSSignUp
         ]
 
         return self.collection.aggregate(pipeline)
-
-
-vms_sign_repo = VMSSignRepository()

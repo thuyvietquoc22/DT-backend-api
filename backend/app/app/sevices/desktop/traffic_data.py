@@ -1,14 +1,12 @@
+import random as rd
 from datetime import datetime
 
-from app.decorator import signleton
 from app.models.desktop.traffic_data import TrafficDataCreate
 from app.repository.desktop.traffic_data import TrafficDataRepository
+from app.sevices import BaseService
 
-import random as rd
 
-
-@signleton.singleton
-class TrafficDataService:
+class TrafficDataService(BaseService):
     def __init__(self):
         self.traffic_data_repo = TrafficDataRepository()
 

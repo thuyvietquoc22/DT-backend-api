@@ -6,9 +6,10 @@ from app.models.auth.admin_auth import AccountRegisterModel
 from app.models.cms.account import AccountCreate, AccountUpdate
 from app.models.pagination_model import Pageable
 from app.repository.cms.account import AccountRepository
+from app.sevices import BaseService
 
 
-class AccountService:
+class AccountService(BaseService):
 
     @property
     def account_repository(self):

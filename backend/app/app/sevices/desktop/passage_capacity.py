@@ -1,24 +1,22 @@
-import concurrent.futures
-from app.decorator import signleton
-from app.models.desktop.camera import CameraResponse, CameraTrafficDataResponse
+from app.models.desktop.camera import CameraTrafficDataResponse
 from app.models.desktop.passage_capacity import Bounce, PassageCapacityValue
 from app.repository.desktop.camera import CameraRepository
 from app.repository.desktop.master_data.passage_capacity import PassageCapacityRepository
 from app.repository.desktop.master_data.street import StreetRepository
 from app.repository.desktop.traffic_data import TrafficDataRepository
+from app.sevices import BaseService
 from app.utils.common import calculate_bound
 from app.utils.map_4d_service import Map4DService
 
 
-@signleton.singleton
-class PassageCapacityService:
+class PassageCapacityService(BaseService):
 
     def __init__(self):
         self.camera_repo = CameraRepository()
         self.street_repo = StreetRepository()
         self.traffic_data = TrafficDataRepository()
-        self.capacity_status = []
         self.init_passage_capacity_status()
+        self.capacity_status = []
 
     def init_passage_capacity_status(self):
         capacity_status = PassageCapacityRepository().get_all_passage_capacity_status()

@@ -3,16 +3,16 @@ from bson import ObjectId
 from app.exceptions.param_invalid_exception import ParamInvalidException
 from app.models.desktop.master_data.cross_road import CrossRoadCreate, CrossRoadUpdate
 from app.models.pagination_model import Pageable
-from app.repository.desktop.master_data.address import address_repo, AddressRepository
-from app.repository.desktop.master_data.cross_road import cross_road_repo, CrossRoadRepo
+from app.repository.desktop.master_data.address import AddressRepository
+from app.repository.desktop.master_data.cross_road import CrossRoadRepository
 from app.repository.desktop.master_data.street import StreetRepository
 
 
 class CrossRoadService:
 
     def __init__(self):
-        self.cross_road_repo = cross_road_repo
-        self.address_repo = address_repo
+        self.cross_road_repo = CrossRoadRepository()
+        self.address_repo = AddressRepository()
         self.street_repo = StreetRepository()
 
     def get_district_code(self, district_code: int):
@@ -68,6 +68,3 @@ class CrossRoadService:
             cross_road_update.province_code = self.validate_district_code(cross_road_update.district_code)
 
         return self.cross_road_repo.update(district_id, cross_road_update)
-
-
-cross_road_service = CrossRoadService()

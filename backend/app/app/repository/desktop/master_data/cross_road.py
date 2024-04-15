@@ -8,7 +8,7 @@ from app.models.pagination_model import Pageable
 from app.repository.base_repository import BaseRepository
 
 
-class CrossRoadRepo(BaseRepository[CrossRoadResponse, CrossRoadCreate, CrossRoadUpdate]):
+class CrossRoadRepository(BaseRepository[CrossRoadResponse, CrossRoadCreate, CrossRoadUpdate]):
 
     @property
     def collection(self) -> Collection:
@@ -51,4 +51,3 @@ class CrossRoadRepo(BaseRepository[CrossRoadResponse, CrossRoadCreate, CrossRoad
         return self.collection.aggregate(pipeline)
 
 
-cross_road_repo = CrossRoadRepo()

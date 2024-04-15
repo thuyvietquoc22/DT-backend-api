@@ -4,7 +4,6 @@ from app.core import jwt
 from app.core.jwt import create_refresh_token, create_access_token, extract_jwt_token
 from app.core.password_encoder import verify_password, hash_password
 from app.decorator import signleton
-from app.sevices.cms.role import role_service
 from app.exceptions.authenticate_exception import AuthenticateException
 from app.exceptions.param_invalid_exception import ParamInvalidException
 from app.models.auth.admin_auth import AccountLogin, AccountRegisterModel, FirstLoginModel
@@ -13,13 +12,14 @@ from app.models.cms.role import RoleResponse
 from app.models.pagination_model import Pageable
 from app.repository.cms.account import AccountRepository
 from app.routers.auth import AuthLoginResponseModel
+from app.sevices.cms.role import RoleService
 
 
 @signleton.singleton
 class AdminAuthService:
 
-    def __init__(self, account_repo: AccountRepository):
-        self.account_repo = account_repo
+    def __init__(self):
+        self.account_repo = AccountRepository()
 
     @staticmethod
     def validate_token(token: str):
@@ -35,7 +35,7 @@ class AdminAuthService:
         if not verify_password(user_login_model.password, user.password):
             raise AuthenticateException("Mật khẩu không chính xác")
 
-        permissions: RoleResponse = role_service.get_permission_by_role_id(user.role_id)
+        permissions: RoleResponse = RoleService().get_permission_by_role_id(user.role_id)
 
         access_token = create_access_token(user.email)
         refresh_token = create_refresh_token(user.email)
@@ -95,4 +95,3 @@ class AdminAuthService:
         return result
 
 
-admin_auth_service = AdminAuthService(AccountRepository())

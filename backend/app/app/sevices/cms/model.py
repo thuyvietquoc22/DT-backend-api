@@ -1,25 +1,25 @@
 from bson import ObjectId
 from click import BadParameter
 
-from app.decorator import signleton
 from app.decorator.parser import parse_as
-from app.sevices.cms.assets import assets_service
 from app.exceptions.param_invalid_exception import ParamInvalidException
 from app.models.cms.assets import AssetsResponse
 from app.models.cms.model import ModelCreate, ModelResponse, Location, ModelUpdate, ModelType
 from app.models.pagination_model import Pageable
 from app.repository.cms.model import ModelRepository
+from app.sevices import BaseService
+from app.sevices.cms.assets import AssetsService
 
 
-@signleton.singleton
-class ModelService:
-    def __init__(self, repo: ModelRepository):
-        self.repo = repo
+class ModelService(BaseService):
+    def __init__(self):
+        self.repo = ModelRepository()
+        self.assets_service = AssetsService()
 
     @parse_as(ModelResponse)
     def create_model(self, model: ModelCreate):
 
-        assets: list[AssetsResponse] = assets_service.find_by_ids([model.asset_id])
+        assets: list[AssetsResponse] = self.assets_service.find_by_ids([model.asset_id])
 
         # Find Assets
         if not assets or len(assets) != 1:
@@ -58,9 +58,8 @@ class ModelService:
             raise Exception("Model not found")
         return delete_response.deleted_count
 
-    @staticmethod
-    def validate_asset(model_type: ModelType, asset_ids: list[str]) -> list[AssetsResponse]:
-        assets: list[AssetsResponse] = assets_service.find_by_ids(asset_ids)
+    def validate_asset(self, model_type: ModelType, asset_ids: list[str]) -> list[AssetsResponse]:
+        assets: list[AssetsResponse] = self.assets_service.find_by_ids(asset_ids)
 
         # Find Assets
         if not assets or len(assets) != len(asset_ids):
@@ -87,6 +86,3 @@ class ModelService:
 
     def get_group_by_model_id(self, model_id):
         return self.repo.get_group_by_model_id(model_id)
-
-
-model_service = ModelService(repo=ModelRepository())

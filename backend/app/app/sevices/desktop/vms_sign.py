@@ -10,20 +10,21 @@ from app.models.desktop.vms_sign import VMSSignCreate
 from app.models.pagination_model import Pageable
 from app.repository.cms.model import ModelRepository
 from app.repository.desktop.controller import ControlRepository
-from app.repository.desktop.master_data.connect_source import connection_source_repo
-from app.repository.desktop.master_data.cross_road import cross_road_repo
+from app.repository.desktop.master_data.connect_source import ConnectSourceRepository
+from app.repository.desktop.master_data.cross_road import CrossRoadRepository
 from app.repository.desktop.master_data.vms_component import VMSComponentRepository
-from app.repository.desktop.vms_sign import vms_sign_repo
+from app.repository.desktop.vms_sign import VMSSignRepository
+from app.sevices import BaseService
 from app.utils.common import calculate_bound
 from app.utils.rsa_helper import RSAHelper
 
 
-class VMSSignService:
+class VMSSignService(BaseService):
 
     def __init__(self):
-        self.vms_sign_repo = vms_sign_repo
-        self.cross_road_repo = cross_road_repo
-        self.connect_source_repo = connection_source_repo
+        self.vms_sign_repo = VMSSignRepository()
+        self.cross_road_repo = CrossRoadRepository()
+        self.connect_source_repo = ConnectSourceRepository()
         self.model_repo = ModelRepository()
         self.control_repo = ControlRepository()
         self.vms_comp = VMSComponentRepository()
@@ -121,6 +122,3 @@ class VMSSignService:
     @parse_as(response_type=list[VMSSignController])
     def get_vms_sign_by_model_id(self, model_id):
         return self.vms_sign_repo.get_vms_sign_by_model_id(model_id)
-
-
-vms_sign_service = VMSSignService()
