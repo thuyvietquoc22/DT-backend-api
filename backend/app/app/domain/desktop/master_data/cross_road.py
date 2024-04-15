@@ -2,6 +2,7 @@ from bson import ObjectId
 
 from app.exceptions.param_invalid_exception import ParamInvalidException
 from app.models.desktop.master_data.cross_road import CrossRoadCreate, CrossRoadUpdate
+from app.models.pagination_model import Pageable
 from app.repository.desktop.master_data.address import address_repo, AddressRepository
 from app.repository.desktop.master_data.cross_road import cross_road_repo, CrossRoadRepo
 from app.repository.desktop.master_data.street import StreetRepository
@@ -36,11 +37,11 @@ class CrossRoadDomain:
 
         return self.cross_road_repo.create(creator_cross_road)
 
-    def get_all_cross_road(self):
-        return self.cross_road_repo.find_all_cross_road()
+    def get_all_cross_road(self, pageable: Pageable):
+        return self.cross_road_repo.find_all_cross_road(pageable)
 
-    def get_cross_road_by_district_id(self, district_id):
-        return self.cross_road_repo.find_cross_road_by_district_id(district_id)
+    def get_cross_road_by_district_id(self, district_id, pageable: Pageable):
+        return self.cross_road_repo.find_cross_road_by_district_id(district_id, pageable)
 
     def get_cross_road_by_id(self, cross_road_id: str):
         return self.cross_road_repo.get_cross_road_by_id(cross_road_id)

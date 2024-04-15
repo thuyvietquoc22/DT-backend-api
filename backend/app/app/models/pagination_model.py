@@ -16,6 +16,13 @@ class Pageable(BaseModel):
     def skip(self):
         return (self.page - 1) * self.limit
 
+    @property
+    def pipeline(self):
+        return [
+            {"$skip": self.skip},
+            {"$limit": self.limit}
+        ]
+
     @classmethod
     def of(cls, page: int, limit: int):
         return cls(page=page, limit=limit, pages=None, items=None)

@@ -4,6 +4,7 @@ from pymongo.collection import Collection
 from app.db.mongo_db import cross_road_collection
 from app.decorator.parser import parse_as
 from app.models.desktop.master_data.cross_road import CrossRoadResponse, CrossRoadCreate, CrossRoadUpdate
+from app.models.pagination_model import Pageable
 from app.repository.base_repository import BaseRepository
 
 
@@ -29,15 +30,16 @@ class CrossRoadRepo(BaseRepository[CrossRoadResponse, CrossRoadCreate, CrossRoad
         pass
 
     @parse_as(response_type=list[CrossRoadResponse])
-    def find_all_cross_road(self):
-        return self.collection.aggregate(self.pipeline_has_address)
+    def find_all_cross_road(self, pageable: Pageable):
+        pipeline = pageable.pipeline + self.pipeline_has_address
+        self.get_pageable(pageable)
+        return self.collection.aggregate(pipeline)
 
     @parse_as(response_type=list[CrossRoadResponse])
-    def find_cross_road_by_district_id(self, district_id):
-        pipeline = [
-                       {'$match': {'district_code': district_id}}
-                   ] + self.pipeline_has_address
-
+    def find_cross_road_by_district_id(self, district_id, pageable: Pageable):
+        query = {'district_code': district_id}
+        pipeline = [{'$match': query}] + self.pipeline_has_address + pageable.pipeline
+        self.get_pageable(pageable, query)
         return self.collection.aggregate(pipeline)
 
     @parse_as(response_type=CrossRoadResponse, get_first=True)
