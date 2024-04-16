@@ -6,6 +6,7 @@ from app.models.pagination_model import Pageable
 from app.repository.desktop.master_data.address import AddressRepository
 from app.repository.desktop.master_data.cross_road import CrossRoadRepository
 from app.repository.desktop.master_data.street import StreetRepository
+from app.sevices.map_4d import Map4DService
 
 
 class CrossRoadService:
@@ -14,6 +15,7 @@ class CrossRoadService:
         self.cross_road_repo = CrossRoadRepository()
         self.address_repo = AddressRepository()
         self.street_repo = StreetRepository()
+        self.map4d_service = Map4DService()
 
     def get_district_code(self, district_code: int):
         return self.address_repo.get_district_by_code(district_code)
@@ -68,3 +70,9 @@ class CrossRoadService:
             cross_road_update.province_code = self.validate_district_code(cross_road_update.district_code)
 
         return self.cross_road_repo.update(district_id, cross_road_update)
+
+    def get_cross_road_location(self, first_street, second_street, district):
+        return self.map4d_service.get_crossroad_location(first_street, second_street, district)
+
+    def delete_cross_road(self, cross_road_id):
+        return self.cross_road_repo.delete(cross_road_id)

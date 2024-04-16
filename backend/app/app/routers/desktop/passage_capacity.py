@@ -24,8 +24,8 @@ class PassageCapacityRouter(BaseRouter):
             }
 
         @router.get("/keyword")
-        def search_passage_capacity(keyword: str):
-            result, new_bounce = self.passage_capacity_service.get_passage_capacity_by_keyword(keyword)
+        def search_passage_capacity(keyword: str, lat: float = None, lng: float = None):
+            result, new_bounce = self.passage_capacity_service.get_passage_capacity_by_keyword(keyword, lat, lng)
             return {
                 "values": result,
                 "center": new_bounce.center

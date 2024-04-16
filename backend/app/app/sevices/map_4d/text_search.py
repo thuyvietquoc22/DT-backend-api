@@ -1,10 +1,10 @@
 import requests
 
 from app.exceptions.param_invalid_exception import ParamInvalidException
-from app.sevices.map_4d import TextSearchResponse
-from app.sevices.map_4d.base_service import BaseMap4DService
+from app.sevices.map_4d.base_map_service import BaseMap4DService
 from app.sevices.map_4d.config import Map4DConfig
 from app.sevices.map_4d.response import Map4DServiceResponse
+from app.sevices.map_4d.response.text_search import TextSearchResponse
 
 
 class Map4DTextSearchService(BaseMap4DService):

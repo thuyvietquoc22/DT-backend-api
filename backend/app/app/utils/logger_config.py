@@ -15,3 +15,4 @@ logger.add(
     level=log_level,
     format=log_format,
 )
+logger.add(sys.stderr, encoding="utf-8")

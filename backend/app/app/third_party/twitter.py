@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from pydantic import BaseModel, Field
 
 from app.core.config import settings
-from app.utils.utils_logging import logger
+from app.utils.logger_config import logger
 
 
 class UserTwitterResponseModel(BaseModel):

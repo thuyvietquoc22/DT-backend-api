@@ -1,4 +1,5 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
+from pydantic import Field
 
 from app.models.desktop.master_data.cross_road import CrossRoadCreate, CrossRoadResponse, CrossRoadUpdate
 from app.models.pagination_model import Pageable, PaginationResponse
@@ -28,6 +29,13 @@ class CrossRoadRouter(BaseRouter):
             result = self.cross_road_service.get_cross_road_by_district_id(district_id, pageable)
             return PaginationResponse.response_pageable(result, pageable)
 
+        @router.get('/cross_location')
+        async def get_cross_road_location(
+                first_street: str = Query(..., title="First street name"),
+                second_street: str = Query(..., title="Second street name"),
+                district: str = Query(..., title="District name")):
+            return self.cross_road_service.get_cross_road_location(first_street, second_street, district)
+
         @router.get('/{cross_road_id}')
         async def get_cross_road_by_id(cross_road_id: str):
             return self.cross_road_service.get_cross_road_by_id(cross_road_id)
@@ -41,5 +49,10 @@ class CrossRoadRouter(BaseRouter):
         async def update_cross_road(district_id: str, cross_road_update: CrossRoadUpdate):
             self.cross_road_service.update_cross_road(district_id, cross_road_update)
             return {"message": "update cross road success"}
+
+        @router.delete('/{cross_road_id}')
+        async def delete_cross_road(cross_road_id: str):
+            self.cross_road_service.delete_cross_road(cross_road_id)
+            return {"message": "delete cross road success"}
 
         return router

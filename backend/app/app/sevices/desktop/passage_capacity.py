@@ -1,3 +1,4 @@
+from app.models.cms.model import Location
 from app.models.desktop.camera import CameraTrafficDataResponse
 from app.models.desktop.passage_capacity import Bounce, PassageCapacityValue
 from app.repository.desktop.camera import CameraRepository
@@ -77,14 +78,19 @@ class PassageCapacityService(BaseService):
                 return status
         raise Exception("Không xát định được trạng thái")
 
-    def get_passage_capacity_by_keyword(self, keyword: str):
-        response = Map4DService().text_search.fetch(text=keyword)
-        if response is None or response.results is None or len(response.results) == 0:
-            raise Exception("Không tìm thấy địa điểm: " + keyword)
+    def get_passage_capacity_by_keyword(self, keyword: str, lat, lng):
 
-        location = [result.location for result in response.results]
+        location = []
+        if lat is not None and lng is not None:
+            location.append(Location(lat=lat, lng=lng))
+        else:
+            response = Map4DService().text_search.fetch(text=keyword)
+            if response is None or response.results is None or len(response.results) == 0:
+                raise Exception("Không tìm thấy địa điểm: " + keyword)
 
-        min_lat, max_lat, min_lng, max_lng = calculate_bound(location[0].lat, location[0].lng, 1000)
+            location = [result.location for result in response.results]
+
+        min_lat, max_lat, min_lng, max_lng = calculate_bound(location[0].lat, location[0].lng, 750)
         bounce = Bounce(min_lat=min_lat, max_lat=max_lat, min_lng=min_lng, max_lng=max_lng)
 
         return self.get_all_passage_capacity(bounce)
