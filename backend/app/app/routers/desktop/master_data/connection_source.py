@@ -1,11 +1,16 @@
 from fastapi import APIRouter
 
 from app.models.desktop.master_data.connect_source import ConnectSourceCreate, ConnectSourceUpdate
-from app.routers import BaseRouter
+from app.routers import BaseRouter, DesktopTag, CMSTag
 from app.sevices.desktop.master_data.connection_source import ConnectSourceService
 
 
 class ConnectSourceRouter(BaseRouter):
+    def __init__(self):
+        name = "Connection Source"
+        self.tag = DesktopTag().get(name, False)
+        self.desktop_master_tag = DesktopTag().get(name, True)
+        self.cms_master_tag = CMSTag().get(name, True)
 
     @property
     def connection_source_service(self) -> ConnectSourceService:
@@ -13,13 +18,13 @@ class ConnectSourceRouter(BaseRouter):
 
     @property
     def router(self) -> APIRouter:
-        router = APIRouter(prefix="/connection-source", tags=["Desktop Master Data > Connection Source"])
+        router = APIRouter(prefix="/connection-source", tags=self.cms_master_tag)
 
-        @router.get("")
+        @router.get("", tags=self.desktop_master_tag)
         def get_connection_source():
             return self.connection_source_service.get_connection_source()
 
-        @router.get("/{connection_source_keyname}")
+        @router.get("/{connection_source_keyname}", tags=self.desktop_master_tag)
         def get_connection_source_by_keyname(connection_source_keyname: str):
             return self.connection_source_service.get_connection_source_by_keyname(connection_source_keyname)
 

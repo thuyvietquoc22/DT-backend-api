@@ -9,7 +9,11 @@ from app.exceptions.exception_handler import register_exception_handler
 from app.middlewares import register_middlewares
 from app.routers.router import register_router
 
-app = FastAPI()
+app = FastAPI(
+    swagger_ui_parameters={
+        "tagsSorter": "alpha",
+    }
+)
 
 # db = initialize_db()
 # generate_table(db)
@@ -29,4 +33,3 @@ global_cache = redis.Redis(
 
 if __name__ == '__main__':
     uvicorn.run("app.main:app", host="0.0.0.0", port=8000, log_level="info", reload=True)
-

@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 
+from app.routers import BaseRouter, CMSTag
 from app.sevices.cms.account import AccountService
 from app.models import StringBody
 from app.models.auth.admin_auth import AccountRegisterModel
@@ -7,7 +8,7 @@ from app.models.cms.account import AccountUpdate, AccountResponse
 from app.models.pagination_model import Pageable, PaginationResponse
 
 
-class AccountRouter:
+class AccountRouter(BaseRouter):
 
     @property
     def account_service(self):
@@ -15,7 +16,7 @@ class AccountRouter:
 
     @property
     def router(self):
-        router = APIRouter(prefix='/accounts', tags=['System Account'])
+        router = APIRouter(prefix='/accounts', tags=CMSTag().get("Account"))
 
         @router.get('/', response_model=PaginationResponse[AccountResponse])
         def get_accounts(limit: int = 10, page: int = 1, fullname: str = None, email: str = None):

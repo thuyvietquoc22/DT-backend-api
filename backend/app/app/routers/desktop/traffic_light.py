@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from app.models.desktop.traffic_light import TrafficLightCreate, TrafficLightUpdate
-from app.routers import BaseRouter
+from app.routers import BaseRouter, DesktopTag
 from app.sevices.desktop.traffic_light import TrafficLightService
 
 
@@ -13,7 +13,7 @@ class TrafficLightRouter(BaseRouter):
 
     @property
     def router(self) -> APIRouter:
-        router = APIRouter(prefix='/traffic-lights', tags=['Desktop > Traffic Light'])
+        router = APIRouter(prefix='/traffic-lights', tags=DesktopTag().get("Traffic Light"))
 
         @router.get('')
         def get_all_traffic_light():
@@ -27,11 +27,9 @@ class TrafficLightRouter(BaseRouter):
         def get_traffic_light_by_model_id(model_id: str):
             return self.traffic_light_service.get_traffic_light_by_model_id(model_id)
 
-
         @router.get('/nearby/{cross_road_id}')
         def get_traffic_light_nearby(cross_road_id: str):
             return self.traffic_light_service.get_traffic_light_nearby(cross_road_id)
-
 
         @router.post('')
         def create_traffic_light(traffic_light: TrafficLightCreate):

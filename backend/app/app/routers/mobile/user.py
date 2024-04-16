@@ -1,17 +1,18 @@
 from fastapi import APIRouter
 
+from app.routers import MobileTag, BaseRouter
 from app.sevices.moblie.user import UserResponse, UserService
 from app.models.pagination_model import PaginationResponse, Pageable
 
 
-class UserRouter:
+class UserRouter(BaseRouter):
 
     def __init__(self):
         self.user_service = UserService()
 
     @property
     def router(self):
-        api_router = APIRouter(prefix='/mobile/users', tags=['User'])
+        api_router = APIRouter(prefix='/mobile/users', tags=MobileTag().get(name="Users", is_mater_data=False))
 
         @api_router.get("", response_model=PaginationResponse[UserResponse])
         async def get_user(page: int = 1, limit: int = 10, email=None, fullname=None):

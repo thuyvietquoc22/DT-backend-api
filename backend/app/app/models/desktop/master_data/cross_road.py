@@ -25,7 +25,7 @@ class CrossRoadCreate(BaseCrossRoad):
                     "lng": 108.208787
                 },
                 "district_code": 492,
-                "street_id": ["<id_street>", "<id_street>"]
+                "street_ids": ["<id_street>", "<id_street>"]
             }}
     }
 

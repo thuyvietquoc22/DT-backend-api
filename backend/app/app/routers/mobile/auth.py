@@ -1,19 +1,20 @@
 from fastapi import APIRouter
 
+from app.routers import MobileTag, BaseRouter
 from app.sevices.auth.mobile_auth import MobileAuthService, UserRegisterModel
 from app.models.auth.admin_auth import AuthCheckResponseModel
 from app.models.mobile.user import UserResponse
 from app.routers.auth import LoginModel, AuthLoginResponseModel
 
 
-class MobileAuthRoute:
+class MobileAuthRoute(BaseRouter):
 
     def __init__(self):
         self.mobile_auth_service = MobileAuthService()
 
     @property
     def router(self):
-        router = APIRouter(prefix='/mobile/auth', tags=['Mobile Authenticate'])
+        router = APIRouter(prefix='/auth', tags=MobileTag().get("Authenticate"))
 
         @router.post('/login', response_model=AuthLoginResponseModel)
         async def login(login_model: LoginModel):

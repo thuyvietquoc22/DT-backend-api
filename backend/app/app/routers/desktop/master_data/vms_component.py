@@ -4,27 +4,33 @@ from fastapi import APIRouter, UploadFile, Form
 
 from app.sevices.desktop.master_data.vms_component import VMSComponentService
 from app.models.desktop.master_data.vms_component import VMSComponentResponse, VMSComponentUpdate
-from app.routers import BaseRouter
+from app.routers import BaseRouter, DesktopTag, CMSTag
 
 
 class VMSComponentRouter(BaseRouter):
 
     def __init__(self):
+        # Swagger tag
+        name = "VMS Component"
+        self.tag = DesktopTag().get(name, False)
+        self.desktop_master_tag = DesktopTag().get(name, True)
+        self.cms_master_tag = CMSTag().get(name, True)
+
         self.vms_component_service = VMSComponentService()
 
     @property
     def router(self) -> APIRouter:
-        router = APIRouter(prefix="/vms-components", tags=["Desktop Master Data > VMS Component"])
+        router = APIRouter(prefix="/vms-components", tags=self.cms_master_tag)
 
-        @router.get("", response_model=list[VMSComponentResponse])
+        @router.get("", response_model=list[VMSComponentResponse], tags=self.desktop_master_tag)
         def get_vms_component():
             return self.vms_component_service.get_all_vms_component()
 
-        @router.get("/{vms_component_id}", response_model=VMSComponentResponse)
+        @router.get("/{vms_component_id}", response_model=VMSComponentResponse, tags=self.desktop_master_tag)
         def get_vms_component_by_id(vms_component_id: str):
             return self.vms_component_service.get_vms_component_by_id(vms_component_id)
 
-        @router.get("/code/{code}", response_model=VMSComponentResponse)
+        @router.get("/code/{code}", response_model=VMSComponentResponse, tags=self.desktop_master_tag)
         def get_vms_component_by_code(code: int):
             return self.vms_component_service.get_vms_component_by_code(code)
 

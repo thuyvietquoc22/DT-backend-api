@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 
+from app.routers import CMSTag, MobileTag, DesktopTag
 from app.sevices.auth.admin_auth import AccountLogin, AuthLoginResponseModel, AccountRegisterModel, AdminAuthService
 from app.models.auth.admin_auth import AuthTokenModel, AuthCheckResponseModel, FirstLoginModel
 from app.models.pagination_model import Pageable
@@ -12,7 +13,7 @@ class AdminAuthRouter:
 
     @property
     def router(self):
-        api_router = APIRouter(prefix='/cms/auth', tags=['Auth'])
+        api_router = APIRouter(prefix='/cms/auth', tags=CMSTag().get("Auth") + DesktopTag().get("Auth"))
 
         @api_router.get("/accounts")
         async def get_accounts(limit: int = 10, page: int = 1):

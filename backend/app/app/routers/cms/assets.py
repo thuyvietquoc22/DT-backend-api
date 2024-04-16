@@ -2,19 +2,20 @@ from typing import Annotated
 
 from fastapi import APIRouter, UploadFile, Form, Body
 
+from app.routers import BaseRouter, CMSTag
 from app.sevices.cms.assets import AssetsService
 from app.models.cms.assets import AssetsResponse, GroupAssets
 from app.models.pagination_model import Pageable, PaginationResponse
 
 
-class AssetsRouter:
+class AssetsRouter(BaseRouter):
 
     def __init__(self):
         self.asset_service = AssetsService()
 
     @property
     def router(self):
-        router = APIRouter(prefix='/assets', tags=['Assets'])
+        router = APIRouter(prefix='/assets', tags=CMSTag().get("Assets"))
 
         @router.get('', response_model=PaginationResponse[AssetsResponse])
         def get_all_assets(page: int = 1, limit: int = 10):

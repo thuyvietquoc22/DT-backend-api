@@ -5,7 +5,7 @@ from app.sevices.desktop.camera import CameraService
 from app.models.desktop.camera import CameraCreate, CameraUpdate
 from app.models.desktop.control.camera import CameraControl, CameraControlRequest
 from app.models.pagination_model import Pageable, PaginationResponse
-from app.routers import BaseRouter
+from app.routers import BaseRouter, DesktopTag
 
 
 class CameraRouter(BaseRouter):
@@ -16,7 +16,7 @@ class CameraRouter(BaseRouter):
 
     @property
     def router(self) -> APIRouter:
-        router = APIRouter(prefix='/camera', tags=['Desktop > Camera'])
+        router = APIRouter(prefix='/camera', tags=DesktopTag().get("Camera"))
 
         @router.get('')
         async def get_all_camera():

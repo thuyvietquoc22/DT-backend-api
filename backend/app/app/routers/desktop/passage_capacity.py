@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from app.models.desktop.passage_capacity import Bounce
-from app.routers import BaseRouter
+from app.routers import BaseRouter, DesktopTag
 from app.sevices.desktop.passage_capacity import PassageCapacityService
 
 
@@ -12,7 +12,7 @@ class PassageCapacityRouter(BaseRouter):
 
     @property
     def router(self) -> APIRouter:
-        router = APIRouter(prefix="/passage-capacity", tags=["Desktop > Passage Capacity"])
+        router = APIRouter(prefix="/passage-capacity", tags=DesktopTag().get("Passage Capacity"))
 
         @router.get("/bounce")
         def get_all_passage_capacity(min_lat: float, max_lat: float, min_lng: float, max_lng: float):

@@ -2,18 +2,19 @@ from typing import List
 
 from fastapi import APIRouter
 
+from app.routers import BaseRouter, CMSTag
 from app.sevices.cms.role import RoleService
 from app.models.cms.role import RoleCreate, RoleResponse
 
 
-class RoleRouter:
+class RoleRouter(BaseRouter):
 
     def __init__(self):
         self.role_service = RoleService
 
     @property
     def router(self):
-        api_router = APIRouter(prefix='/roles', tags=['Permission & Role'])
+        api_router = APIRouter(prefix='/roles', tags=CMSTag().get("Role"))
 
         @api_router.get('', response_model=List[RoleResponse])
         async def get_oles(role_name: str = None):

@@ -2,11 +2,18 @@ from fastapi import APIRouter, Query
 
 from app.models.desktop.master_data.cross_road import CrossRoadCreate, CrossRoadResponse, CrossRoadUpdate
 from app.models.pagination_model import Pageable, PaginationResponse
-from app.routers import BaseRouter
+from app.routers import BaseRouter, DesktopTag, CMSTag
 from app.sevices.desktop.master_data.cross_road import CrossRoadService
 
 
 class CrossRoadRouter(BaseRouter):
+
+    def __init__(self):
+        # Swagger Tag
+        name = "Cross Road"
+        self.tag = DesktopTag().get(name, False)
+        self.desktop_master_tag = DesktopTag().get(name, True)
+        self.cms_master_tag = CMSTag().get(name, True)
 
     @property
     def cross_road_service(self) -> CrossRoadService:
@@ -14,21 +21,22 @@ class CrossRoadRouter(BaseRouter):
 
     @property
     def router(self) -> APIRouter:
-        router = APIRouter(prefix='/cross-road', tags=['Desktop Master Data> Cross Road'])
+        router = APIRouter(prefix='/cross-road', tags=self.cms_master_tag)
 
-        @router.get('', response_model=PaginationResponse[CrossRoadResponse])
+        @router.get('', response_model=PaginationResponse[CrossRoadResponse], tags=self.desktop_master_tag)
         async def get_all_cross_road(limit: int = 10, page: int = 1):
             pageable: Pageable = Pageable.of(page, limit)
             result = self.cross_road_service.get_all_cross_road(pageable)
             return PaginationResponse.response_pageable(result, pageable)
 
-        @router.get('/district/{district_id}', response_model=PaginationResponse[CrossRoadResponse])
+        @router.get('/district/{district_id}', response_model=PaginationResponse[CrossRoadResponse],
+                    tags=self.desktop_master_tag)
         async def get_cross_road_by_district_id(district_id: int, limit: int = 10, page: int = 1):
             pageable = Pageable.of(page, limit)
             result = self.cross_road_service.get_cross_road_by_district_id(district_id, pageable)
             return PaginationResponse.response_pageable(result, pageable)
 
-        @router.get('/cross_location',
+        @router.get('/cross_location', tags=self.desktop_master_tag,
                     description="Lấy toạ độ điểm giao của 2 tuyến đường dựa trên <Tên> đường và quận/huyện")
         async def get_cross_road_location(
                 first_street: str = Query(..., title="First street name"),
@@ -36,7 +44,7 @@ class CrossRoadRouter(BaseRouter):
                 district: str = Query(..., title="District name")):
             return self.cross_road_service.get_cross_road_location(first_street, second_street, district)
 
-        @router.get('/{cross_road_id}')
+        @router.get('/{cross_road_id}', tags=self.desktop_master_tag, )
         async def get_cross_road_by_id(cross_road_id: str):
             return self.cross_road_service.get_cross_road_by_id(cross_road_id)
 

@@ -4,18 +4,19 @@ from bson import ObjectId
 from fastapi import APIRouter
 
 from app.db.mongo_db import permission_collection
+from app.routers import BaseRouter, CMSTag
 from app.sevices.cms.permission import PermissionService
 from app.models.cms.permission import PermissionResponse
 
 
-class PermissionRouter:
+class PermissionRouter(BaseRouter):
 
     def __init__(self):
         self.permission_service = PermissionService()
 
     @property
     def router(self):
-        api_router = APIRouter(prefix='/permissions', tags=['Permission & Role'])
+        api_router = APIRouter(prefix='/permissions', tags=CMSTag().get("Permission"))
 
         @api_router.get('', response_model=List[PermissionResponse])
         async def get_permissions():

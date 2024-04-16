@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.routers import BaseRouter
+from app.routers import BaseRouter, BaseRouterGroup
 from app.routers.desktop.camera import CameraRouter
 from app.routers.desktop.master_data.address import DesktopAddressRouter
 from app.routers.desktop.master_data.connection_source import ConnectSourceRouter
@@ -13,13 +13,15 @@ from app.routers.desktop.traffic_light import TrafficLightRouter
 from app.routers.desktop.vms_sign import VMSSignRouter
 
 
-class DesktopRouter:
+class DesktopRouter(BaseRouterGroup):
 
     @property
-    def router(self):
-        api_router = APIRouter(prefix='/desktop')
+    def prefix(self) -> str:
+        return "/desktop"
 
-        routers: list[BaseRouter] = [
+    @property
+    def sub_routers(self) -> list[BaseRouter]:
+        return [
             TrafficDataRouter(),
 
             DesktopAddressRouter(),
@@ -34,8 +36,3 @@ class DesktopRouter:
             TrafficLightRouter(),
             VMSSignRouter(),
         ]
-
-        for router in routers:
-            api_router.include_router(router.router)
-
-        return api_router

@@ -3,7 +3,7 @@ from fastapi import APIRouter
 from app.models.desktop.control.vms_sign import VMSSignRequest
 from app.models.desktop.vms_sign import VMSSignCreate, VMSSignUpdate
 from app.models.pagination_model import Pageable
-from app.routers import BaseRouter
+from app.routers import BaseRouter, DesktopTag
 from app.sevices.desktop.vms_sign import VMSSignService
 
 
@@ -15,7 +15,7 @@ class VMSSignRouter(BaseRouter):
 
     @property
     def router(self) -> APIRouter:
-        router = APIRouter(prefix="/vms-sign", tags=["Desktop > VMS Sign"])
+        router = APIRouter(prefix="/vms-sign", tags=DesktopTag().get("VMS Sign"))
 
         @router.get("")
         def get_all_vms_sign():

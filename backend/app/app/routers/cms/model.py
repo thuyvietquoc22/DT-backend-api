@@ -1,18 +1,19 @@
 from fastapi import APIRouter
 
+from app.routers import BaseRouter, CMSTag
 from app.sevices.cms.model import ModelService
 from app.models.cms.model import ModelCreate, ModelResponse, Location, ModelUpdate
 from app.models.pagination_model import Pageable
 
 
-class ModelRouter:
+class ModelRouter(BaseRouter):
 
     def __init__(self):
         self.model_service = ModelService()
 
     @property
     def router(self):
-        router = APIRouter(prefix="/models", tags=["Model 2D, 3D"])
+        router = APIRouter(prefix="/models", tags=CMSTag().get("Model"))
 
         @router.get("", response_model=list[ModelResponse])
         async def get_models(page: int = 1, limit: int = 999):
