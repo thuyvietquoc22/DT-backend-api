@@ -25,10 +25,11 @@ class PassageCapacityRouter(BaseRouter):
 
         @router.get("/keyword")
         def search_passage_capacity(keyword: str, lat: float = None, lng: float = None):
-            result, new_bounce = self.passage_capacity_service.get_passage_capacity_by_keyword(keyword, lat, lng)
+            result, new_bounce, id_ = self.passage_capacity_service.get_passage_capacity_by_keyword(keyword, lat, lng)
             return {
                 "values": result,
-                "center": new_bounce.center
+                "center": new_bounce.center,
+                "map_id": id_
             }
 
         return router

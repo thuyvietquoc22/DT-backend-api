@@ -17,8 +17,8 @@ class PassageCapacityService:
         self.camera_repo = CameraRepository()
         self.street_repo = StreetRepository()
         self.traffic_data = TrafficDataRepository()
-        self.init_passage_capacity_status()
         self.capacity_status = []
+        self.init_passage_capacity_status()
 
     def init_passage_capacity_status(self):
         capacity_status = PassageCapacityRepository().get_all_passage_capacity_status()
@@ -82,6 +82,7 @@ class PassageCapacityService:
     def get_passage_capacity_by_keyword(self, keyword: str, lat, lng):
 
         location = []
+        id_map_4d = ""
         if lat is not None and lng is not None:
             location.append(Location(lat=lat, lng=lng))
         else:
@@ -90,8 +91,10 @@ class PassageCapacityService:
                 raise Exception("Không tìm thấy địa điểm: " + keyword)
 
             location = [result.location for result in response.results]
+            id_map_4d = response.results[0].id
 
         min_lat, max_lat, min_lng, max_lng = calculate_bound(location[0].lat, location[0].lng, 750)
         bounce = Bounce(min_lat=min_lat, max_lat=max_lat, min_lng=min_lng, max_lng=max_lng)
 
-        return self.get_all_passage_capacity(bounce)
+        value, bounce = self.get_all_passage_capacity(bounce)
+        return value, bounce, id_map_4d
