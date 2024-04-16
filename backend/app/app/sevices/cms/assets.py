@@ -2,16 +2,17 @@ from bson import ObjectId
 from cloudinary import uploader
 from fastapi import UploadFile
 
+from app.decorator import signleton
 from app.decorator.parser import parse_as
 from app.models.cms.assets import AssetsCreate, AssetsResponse
 from app.models.pagination_model import Pageable
 from app.repository.cms.assets import AssetsModelRepository
 from app.repository.cms.model import ModelRepository
-from app.sevices import BaseService
 from app.utils.random_helper import random_str
 
 
-class AssetsService(BaseService):
+@signleton.singleton
+class AssetsService:
     def __init__(self):
         self.assets_repo = AssetsModelRepository()
 

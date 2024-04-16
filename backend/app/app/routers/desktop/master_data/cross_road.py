@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Query
-from pydantic import Field
 
 from app.models.desktop.master_data.cross_road import CrossRoadCreate, CrossRoadResponse, CrossRoadUpdate
 from app.models.pagination_model import Pageable, PaginationResponse
@@ -29,7 +28,8 @@ class CrossRoadRouter(BaseRouter):
             result = self.cross_road_service.get_cross_road_by_district_id(district_id, pageable)
             return PaginationResponse.response_pageable(result, pageable)
 
-        @router.get('/cross_location')
+        @router.get('/cross_location',
+                    description="Lấy toạ độ điểm giao của 2 tuyến đường dựa trên <Tên> đường và quận/huyện")
         async def get_cross_road_location(
                 first_street: str = Query(..., title="First street name"),
                 second_street: str = Query(..., title="Second street name"),

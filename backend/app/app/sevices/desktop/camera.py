@@ -3,6 +3,7 @@ from datetime import datetime
 from bson import ObjectId
 
 from app.db.mongo_db import start_session
+from app.decorator import signleton
 from app.decorator.parser import parse_as, parse_val_as
 from app.exceptions.param_invalid_exception import ParamInvalidException
 from app.models.cms.model import ModelResponse
@@ -14,13 +15,13 @@ from app.repository.desktop.controller import ControlRepository
 from app.repository.desktop.master_data.connect_source import ConnectSourceRepository
 from app.repository.desktop.master_data.cross_road import CrossRoadRepository
 from app.repository.desktop.master_data.street import StreetRepository
-from app.sevices import BaseService
 from app.sevices.desktop.traffic_data import TrafficDataService
 from app.utils.common import calculate_bound, is_in_range, copy_attr
 from app.utils.rsa_helper import RSAHelper
 
 
-class CameraService(BaseService):
+@signleton.singleton
+class CameraService:
 
     def __init__(self):
         self.camera_repo = CameraRepository()

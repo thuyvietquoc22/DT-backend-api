@@ -1,17 +1,18 @@
 from bson import ObjectId
 from click import BadParameter
 
+from app.decorator import signleton
 from app.decorator.parser import parse_as
 from app.exceptions.param_invalid_exception import ParamInvalidException
 from app.models.cms.assets import AssetsResponse
 from app.models.cms.model import ModelCreate, ModelResponse, Location, ModelUpdate, ModelType
 from app.models.pagination_model import Pageable
 from app.repository.cms.model import ModelRepository
-from app.sevices import BaseService
 from app.sevices.cms.assets import AssetsService
 
 
-class ModelService(BaseService):
+@signleton.singleton
+class ModelService:
     def __init__(self):
         self.repo = ModelRepository()
         self.assets_service = AssetsService()

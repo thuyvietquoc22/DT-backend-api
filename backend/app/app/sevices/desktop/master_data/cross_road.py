@@ -72,7 +72,13 @@ class CrossRoadService:
         return self.cross_road_repo.update(district_id, cross_road_update)
 
     def get_cross_road_location(self, first_street, second_street, district):
-        return self.map4d_service.get_crossroad_location(first_street, second_street, district)
+        (first, second) = self.map4d_service.get_crossroad_location(first_street, second_street, district)
+        if first is None and second is None:
+            raise ParamInvalidException(f"Không tìm thấy thông tin đường \"{first_street}\" và \"{second_street}\"")
+        return {
+            "lng": (first[0] + second[0]) / 2,
+            "lat": (first[1] + second[1]) / 2
+        }
 
     def delete_cross_road(self, cross_road_id):
         return self.cross_road_repo.delete(cross_road_id)

@@ -1,15 +1,16 @@
 from pymongo.cursor import Cursor
 
+from app.decorator import signleton
 from app.decorator.parser import parse_as
 from app.models.cms.permission import PermissionResponse
 from app.repository.cms.permission import PermissionRepository
-from app.sevices import BaseService
 
 
-class PermissionService(BaseService):
+@signleton.singleton
+class PermissionService:
 
-    def __init__(self, repo: PermissionRepository):
-        self.repo = repo
+    def __init__(self):
+        self.repo = PermissionRepository()
 
     @parse_as(response_type=list[PermissionResponse])
     def get_all(self):

@@ -1,11 +1,12 @@
+from app.decorator import signleton
 from app.exceptions.param_invalid_exception import ParamInvalidException
 from app.models.desktop.master_data.street import StreetCreate
 from app.repository.desktop.master_data.address import AddressRepository
 from app.repository.desktop.master_data.street import StreetRepository
-from app.sevices import BaseService
 
 
-class StreetService(BaseService):
+@signleton.singleton
+class StreetService:
     def __init__(self):
         self.street_repo = StreetRepository()
         self.address_repo = AddressRepository()

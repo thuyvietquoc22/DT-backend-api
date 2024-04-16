@@ -1,7 +1,5 @@
 from abc import abstractmethod
 
-from app.sevices import BaseService
-
 
 class BaseMap4DService:
 

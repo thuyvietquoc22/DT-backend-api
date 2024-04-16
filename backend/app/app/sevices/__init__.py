@@ -1,6 +1,3 @@
-from app.decorator import signleton
-
-
-@signleton.singleton
-class BaseService:
-    pass
+# @signleton.singleton
+# class BaseService:
+#     pass

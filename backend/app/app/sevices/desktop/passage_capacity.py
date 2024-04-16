@@ -1,3 +1,4 @@
+from app.decorator import signleton
 from app.models.cms.model import Location
 from app.models.desktop.camera import CameraTrafficDataResponse
 from app.models.desktop.passage_capacity import Bounce, PassageCapacityValue
@@ -5,12 +6,12 @@ from app.repository.desktop.camera import CameraRepository
 from app.repository.desktop.master_data.passage_capacity import PassageCapacityRepository
 from app.repository.desktop.master_data.street import StreetRepository
 from app.repository.desktop.traffic_data import TrafficDataRepository
-from app.sevices import BaseService
-from app.utils.common import calculate_bound
 from app.sevices.map_4d import Map4DService
+from app.utils.common import calculate_bound
 
 
-class PassageCapacityService(BaseService):
+@signleton.singleton
+class PassageCapacityService:
 
     def __init__(self):
         self.camera_repo = CameraRepository()

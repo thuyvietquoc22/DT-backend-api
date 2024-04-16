@@ -1,13 +1,14 @@
 from typing import List
 
+from app.decorator import signleton
 from app.decorator.parser import parse_as
 from app.models.mobile.user import UserResponse
 from app.models.pagination_model import Pageable
 from app.repository.mobile.user import UserRepository
-from app.sevices import BaseService
 
 
-class UserService(BaseService):
+@signleton.singleton
+class UserService:
 
     def __init__(self):
         self.user_repo = UserRepository()
@@ -23,5 +24,3 @@ class UserService(BaseService):
     @parse_as(response_type=UserResponse)
     def unlock_user(self, user_id):
         return self.user_repo.set_is_banned(user_id, False)
-
-

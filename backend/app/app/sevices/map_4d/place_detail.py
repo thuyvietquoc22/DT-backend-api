@@ -1,6 +1,5 @@
 import requests
 
-from app.sevices import BaseService
 from app.sevices.map_4d import Map4DConfig
 from app.sevices.map_4d.base_map_service import BaseMap4DService
 from app.sevices.map_4d.response.place_detail import PlaceDetailResponse

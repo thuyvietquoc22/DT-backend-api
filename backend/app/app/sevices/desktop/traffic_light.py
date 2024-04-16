@@ -1,5 +1,6 @@
 from bson import ObjectId
 
+from app.decorator import signleton
 from app.decorator.parser import parse_as
 from app.exceptions.param_invalid_exception import ParamInvalidException
 from app.models.cms.model import ModelResponse
@@ -8,12 +9,12 @@ from app.repository.cms.model import ModelRepository
 from app.repository.desktop.master_data.connect_source import ConnectSourceRepository
 from app.repository.desktop.master_data.cross_road import CrossRoadRepository
 from app.repository.desktop.traffic_light import TrafficLightRepository, traffic_light_repo
-from app.sevices import BaseService
 from app.utils.common import calculate_bound
 from app.utils.rsa_helper import RSAHelper
 
 
-class TrafficLightService(BaseService):
+@signleton.singleton
+class TrafficLightService:
 
     @property
     def traffic_light_repo(self) -> TrafficLightRepository:

@@ -2,6 +2,7 @@ from datetime import datetime
 
 from bson import ObjectId
 
+from app.decorator import signleton
 from app.decorator.parser import parse_as
 from app.exceptions.param_invalid_exception import ParamInvalidException
 from app.models.cms.model import ModelResponse
@@ -14,12 +15,12 @@ from app.repository.desktop.master_data.connect_source import ConnectSourceRepos
 from app.repository.desktop.master_data.cross_road import CrossRoadRepository
 from app.repository.desktop.master_data.vms_component import VMSComponentRepository
 from app.repository.desktop.vms_sign import VMSSignRepository
-from app.sevices import BaseService
 from app.utils.common import calculate_bound
 from app.utils.rsa_helper import RSAHelper
 
 
-class VMSSignService(BaseService):
+@signleton.singleton
+class VMSSignService:
 
     def __init__(self):
         self.vms_sign_repo = VMSSignRepository()

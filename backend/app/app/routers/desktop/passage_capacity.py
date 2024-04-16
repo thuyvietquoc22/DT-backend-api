@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 
-from app.sevices.desktop.passage_capacity import PassageCapacityService
 from app.models.desktop.passage_capacity import Bounce
 from app.routers import BaseRouter
+from app.sevices.desktop.passage_capacity import PassageCapacityService
 
 
 class PassageCapacityRouter(BaseRouter):
