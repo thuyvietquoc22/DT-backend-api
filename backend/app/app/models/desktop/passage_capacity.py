@@ -40,6 +40,7 @@ class PassageCapacityRequest:
 class PassageCapacityValue(BaseModel):
     camera_id: str
     location: Location
+    camera_direction: Literal[-1, 1]
     passage_capacity_current: int
     passage_capacity_ratio: float
     passage_capacity_status: Optional[PassageCapacityStatus] = None

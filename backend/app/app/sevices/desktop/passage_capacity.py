@@ -56,6 +56,7 @@ class PassageCapacityService:
             return PassageCapacityValue(
                 camera_id=camera.id,
                 location=camera.location,
+                camera_direction=camera.direction,
                 passage_capacity_current=current_passage_capacity,
                 passage_capacity_ratio=passage_capacity_ratio,
                 passage_capacity_status=self.get_passage_capacity_status(passage_capacity_ratio),
@@ -65,6 +66,7 @@ class PassageCapacityService:
         except Exception as e:
             return PassageCapacityValue(
                 camera_id=camera.id,
+                camera_direction=camera.direction,
                 location=camera.location,
                 passage_capacity_current=0,
                 passage_capacity_ratio=0,
