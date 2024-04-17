@@ -28,3 +28,6 @@ class StreetService:
 
     def delete_street(self, street_id):
         return self.street_repo.delete(street_id)
+
+    def find_street_by_id(self, street_id):
+        return self.street_repo.find_by_id(street_id)

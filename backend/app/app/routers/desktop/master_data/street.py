@@ -24,6 +24,10 @@ class StreetRouter(BaseRouter):
         def get_all_street(districts_code: int):
             return self.street_service.find_all_by_districts(districts_code)
 
+        @router.get("/{street_id}", response_model=StreetResponse, tags=self.desktop_master_tag)
+        def get_street(street_id: str):
+            return self.street_service.find_street_by_id(street_id)
+
         @router.post("")
         def create_street(street_create: StreetCreate):
             self.street_service.create_street(street_create)
