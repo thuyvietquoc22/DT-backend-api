@@ -16,6 +16,9 @@ class Location(BaseModel):
     def to_array(self):
         return [self.lat, self.lng]
 
+    def __str__(self):
+        return f"{self.lat},{self.lng}"
+
 
 ModelType = Literal["2D", "3D"]
 

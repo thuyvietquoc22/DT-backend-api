@@ -32,6 +32,9 @@ class Bounce(BaseModel):
             "lng": (self.min_lng + self.max_lng) / 2
         }
 
+    def __str__(self):
+        return f"{self.min_lat},{self.min_lng},{self.max_lat},{self.max_lng}"
+
 
 class PassageCapacityRequest:
     bounce: Bounce

@@ -52,7 +52,7 @@ class PlaceType(BaseModel):
 
 class Geometry(BaseModel):
     type: str
-    coordinates: List[List[List[float]]]
+    coordinates: List[Any]
 
 
 class Rank(BaseModel):
@@ -75,7 +75,7 @@ class PlaceDetailResult(BaseModel):
     address: str
     name: str
     objectId: Any
-    description: str
+    description: Optional[str]
     types: List[str]
     mainType: str
     addressComponents: List[AddressComponent]

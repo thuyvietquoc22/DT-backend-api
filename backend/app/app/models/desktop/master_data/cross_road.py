@@ -37,6 +37,7 @@ class CrossRoadUpdate(BaseModel):
     province_code: Optional[int] = None
     street_ids: Optional[list[PyObjectId]] = None
 
+
 class CrossRoadResponse(BaseCrossRoad):
     province: Optional[Province] = None
     district: Optional[District] = None
