@@ -48,6 +48,7 @@ class AssetsModelRepository(BaseRepository[AssetsResponse, AssetsCreate, AssetsU
             update_data['image'] = image
         return self.collection.update_one({"_id": ObjectId(asset_id)}, {"$set": update_data})
 
+    @parse_as(GroupAssets)
     def get_group_by_id(self, group_id):
         return self.group_assets_collection.find_one({"_id": ObjectId(group_id)})
 

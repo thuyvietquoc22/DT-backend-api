@@ -49,7 +49,7 @@ class AssetsService:
 
         # Save to Database
         assets = AssetsCreate(name=name, object_3d=obj_3d_url, texture=texture_url, image=image_url,
-                              public_id=public_id, group_id=ObjectId(group_id))
+                              public_id=public_id, group_id=group.keyname)
 
         result = self.assets_repo.create_asset(assets)
 
@@ -166,4 +166,3 @@ class AssetsService:
 
     def count_usage(self, asset_id):
         return self.assets_repo.count_usage(asset_id)
-
