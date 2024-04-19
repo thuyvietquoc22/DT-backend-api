@@ -18,14 +18,14 @@ class ModelRepository(BaseRepository[ModelResponse, ModelCreate, ModelUpdate]):
         return [
             {'$lookup': {'from': 'assets', 'localField': 'asset_id', 'foreignField': '_id', 'as': 'resultArray'}},
             {'$addFields': {'asset': {'$arrayElemAt': ['$resultArray', 0]}}},
-            {'$lookup': {'from': 'group-assets', 'localField': 'asset.group_id', 'foreignField': '_id',
+            {'$lookup': {'from': 'group-assets', 'localField': 'asset.group_id', 'foreignField': 'keyname',
                          'as': 'asset.group'}},
             {'$addFields': {'asset.group': {'$arrayElemAt': ['$asset.group', 0]}}},
             {'$project': {'resultArray': 0, 'asset_id': 0}}]
 
     @parse_as(ModelResponse)
     def save(self, obj: ModelCreate):
-        inserted = self.collection.insert_one(obj.model_dump(by_alias=True, exclude=["id"])).inserted_id
+        inserted = self.collection.insert_one(obj.model_dump(by_alias=True, exclude={"id"})).inserted_id
 
         return self.collection.aggregate(self.pipeline)
 
@@ -64,7 +64,8 @@ class ModelRepository(BaseRepository[ModelResponse, ModelCreate, ModelUpdate]):
             {'$match': {'_id': ObjectId(model_id)}},
             {'$lookup': {'from': 'assets', 'localField': 'asset_id', 'foreignField': '_id', 'as': 'asset'}},
             {'$unwind': '$asset'},
-            {'$lookup': {'from': 'group-assets', 'localField': 'asset.group_id', 'foreignField': '_id', 'as': 'group'}},
+            {'$lookup': {'from': 'group-assets', 'localField': 'asset.group_id', 'foreignField': 'keyname',
+                         'as': 'group'}},
             {'$unwind': '$group'},
             {'$replaceRoot': {'newRoot': '$group'}}
         ]

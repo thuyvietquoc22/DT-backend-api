@@ -27,6 +27,7 @@ assets_collection = __db.get_collection("assets")
 model_collection = __db.get_collection("model")
 
 group_assets_collection = __db.get_collection("group-assets")
+group_assets_collection.create_index('keyname', unique=True)
 
 role_collection = __db.get_collection("role")
 

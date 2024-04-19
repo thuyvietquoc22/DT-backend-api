@@ -19,7 +19,7 @@ class AssetsModelRepository(BaseRepository[AssetsResponse, AssetsCreate, AssetsU
     @property
     def pipeline(self):
         return [
-            {'$lookup': {'from': 'group-assets', 'localField': 'group_id', 'foreignField': '_id', 'as': 'group'}},
+            {'$lookup': {'from': 'group-assets', 'localField': 'group_id', 'foreignField': 'keyname', 'as': 'group'}},
             {'$addFields': {'group': {'$arrayElemAt': ['$group', 0]}}},
             {'$project': {'group_id': 0}}
         ]
