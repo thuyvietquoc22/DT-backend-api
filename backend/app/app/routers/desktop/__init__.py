@@ -3,6 +3,7 @@ from fastapi import APIRouter
 from app.routers import BaseRouter, BaseRouterGroup
 from app.routers.desktop.camera import CameraRouter
 from app.routers.desktop.master_data.address import DesktopAddressRouter
+from app.routers.desktop.master_data.bus_connection import BusConnectionRouter
 from app.routers.desktop.master_data.bus_routes import BusRoutesRouter
 from app.routers.desktop.master_data.connection_source import ConnectSourceRouter
 from app.routers.desktop.master_data.cross_road import CrossRoadRouter
@@ -25,6 +26,7 @@ class DesktopRouter(BaseRouterGroup):
         return [
             TrafficDataRouter(),
             BusRoutesRouter(),
+            BusConnectionRouter(),
 
             DesktopAddressRouter(),
             CrossRoadRouter(),

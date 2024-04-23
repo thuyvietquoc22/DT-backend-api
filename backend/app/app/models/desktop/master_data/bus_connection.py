@@ -20,3 +20,18 @@ class BaseBusConnection(BaseMongoModel):
 
 class BusConnectionCreate(BaseBusConnection):
     bus_router_id: str
+
+
+class BusConnectionUpdate(BaseMongoModel):
+    code: Optional[str] = None
+    provider: Optional[str] = None
+    connection_source: Optional[str] = None
+    ip_address: Optional[str] = Field(default=None, pattern=r'\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b')
+    username: Optional[str] = None
+    password: Optional[str] = None
+    bus_router_id: Optional[str] = None
+
+
+class BusConnectionResponse(BaseBusConnection):
+    pass
+

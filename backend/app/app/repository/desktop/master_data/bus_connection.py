@@ -14,6 +14,9 @@ class BusConnectionRepository(BaseRepository):
         obj = [bs.model_dump(by_alias=True, exclude={"id"}) for bs in bus_connections]
         return self.collection.insert_many(obj)
 
+    def list_bus_connections(self, pageable):
+        return self.get_all(pageable)
+
 
 
 
