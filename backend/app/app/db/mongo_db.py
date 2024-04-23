@@ -59,3 +59,8 @@ vehicle_type_collection.create_index('type', unique=True)
 
 passage_capacity_status_collection = __db.get_collection("master-passage_capacity_status")
 passage_capacity_status_collection.create_index('keyname', unique=True)
+
+bus_routes_collection = __db.get_collection("master-bus_routes")
+
+bus_connection_collection = __db.get_collection("master-bus_connection")
+bus_connection_collection.create_index('code', unique=True)

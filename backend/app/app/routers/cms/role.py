@@ -10,7 +10,7 @@ from app.models.cms.role import RoleCreate, RoleResponse
 class RoleRouter(BaseRouter):
 
     def __init__(self):
-        self.role_service = RoleService
+        self.role_service = RoleService()
 
     @property
     def router(self):

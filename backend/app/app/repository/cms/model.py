@@ -5,6 +5,7 @@ from app.db.mongo_db import model_collection
 from app.decorator.parser import parse_as
 from app.models.cms.assets import GroupAssets
 from app.models.cms.model import ModelUpdate, ModelCreate, ModelResponse, Location
+from app.models.pagination_model import Pageable
 from app.repository.base_repository import BaseRepository
 
 
@@ -68,6 +69,37 @@ class ModelRepository(BaseRepository[ModelResponse, ModelCreate, ModelUpdate]):
                          'as': 'group'}},
             {'$unwind': '$group'},
             {'$replaceRoot': {'newRoot': '$group'}}
+        ]
+
+        return self.collection.aggregate(pipeline)
+
+    @parse_as(list[ModelResponse])
+    def get_bus_stop(self):
+        """
+        Get list model has asset type keyname is "BUS_STOP"
+        """
+        pipeline = self.pipeline + [
+            {'$match': {'asset.group_id': 'BUS_STOP'}}
+        ]
+        return self.collection.aggregate(pipeline)
+
+    @parse_as(list[ModelResponse])
+    def get_models_by_group(self, group: list[str], pageable: Pageable):
+        query = {'asset.group_id': {'$in': group}}
+        pipeline = self.pipeline + [
+            {'$match': query},
+            {'$skip': pageable.skip},
+            {'$limit': pageable.limit}
+        ]
+
+        self.get_pageable(pageable, query)
+        return self.collection.aggregate(pipeline)
+
+    @parse_as(list[ModelResponse])
+    def get_list_models_by_ids(self, model_ids: list[str]):
+        query = {'_id': {'$in': [ObjectId(id_) for id_ in model_ids]}}
+        pipeline = self.pipeline + [
+            {'$match': query}
         ]
 
         return self.collection.aggregate(pipeline)

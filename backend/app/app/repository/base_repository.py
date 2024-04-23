@@ -8,6 +8,7 @@ from pymongo.client_session import ClientSession
 from pymongo.collection import Collection
 from pymongo.cursor import Cursor
 
+from app.decorator.parser import parse_as, parse_val_as
 from app.models import BaseMongoModel
 from app.models.pagination_model import Pageable
 
@@ -50,15 +51,25 @@ class BaseRepository(Generic[Model, CreateModel, UpdateModel], ABC):
         else:
             return self.collection.find({"_id": {"$in": ids}})
 
-    def get_all(self, pageable: Pageable = None) -> Cursor:
-        if pageable:
-            self.get_pageable(pageable)
-            return self.collection.find().skip(pageable.skip).limit(pageable.limit)
-        else:
-            return self.collection.find()
+    def get_all(self, pageable: Pageable = None):
+        # if pageable:
+        #     self.get_pageable(pageable)
+        #     return self.collection.find().skip(pageable.skip).limit(pageable.limit)
+        # else:
+        #     return self.collection.find()
 
-    def get_by_id(self, obj_id: str) -> Optional[Model]:
-        return self.collection.find_one({"_id": ObjectId(obj_id)})
+        pipeline = self.root_pipeline + [
+            {"$skip": pageable.skip},
+            {"$limit": pageable.limit}
+        ]
+
+        self.get_pageable(pageable, {})
+
+        return self.collection.aggregate(pipeline)
+
+    def get_by_id(self, obj_id: str):
+        pipeline = [{"$match": {"_id": ObjectId(obj_id)}}] + self.root_pipeline
+        return self.collection.aggregate(pipeline)
 
     def create(self, obj: CreateModel):
         inserted = self.collection.insert_one(obj.model_dump(by_alias=True, exclude={"id"}))

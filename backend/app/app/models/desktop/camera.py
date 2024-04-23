@@ -22,19 +22,6 @@ class BaseCamera(BaseMongoModel):
 
 
 class CameraCreate(BaseCamera):
-    model_config = {
-        "json_schema_extra": {
-            "example": {
-                "id_model": "660699f497fbc609d2cdf2f6",
-                "camera_code": "CAMERA_NHT_XVNT",
-                "resource": "Sở giao thông vận tải",
-                "ip_address": "0.0.0.0",
-                "username": "admin",
-                "password": "admin",
-                "street_id": "660699f497fbc609d2cdf2f6"
-            }}
-    }
-
     @field_serializer("id_model", "street_id")
     def serializer_id_model(self, value: PyObjectId) -> ObjectId:
         return ObjectId(value)
@@ -46,7 +33,7 @@ class CameraUpdate(BaseModel):
     resource: Optional[str] = None
     ip_address: Optional[str] = Field(pattern=r'\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b', default=None)
     username: Optional[str] = None
-
+    direction: Optional[Literal[-1, 1]]
     model_config = {
         "json_schema_extra": {
             "example": {

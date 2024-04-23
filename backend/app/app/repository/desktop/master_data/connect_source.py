@@ -19,10 +19,13 @@ class ConnectSourceRepository(BaseRepository):
     def find_connection_source_by_keyname(self, keyname: str):
         return self.collection.find_one({"keyname": keyname})
 
+    @parse_as(list[ConnectSourceResponse])
+    def find_connection_sources_by_keynames(self, keyname: set[str]):
+        return self.collection.aggregate([{"$match": {"keyname": {"$in": list(keyname)}}}])
+
     def update_connection_source(self, connection_source_keyname, connection_source_update):
         return self.collection.update_one({"keyname": connection_source_keyname},
                                           {"$set": connection_source_update.dict(exclude_none=True)})
 
     def delete_by_keyname(self, connection_source_keyname):
         return self.collection.delete_one({"keyname": connection_source_keyname})
-

@@ -1,4 +1,5 @@
 from app.routers import BaseRouterGroup, BaseRouter
+from app.routers.auth.admin_auth import AdminAuthRouter
 from app.routers.cms.account import AccountRouter
 from app.routers.cms.assets import AssetsRouter
 from app.routers.cms.model import ModelRouter
@@ -14,5 +15,6 @@ class CMSRouterGroup(BaseRouterGroup):
             AssetsRouter(),
             ModelRouter(),
             PermissionRouter(),
-            RoleRouter()
+            RoleRouter(),
+            AdminAuthRouter(),
         ]

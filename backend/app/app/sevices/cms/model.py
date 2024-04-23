@@ -87,3 +87,7 @@ class ModelService:
 
     def get_group_by_model_id(self, model_id):
         return self.repo.get_group_by_model_id(model_id)
+
+    def get_models_by_group(self, group: list[str], pageable: Pageable):
+        result = self.repo.get_models_by_group(group, pageable)
+        return result

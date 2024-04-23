@@ -27,6 +27,10 @@ class RSAHelper:
                 with open(key_path + "public.pem", "rb") as f:
                     cls._public_key = rsa.PublicKey.load_pkcs1(f.read())
             except FileNotFoundError as e:
+                if not os.path.exists(key_path):
+                    os.makedirs(key_path)
+                with open(key_path + "PUT_YOUR_KEY_HERE", "wb") as f:
+                    f.write("Not found key".encode())
                 raise Exception(f"RSA key not found at: {key_path}")
 
         return cls._instance
@@ -38,6 +42,10 @@ class RSAHelper:
             with open(key_path + "private.pem", "rb") as f:
                 self._private_key = rsa.PrivateKey.load_pkcs1(f.read())
         except FileNotFoundError as e:
+            if not os.path.exists(key_path):
+                os.makedirs(key_path)
+            with open(key_path + "PUT_YOUR_KEY_HERE", "wb") as f:
+                f.write("Not found key".encode())
             raise Exception(f"RSA key not found at: {key_path}")
 
     def generate_key(self, saved_key=True):
@@ -46,7 +54,7 @@ class RSAHelper:
         self._public_key = public_key
         self._private_key = private_key
 
-        if True:
+        if saved_key:
             with open("public.pem", "wb") as f:
                 f.write(public_key.save_pkcs1("PEM"))
             with open("private.pem", "wb") as f:

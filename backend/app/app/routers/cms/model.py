@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 
 from app.routers import BaseRouter, CMSTag
 from app.sevices.cms.model import ModelService
@@ -25,6 +25,12 @@ class ModelRouter(BaseRouter):
         @router.post("/area", response_model=list[ModelResponse])
         async def get_models_by_area(start: Location, end: Location, limit: int = 20):
             result = self.model_service.get_by_area(start, end, limit)
+            return result
+
+        @router.get("/group", response_model=list[ModelResponse])
+        async def get_models_by_group(group_key_name: list[str] = Query(), page: int = 1, limit: int = 999):
+            pageable = Pageable.of(page=page, limit=limit)
+            result = self.model_service.get_models_by_group(group_key_name, pageable)
             return result
 
         @router.get("/{model_id}", response_model=ModelResponse)
