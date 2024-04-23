@@ -15,6 +15,7 @@ RUN apt-get update \
 WORKDIR /app
 
 COPY requirements.txt /app/requirements.txt
+COPY dev.env /app/dev.env
 
 RUN pip install --upgrade pip
 RUN pip install -r /app/requirements.txt

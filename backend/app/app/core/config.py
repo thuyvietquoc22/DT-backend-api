@@ -1,7 +1,15 @@
-from pydantic_settings import BaseSettings
+import os.path
+from pathlib import Path
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+BasePath = Path(__file__).resolve().parent.parent.parent
+env_path = os.path.join(BasePath, os.environ.get('ENV_FILE', '.env'))
 
 
 class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=env_path, env_file_encoding='utf-8')
+
     API_V1_STR: str = "/api/v1"
     SECRET_KEY: str = 'dt.secret_key'
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 5
@@ -48,14 +56,8 @@ class Settings(BaseSettings):
     CLOUDINARY_API_SECRET: str = "dryjjj8kaOZKknQDhcdha29FGKI"
     CLOUDINARY_URL: str = "CLOUDINARY_URL=cloudinary://727316736938961:dryjjj8kaOZKknQDhcdha29FGKI@dunezoucn"
 
-    # RSA KEY PATH
-    RSA_KEY_PATH: str = "rsa_key/"
-
     # MAP 4D KEY
     MAP_4D_KEY: str = "7e24e8dae5b5b72a7d742a9b38444128"
-
-    class Config:
-        case_sensitive = True
 
 
 settings = Settings()
