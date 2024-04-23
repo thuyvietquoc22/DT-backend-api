@@ -1,7 +1,8 @@
 from bson import ObjectId
 from pymongo.collection import Collection
 
-from app.db.mongo_db import role_collection, account_collection
+from app.db.mongo.role import role_collection
+from app.db.mongo.account import account_collection
 from app.decorator.parser import parse_as
 from app.models.cms.role import RoleResponse, RoleCreate, RoleUpdate
 from app.repository.base_repository import BaseRepository

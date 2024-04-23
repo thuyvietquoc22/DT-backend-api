@@ -1,7 +1,7 @@
 from bson import ObjectId
 from pymongo.collection import Collection
 
-from app.db.mongo_db import traffic_light_collection
+from app.db.mongo.traffic_light import traffic_light_collection
 from app.decorator.parser import parse_as
 from app.models.desktop.traffic_light import TrafficLightResponse, TrafficLightCreate, TrafficLightUpdate
 from app.repository.base_repository import BaseRepository

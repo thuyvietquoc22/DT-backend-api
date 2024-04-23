@@ -1,7 +1,7 @@
 from bson import ObjectId
 from pymongo.collection import Collection
 
-from app.db.mongo_db import user_collection
+from app.db.mongo.user import user_collection
 from app.models.mobile.user import UserModelCreate
 from app.models.pagination_model import Pageable
 from app.repository.base_repository import BaseRepository

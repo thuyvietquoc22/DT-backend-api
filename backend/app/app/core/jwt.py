@@ -5,7 +5,6 @@ import jwt
 from passlib.context import CryptContext
 
 from app.core.config import settings
-from app.db.mongo_db import refresh_token_collection
 from app.repository.refresh_repository import refresh_token_repository
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

@@ -1,7 +1,8 @@
 from bson import ObjectId
 from pymongo.collection import Collection
 
-from app.db.mongo_db import camera_collection, controller_collection
+from app.db.mongo.controller import controller_collection
+from app.db.mongo.camera import camera_collection
 from app.decorator import signleton
 from app.decorator.parser import parse_as
 from app.models.desktop.camera import CameraResponse, CameraCreate, CameraUpdate, CameraTrafficDataResponse

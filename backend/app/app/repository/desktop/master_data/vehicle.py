@@ -1,6 +1,6 @@
 from pymongo.collection import Collection
 
-from app.db.mongo_db import vehicle_type_collection
+from app.db.mongo.vehicle_type import vehicle_type_collection
 from app.decorator.parser import parse_as
 from app.models.desktop.master_data.vehicle_type import VehicleTypeResponse
 from app.repository.base_repository import BaseRepository

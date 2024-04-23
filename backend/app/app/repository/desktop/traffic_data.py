@@ -3,7 +3,7 @@ from datetime import datetime
 from bson import ObjectId
 from pymongo.collection import Collection
 
-from app.db.mongo_db import traffic_data_collection
+from app.db.mongo.traffic_data import traffic_data_collection
 from app.decorator import signleton
 from app.decorator.parser import parse_as
 from app.models.desktop.camera import CameraTrafficDataResponse

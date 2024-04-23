@@ -1,5 +1,6 @@
 from bson import ObjectId
 
+import app.db.mongo.connection_source
 from app.decorator.parser import parse_val_as
 from app.decorator.signleton import singleton
 from app.exceptions.param_invalid_exception import ParamInvalidException
@@ -87,7 +88,8 @@ class BusConnectionService:
         return parse_val_as(result, BusConnectionResponse, True)
 
     def check_connection_source(self, bus_connection):
-        connection_source = self.connection_source.find_connection_source_by_keyname(bus_connection.connection_source)
+        connection_source = self.connection_source.find_connection_source_by_keyname(
+            app.db.mongo.connection_source.connection_source)
         if not connection_source:
             raise ParamInvalidException("Connection source not found")
 

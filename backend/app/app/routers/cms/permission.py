@@ -3,7 +3,7 @@ from typing import List
 from bson import ObjectId
 from fastapi import APIRouter
 
-from app.db.mongo_db import permission_collection
+from app.db.mongo.permission import permission_collection
 from app.routers import BaseRouter, CMSTag
 from app.sevices.cms.permission import PermissionService
 from app.models.cms.permission import PermissionResponse

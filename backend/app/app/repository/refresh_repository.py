@@ -1,6 +1,6 @@
 from pymongo.errors import DuplicateKeyError
 
-from app.db.mongo_db import refresh_token_collection
+from app.db.mongo.refresh_token import refresh_token_collection
 
 
 class RefreshTokenRepository:
