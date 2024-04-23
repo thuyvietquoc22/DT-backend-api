@@ -29,13 +29,6 @@ class CrossRoadRouter(BaseRouter):
             result = self.cross_road_service.get_all_cross_road(pageable)
             return PaginationResponse.response_pageable(result, pageable)
 
-        @router.get('/district/{district_id}', response_model=PaginationResponse[CrossRoadResponse],
-                    tags=self.desktop_master_tag)
-        async def get_cross_road_by_district_id(district_id: int, limit: int = 10, page: int = 1):
-            pageable = Pageable.of(page, limit)
-            result = self.cross_road_service.get_cross_road_by_district_id(district_id, pageable)
-            return PaginationResponse.response_pageable(result, pageable)
-
         @router.get('/cross_location', tags=self.desktop_master_tag,
                     description="Lấy toạ độ điểm giao của 2 tuyến đường dựa trên <Tên> đường và quận/huyện")
         async def get_cross_road_location(
@@ -47,6 +40,18 @@ class CrossRoadRouter(BaseRouter):
         @router.get('/{cross_road_id}', tags=self.desktop_master_tag, )
         async def get_cross_road_by_id(cross_road_id: str):
             return self.cross_road_service.get_cross_road_by_id(cross_road_id)
+
+        @router.get('/street/{street_id}', response_model=list[str],
+                    description="Lấy danh sách id các tuyến đường đã được tạo nút giao với tuyến đường được gửi lên")
+        async def get_cross_road_by_street_id(street_id: str):
+            return self.cross_road_service.get_street_ids_existed_by_street_id(street_id)
+
+        @router.get('/district/{district_id}', response_model=PaginationResponse[CrossRoadResponse],
+                    tags=self.desktop_master_tag)
+        async def get_cross_road_by_district_id(district_id: int, limit: int = 10, page: int = 1):
+            pageable = Pageable.of(page, limit)
+            result = self.cross_road_service.get_cross_road_by_district_id(district_id, pageable)
+            return PaginationResponse.response_pageable(result, pageable)
 
         @router.post('')
         async def create_cross_road(creator_cross_road: CrossRoadCreate):

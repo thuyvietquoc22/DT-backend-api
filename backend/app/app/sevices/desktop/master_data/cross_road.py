@@ -27,7 +27,11 @@ class CrossRoadService:
         if district is None:
             raise ParamInvalidException(f"Mã quận/huyện \"{creator_cross_road.district_code}\" không tồn tại")
 
-        # Check street_ids is exist
+        # Check street_ids is duplicate
+        if len(set(creator_cross_road.street_ids)) != len(creator_cross_road.street_ids):
+            raise ParamInvalidException("Danh sách id đường không được trùng lặp")
+
+        # Check street_ids is existed
         for street_id in creator_cross_road.street_ids:
             street = self.street_repo.find_by_id(street_id)
             if street is None:
@@ -82,3 +86,7 @@ class CrossRoadService:
 
     def delete_cross_road(self, cross_road_id):
         return self.cross_road_repo.delete(cross_road_id)
+
+    def get_street_ids_existed_by_street_id(self, street_id: str):
+        result = self.cross_road_repo.get_street_ids_existed_by_street_id(street_id)
+        return set([item['street_ids'] for item in result if item['street_ids'] != street_id])

@@ -1,8 +1,11 @@
+from typing import Any
+
 from bson import ObjectId
 from pymongo.collection import Collection
 
 from app.db.mongo.cross_road import cross_road_collection
 from app.decorator.parser import parse_as
+from app.models import PyObjectId
 from app.models.desktop.master_data.cross_road import CrossRoadResponse, CrossRoadCreate, CrossRoadUpdate
 from app.models.pagination_model import Pageable
 from app.repository.base_repository import BaseRepository
@@ -50,4 +53,10 @@ class CrossRoadRepository(BaseRepository[CrossRoadResponse, CrossRoadCreate, Cro
 
         return self.collection.aggregate(pipeline)
 
-
+    @parse_as(response_type=list[dict[str, PyObjectId]])
+    def get_street_ids_existed_by_street_id(self, street_id):
+        pipeline = [
+            {'$match': {'street_ids': ObjectId(street_id)}},
+            {'$project': {'_id': 0, 'street_ids': 1}},
+            {'$unwind': '$street_ids'}]
+        return self.collection.aggregate(pipeline)

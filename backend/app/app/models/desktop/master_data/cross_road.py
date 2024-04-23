@@ -16,18 +16,7 @@ class BaseCrossRoad(BaseMongoModel):
 
 
 class CrossRoadCreate(BaseCrossRoad):
-    model_config = {
-        "json_schema_extra": {
-            "example": {
-                "name": "Ngã ba Nguyễn Hữu Thọ - Xô Viết Nghệ Tĩnh",
-                "location": {
-                    "lat": 16.031314,
-                    "lng": 108.208787
-                },
-                "district_code": 492,
-                "street_ids": ["<id_street>", "<id_street>"]
-            }}
-    }
+    pass
 
 
 class CrossRoadUpdate(BaseModel):
