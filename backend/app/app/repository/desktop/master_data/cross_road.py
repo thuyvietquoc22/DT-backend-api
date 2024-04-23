@@ -60,3 +60,7 @@ class CrossRoadRepository(BaseRepository[CrossRoadResponse, CrossRoadCreate, Cro
             {'$project': {'_id': 0, 'street_ids': 1}},
             {'$unwind': '$street_ids'}]
         return self.collection.aggregate(pipeline)
+
+    def find_cross_road_by_street_ids(self, street_ids: list[str]):
+        query = {'street_ids': {'$all': [ObjectId(street_id) for street_id in street_ids]}}
+        return self.collection.find_one(query)

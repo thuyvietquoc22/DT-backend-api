@@ -37,6 +37,9 @@ class CrossRoadService:
             if street is None:
                 raise ParamInvalidException(f"Không tồn tại đường có id \"{street_id}\"")
 
+        # Check cross road duplicate
+        self.check_cross_duplicate(creator_cross_road.street_ids)
+
         creator_cross_road.street_ids = [ObjectId(street_id) for street_id in creator_cross_road.street_ids]
 
         creator_cross_road.province_code = district.province_code
@@ -57,6 +60,11 @@ class CrossRoadService:
             street = self.street_repo.find_by_id(street_id)
             if street is None:
                 raise ParamInvalidException(f"Không tồn tại đường có id \"{street_id}\"")
+
+    def check_cross_duplicate(self, street_ids: list[str]):
+        cross_road = self.cross_road_repo.find_cross_road_by_street_ids(street_ids)
+        if cross_road:
+            raise ParamInvalidException("Nút giao đã tồn tại")
 
     def validate_district_code(self, district_code):
         district = self.get_district_code(district_code)
