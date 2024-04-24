@@ -10,6 +10,7 @@ from app.routers.desktop.master_data.cross_road import CrossRoadRouter
 from app.routers.desktop.master_data.street import StreetRouter
 from app.routers.desktop.master_data.traffic_data import TrafficDataRouter
 from app.routers.desktop.master_data.vms_component import VMSComponentRouter
+from app.routers.desktop.master_data.vms_component_category import VMSComponentCategoryRouter
 from app.routers.desktop.passage_capacity import PassageCapacityRouter
 from app.routers.desktop.traffic_light import TrafficLightRouter
 from app.routers.desktop.vms_sign import VMSSignRouter
@@ -33,6 +34,7 @@ class DesktopRouter(BaseRouterGroup):
             ConnectSourceRouter(),
             StreetRouter(),
             VMSComponentRouter(),
+            VMSComponentCategoryRouter(),
 
             PassageCapacityRouter(),
 

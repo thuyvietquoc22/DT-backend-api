@@ -1,6 +1,6 @@
 from typing import Literal
 
-from fastapi import APIRouter, UploadFile, Form
+from fastapi import APIRouter, UploadFile, Form, Query
 
 from app.sevices.desktop.master_data.vms_component import VMSComponentService
 from app.models.desktop.master_data.vms_component import VMSComponentResponse, VMSComponentUpdate
@@ -26,6 +26,10 @@ class VMSComponentRouter(BaseRouter):
         def get_vms_component():
             return self.vms_component_service.get_all_vms_component()
 
+        @router.get("/type", response_model=list[VMSComponentResponse], tags=self.desktop_master_tag)
+        def get_vms_component_by_tag(type_component: Literal["IMAGE", "ARROW"] = Query(alias="type")):
+            return self.vms_component_service.get_vms_component_by_type(type_component)
+
         @router.get("/{vms_component_id}", response_model=VMSComponentResponse, tags=self.desktop_master_tag)
         def get_vms_component_by_id(vms_component_id: str):
             return self.vms_component_service.get_vms_component_by_id(vms_component_id)
@@ -40,6 +44,7 @@ class VMSComponentRouter(BaseRouter):
                 name: str = Form(),
                 type_component: Literal["IMAGE", "ARROW"] = Form(),
                 code: int = Form(),
+                category_key: str = Form(),
                 meaning: str = Form()
         ):
             self.vms_component_service.create_vms_component(
@@ -47,6 +52,7 @@ class VMSComponentRouter(BaseRouter):
                 name=name,
                 type_component=type_component,
                 code=code,
+                category_key=category_key,
                 meaning=meaning
             )
             return {"message": "VMS Component created."}

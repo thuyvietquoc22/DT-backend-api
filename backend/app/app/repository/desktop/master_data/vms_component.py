@@ -15,16 +15,24 @@ class VMSComponentRepository(BaseRepository[VMSComponentResponse, VMSComponentCr
         return vms_component_collection
 
     @property
-    def pipeline(self):
-        return []
+    def root_pipeline(self):
+        return [
+            {'$lookup': {'from': 'master-vms_component_category', 'localField': 'category_key',
+                         'foreignField': 'keyname', 'as': 'category'}},
+            {'$unwind': {'path': '$category', 'preserveNullAndEmptyArrays': True}}
+        ]
 
     @parse_as(response_type=VMSComponentResponse, get_first=True)
     def get_vms_component_by_code(self, code):
-        return self.collection.aggregate([{"$match": {"code": code}}] + self.pipeline)
+        return self.collection.aggregate([{"$match": {"code": code}}] + self.root_pipeline)
+
+    @parse_as(response_type=VMSComponentResponse, get_first=True)
+    def get_vms_component_by_code_type(self, code, type_):
+        return self.collection.aggregate([{"$match": {"code": code, "type": type_}}] + self.root_pipeline)
 
     @parse_as(response_type=list[VMSComponentResponse])
     def get_all_vms_component(self):
-        return self.collection.aggregate(self.pipeline)
+        return self.collection.aggregate(self.root_pipeline)
 
     @parse_as(response_type=VMSComponentResponse)
     def get_vms_component_by_id(self, vms_component_id):
@@ -36,3 +44,10 @@ class VMSComponentRepository(BaseRepository[VMSComponentResponse, VMSComponentCr
     @parse_as(response_type=list[VMSComponentResponse])
     def get_by_ids(self, ids: list[str]):
         return self.collection.find({"_id": {"$in": [ObjectId(id_) for id_ in ids]}})
+
+    @parse_as(response_type=list[VMSComponentResponse])
+    def get_vms_component_by_type(self, tag_name):
+        pipeline = [
+            {"$match": {"type": tag_name}}
+        ] + self.root_pipeline
+        return self.collection.aggregate(pipeline)

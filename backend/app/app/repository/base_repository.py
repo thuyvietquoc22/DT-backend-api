@@ -58,12 +58,10 @@ class BaseRepository(Generic[Model, CreateModel, UpdateModel], ABC):
         # else:
         #     return self.collection.find()
 
-        pipeline = self.root_pipeline + [
-            {"$skip": pageable.skip},
-            {"$limit": pageable.limit}
-        ]
-
-        self.get_pageable(pageable, {})
+        pipeline = self.root_pipeline
+        if pageable is not None:
+            self.get_pageable(pageable, {})
+            pipeline += pageable.pipeline
 
         return self.collection.aggregate(pipeline)
 

@@ -1,8 +1,9 @@
 from typing import Literal, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_serializer
 
 from app.models import BaseMongoModel
+from app.models.desktop.master_data.vms_component_category import VMSComponentCategoryResponse
 from app.utils.cloudinary import CloudinaryEnabler
 
 
@@ -26,7 +27,7 @@ class BaseVMSComponent(BaseMongoModel, CloudinaryEnabler):
 
 
 class VMSComponentCreate(BaseVMSComponent):
-    pass
+    category_key: str
 
 
 class VMSComponentUpdate(BaseModel):
@@ -34,7 +35,12 @@ class VMSComponentUpdate(BaseModel):
     name: Optional[str] = None
     code: Optional[int] = None
     meaning: Optional[str] = None
+    category_key: Optional[str] = None
 
 
 class VMSComponentResponse(BaseVMSComponent):
-    pass
+    category: VMSComponentCategoryResponse
+
+    @field_serializer("category")
+    def serialize_category(self, category: VMSComponentCategoryResponse):
+        return category.model_dump(exclude={"type", "description"})
