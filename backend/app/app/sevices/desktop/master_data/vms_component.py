@@ -77,7 +77,7 @@ class VMSComponentService:
         if not vms_comp:
             raise ParamInvalidException(f"VMS Component not found with id: {vms_component_id}")
         # Handle upload image
-        url = CloudinaryHelper().upload_file(file=image, upload_info=vms_comp)
+        url = CloudinaryHelper().upload_file(file=image, folder=vms_comp.folder)
 
         try:
             # Delete old image

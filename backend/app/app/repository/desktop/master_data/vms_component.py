@@ -34,9 +34,13 @@ class VMSComponentRepository(BaseRepository[VMSComponentResponse, VMSComponentCr
     def get_all_vms_component(self):
         return self.collection.aggregate(self.root_pipeline)
 
-    @parse_as(response_type=VMSComponentResponse)
+    @parse_as(VMSComponentResponse, True)
     def get_vms_component_by_id(self, vms_component_id):
-        return self.collection.find_one({"_id": ObjectId(vms_component_id)})
+        # return self.collection.find_one({"_id": ObjectId(vms_component_id)})
+        pipeline = [
+            {"$match": {"_id": ObjectId(vms_component_id)}}
+        ] + self.root_pipeline
+        return self.collection.aggregate(pipeline)
 
     def update_url_vms_component_by_id(self, vms_component_id, url):
         self.collection.update_one({"_id": ObjectId(vms_component_id)}, {"$set": {"url": url}})
