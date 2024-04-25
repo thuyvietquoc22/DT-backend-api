@@ -1,5 +1,3 @@
-from typing import Any
-
 from bson import ObjectId
 from pymongo.collection import Collection
 
@@ -26,7 +24,8 @@ class CrossRoadRepository(BaseRepository[CrossRoadResponse, CrossRoadCreate, Cro
             {'$unwind': '$province.districts'},
             {'$match': {'$expr': {'$eq': ['$province.districts.code', '$district_code']}}},
             {'$addFields': {'district': '$province.districts'}},
-            {'$project': {'district.wards': 0, 'province.districts': 0}}
+            {'$lookup': {'from': 'master-street', 'localField': 'street_ids', 'foreignField': '_id', 'as': 'streets'}},
+            {'$project': {'district.wards': 0, 'province.districts': 0, 'street_ids': 0}}
         ]
 
     def check_district_code(self, district_code):

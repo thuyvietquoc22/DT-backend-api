@@ -22,7 +22,12 @@ class ModelRepository(BaseRepository[ModelResponse, ModelCreate, ModelUpdate]):
             {'$lookup': {'from': 'group-assets', 'localField': 'asset.group_id', 'foreignField': 'keyname',
                          'as': 'asset.group'}},
             {'$addFields': {'asset.group': {'$arrayElemAt': ['$asset.group', 0]}}},
-            {'$project': {'resultArray': 0, 'asset_id': 0}}]
+            {'$project': {'resultArray': 0, 'asset_id': 0}},
+            {'$lookup': {'from': 'camera', 'localField': '_id', 'foreignField': 'id_model', 'as': 'cam'}},
+            {'$lookup': {'from': 'vms_sign', 'localField': '_id', 'foreignField': 'id_model', 'as': 'vms'}},
+            {'$addFields': {'connector': {'$concatArrays': ['$vms', '$cam']}}},
+            {'$addFields': {'connected': {'$gt': [{'$size': {'$ifNull': ['$connector', []]}}, 0]}}}
+        ]
 
     @parse_as(ModelResponse)
     def save(self, obj: ModelCreate):

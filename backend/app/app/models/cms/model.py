@@ -1,4 +1,4 @@
-from typing import Literal, Optional
+from typing import Literal, Optional, Any
 
 from pydantic import BaseModel
 
@@ -47,3 +47,5 @@ class ModelUpdate(BaseModel):
 
 class ModelResponse(ModelBase):
     asset: Optional[AssetsResponse] = None
+    connected: bool = False
+    # connector: Any  if need

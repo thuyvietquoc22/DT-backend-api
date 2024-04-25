@@ -23,8 +23,12 @@ class CameraRepository(BaseRepository[CameraResponse, CameraCreate, CameraUpdate
     def pipeline_has_location(self):
         return [
             {'$lookup': {'from': 'model', 'localField': 'id_model', 'foreignField': '_id', 'as': 'model'}},
-            {'$unwind': '$model'}, {'$addFields': {'location': '$model.location'}},
-            {'$project': {'model': 0}}
+            {'$unwind': '$model'},
+            {'$lookup': {'from': 'master-street', 'localField': 'street_id', 'foreignField': '_id', 'as': 'street'}},
+            {'$unwind': '$street'},
+            {'$addFields': {'location': '$model.location'}},
+            {'$project': {'model': 0, 'street_id': 0}},
+
         ]
 
     @property

@@ -30,7 +30,7 @@ class ModelRouter(BaseRouter):
         @router.get("/group", response_model=list[ModelResponse])
         async def get_models_by_group(group_key_name: list[str] = Query(), page: int = 1, limit: int = 999):
             pageable = Pageable.of(page=page, limit=limit)
-            result = self.model_service.get_models_by_group(group_key_name, pageable)
+            result = self.model_service.get_models_by_group([i.upper() for i in group_key_name], pageable)
             return result
 
         @router.get("/{model_id}", response_model=ModelResponse)
