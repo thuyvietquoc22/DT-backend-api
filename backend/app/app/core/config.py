@@ -4,7 +4,7 @@ from pathlib import Path
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BasePath = Path(__file__).resolve().parent.parent.parent
-env_path = os.path.join(BasePath, os.environ.get('ENV_FILE', '.env'))
+env_path = os.path.join(BasePath, os.environ.get('ENV_FILE', 'dev.env'))
 
 
 class Settings(BaseSettings):
@@ -45,6 +45,11 @@ class Settings(BaseSettings):
     NUMBER_THREADS: int = 5
     CLOUDFRONT_DOMAIN: str = ""
     CLOUDFRONT_DISTRIBUTION_ID: str = ""
+
+    # AES_KEY
+    AES_KEY: str = "1234567890123456"
+    # IV
+    AES_IV: str = "1234567890123456"
 
     # MONGODB_URL
     MONGODB_URL: str = "mongodb+srv://quocthinhtme:dQ1T85lyamzav2LN@digitaltwin.ln93u1m.mongodb.net/?retryWrites=true&w=majority&appName=DigitalTwin"

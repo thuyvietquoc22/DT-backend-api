@@ -10,7 +10,7 @@ from app.repository.desktop.master_data.connect_source import ConnectSourceRepos
 from app.repository.desktop.master_data.cross_road import CrossRoadRepository
 from app.repository.desktop.traffic_light import TrafficLightRepository
 from app.utils.common import calculate_bound
-from app.utils.rsa_helper import RSAHelper
+from app.utils.aes_helper import AESHelper
 
 
 @signleton.singleton
@@ -47,7 +47,7 @@ class TrafficLightService:
             raise ParamInvalidException("Không tìm thấy Connection Source")
 
         traffic_light_create.id_model = ObjectId(model_id)
-        traffic_light_create.password = RSAHelper.instance().encrypt_message(traffic_light_create.password).hex()
+        traffic_light_create.password = AESHelper.instance().encrypt_message(traffic_light_create.password).hex()
 
         self.traffic_light_repo.create(traffic_light_create)
 

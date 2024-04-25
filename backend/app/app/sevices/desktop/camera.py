@@ -17,7 +17,7 @@ from app.repository.desktop.master_data.cross_road import CrossRoadRepository
 from app.repository.desktop.master_data.street import StreetRepository
 from app.sevices.desktop.traffic_data import TrafficDataService
 from app.utils.common import calculate_bound, is_in_range, copy_attr
-from app.utils.rsa_helper import RSAHelper
+from app.utils.aes_helper import AESHelper
 
 
 @signleton.singleton
@@ -33,15 +33,15 @@ class CameraService:
 
     def create_camera(self, camera: CameraCreate):
 
-        session = start_session()
-
         self.check_model(camera)
 
         self.check_connection_source(camera)
 
         self.check_street_existed(camera)
 
-        camera.password = RSAHelper.instance().encrypt_message(camera.password).hex()
+        self.check_camera_code_existed(camera.camera_code)
+
+        camera.password = AESHelper.instance().encrypt_message(camera.password).hex()
         # camera.id_model = ObjectId(camera.id_model)
         # camera.street_id = ObjectId(camera.street_id)
 
@@ -153,3 +153,8 @@ class CameraService:
 
     def get_camera_by_model_id(self, model_id):
         return self.camera_repo.get_camera_by_model_id(model_id)
+
+    def check_camera_code_existed(self, camera_code):
+        camera = self.camera_repo.get_camera_by_code(camera_code)
+        if camera:
+            raise ParamInvalidException(f"Camera code \"{camera_code}\" đã tồn tại")

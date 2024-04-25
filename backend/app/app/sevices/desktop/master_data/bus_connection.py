@@ -12,7 +12,7 @@ from app.models.pagination_model import Pageable
 from app.repository.desktop.master_data.bus_connection import BusConnectionRepository
 from app.repository.desktop.master_data.bus_routes import BusRoutesRepository
 from app.repository.desktop.master_data.connect_source import ConnectSourceRepository
-from app.utils.rsa_helper import RSAHelper
+from app.utils.aes_helper import AESHelper
 
 
 @singleton
@@ -20,7 +20,7 @@ class BusConnectionService:
 
     def __init__(self):
         self.connection_source = ConnectSourceRepository()
-        self.rsa_helper = RSAHelper.instance()
+        self.rsa_helper = AESHelper.instance()
         self.bus_connection_repo = BusConnectionRepository()
         self.bus_router_repo = BusRoutesRepository()
 
@@ -39,7 +39,7 @@ class BusConnectionService:
                 connection_source=bs.connection_source,
                 ip_address=bs.ip_address,
                 username=bs.username,
-                password=RSAHelper.instance().encrypt(bs.password),
+                password=AESHelper.instance().encrypt(bs.password),
                 bus_router_id=ObjectId(bus_route_id),
             )
             for bs in bus_connections
@@ -58,7 +58,7 @@ class BusConnectionService:
             raise ParamInvalidException("Bus router not found")
 
         # Encoded bus password
-        bus_connection.password = RSAHelper.instance().encrypt_message(bus_connection.password)
+        bus_connection.password = AESHelper.instance().encrypt_message(bus_connection.password)
 
         self.bus_connection_repo.create_bus_connection([bus_connection])
 

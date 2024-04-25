@@ -16,7 +16,7 @@ from app.repository.desktop.master_data.cross_road import CrossRoadRepository
 from app.repository.desktop.master_data.vms_component import VMSComponentRepository
 from app.repository.desktop.vms_sign import VMSSignRepository
 from app.utils.common import calculate_bound
-from app.utils.rsa_helper import RSAHelper
+from app.utils.aes_helper import AESHelper
 
 
 @signleton.singleton
@@ -55,7 +55,7 @@ class VMSSignService:
             raise ParamInvalidException("Không tìm thấy Connection Source")
 
         vms_sign_create.id_model = ObjectId(model_id)
-        vms_sign_create.password = RSAHelper.instance().encrypt_message(vms_sign_create.password).hex()
+        vms_sign_create.password = AESHelper.instance().encrypt_message(vms_sign_create.password).hex()
 
         self.vms_sign_repo.create(vms_sign_create)
 

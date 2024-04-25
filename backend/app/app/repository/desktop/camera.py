@@ -88,3 +88,6 @@ class CameraRepository(BaseRepository[CameraResponse, CameraCreate, CameraUpdate
     def get_camera_by_model_id(self, model_id):
         pipeline = self.pipeline_has_location + [{'$match': {'id_model': ObjectId(model_id)}}]
         return self.collection.aggregate(pipeline)
+
+    def get_camera_by_code(self, camera_code):
+        pass
