@@ -91,3 +91,6 @@ class ModelService:
     def get_models_by_group(self, group: list[str], pageable: Pageable):
         result = self.repo.get_models_by_group(group, pageable)
         return result
+
+    def find_models_by_ids_and_group(self, traffic_light_id, group_key):
+        return self.repo.find_models_by_ids_and_group(traffic_light_id, group_key)

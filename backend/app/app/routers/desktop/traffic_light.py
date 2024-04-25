@@ -31,6 +31,10 @@ class TrafficLightRouter(BaseRouter):
         def get_traffic_light_nearby(cross_road_id: str):
             return self.traffic_light_service.get_traffic_light_nearby(cross_road_id)
 
+        @router.get('/cross-road/{cross_road_id}')
+        def get_traffic_light_by_cross_road_id(cross_road_id: str):
+            return self.traffic_light_service.get_traffic_light_by_cross_road_id(cross_road_id)
+
         @router.post('')
         def create_traffic_light(traffic_light: TrafficLightCreate):
             self.traffic_light_service.create_traffic_light(traffic_light)

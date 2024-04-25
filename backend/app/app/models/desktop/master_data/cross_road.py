@@ -30,3 +30,4 @@ class CrossRoadUpdate(BaseModel):
 class CrossRoadResponse(BaseCrossRoad):
     province: Optional[Province] = None
     district: Optional[District] = None
+    traffic_light_ids: list[PyObjectId] = []

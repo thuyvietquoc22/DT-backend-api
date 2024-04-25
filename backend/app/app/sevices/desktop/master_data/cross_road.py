@@ -6,6 +6,7 @@ from app.models.pagination_model import Pageable
 from app.repository.desktop.master_data.address import AddressRepository
 from app.repository.desktop.master_data.cross_road import CrossRoadRepository
 from app.repository.desktop.master_data.street import StreetRepository
+from app.sevices.cms.model import ModelService
 from app.sevices.map_4d import Map4DService
 
 
@@ -16,6 +17,7 @@ class CrossRoadService:
         self.address_repo = AddressRepository()
         self.street_repo = StreetRepository()
         self.map4d_service = Map4DService()
+        self.model_service = ModelService()
 
     def get_district_code(self, district_code: int):
         return self.address_repo.get_district_by_code(district_code)
@@ -98,3 +100,13 @@ class CrossRoadService:
     def get_street_ids_existed_by_street_id(self, street_id: str):
         result = self.cross_road_repo.get_street_ids_existed_by_street_id(street_id)
         return set([item['street_ids'] for item in result if item['street_ids'] != street_id])
+
+    def set_traffic_light_to_cross_road(self, cross_road_id: str, traffic_light_id: list[str]):
+
+        # TODO check traffic light is existed
+        models = self.model_service.find_models_by_ids_and_group(traffic_light_id, "TRAFFIC_LIGHT")
+
+        if len(models) != len(set(traffic_light_id)):
+            raise ParamInvalidException("Traffic light not found")
+
+        return self.cross_road_repo.set_traffic_light_to_cross_road(cross_road_id, traffic_light_id)

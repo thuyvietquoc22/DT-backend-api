@@ -64,3 +64,10 @@ class CrossRoadRepository(BaseRepository[CrossRoadResponse, CrossRoadCreate, Cro
     def find_cross_road_by_street_ids(self, street_ids: list[str]):
         query = {'street_ids': {'$all': [ObjectId(street_id) for street_id in street_ids]}}
         return self.collection.find_one(query)
+
+    def set_traffic_light_to_cross_road(self, cross_road_id, traffic_light_id):
+        query = {'_id': ObjectId(cross_road_id)}
+
+        # Set traffic light id to list of ObjectId
+        traffic_light_id = [ObjectId(light_id) for light_id in traffic_light_id]
+        self.collection.update_one(query, {'$set': {'traffic_light_ids': traffic_light_id}})

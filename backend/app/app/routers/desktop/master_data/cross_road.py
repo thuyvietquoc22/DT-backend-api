@@ -58,6 +58,13 @@ class CrossRoadRouter(BaseRouter):
             self.cross_road_service.create_cross_road(creator_cross_road)
             return {"message": "create cross road success"}
 
+        @router.post("/set_traffic_light",
+                     description="Thêm đèn giao thông vào nút giao thông các đèn cũ sẽ thay thế bằng list đèn "
+                                 "mới , xoá thì truyền vào một []", )
+        async def add_traffic_light_to_cross_road(cross_road_id: str, traffic_light_id: list[str]):
+            self.cross_road_service.set_traffic_light_to_cross_road(cross_road_id, traffic_light_id)
+            return {"message": "add traffic light to cross road success"}
+
         @router.put('/{district_id}')
         async def update_cross_road(district_id: str, cross_road_update: CrossRoadUpdate):
             self.cross_road_service.update_cross_road(district_id, cross_road_update)

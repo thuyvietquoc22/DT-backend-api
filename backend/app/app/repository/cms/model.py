@@ -15,7 +15,7 @@ class ModelRepository(BaseRepository[ModelResponse, ModelCreate, ModelUpdate]):
         return model_collection
 
     @property
-    def pipeline(self):
+    def root_pipeline(self):
         return [
             {'$lookup': {'from': 'assets', 'localField': 'asset_id', 'foreignField': '_id', 'as': 'resultArray'}},
             {'$addFields': {'asset': {'$arrayElemAt': ['$resultArray', 0]}}},
@@ -28,10 +28,10 @@ class ModelRepository(BaseRepository[ModelResponse, ModelCreate, ModelUpdate]):
     def save(self, obj: ModelCreate):
         inserted = self.collection.insert_one(obj.model_dump(by_alias=True, exclude={"id"})).inserted_id
 
-        return self.collection.aggregate(self.pipeline)
+        return self.collection.aggregate(self.root_pipeline)
 
     def get_by_id(self, obj_id: str):
-        pipeline = self.pipeline + [
+        pipeline = self.root_pipeline + [
             {'$match': {'_id': ObjectId(obj_id)}}
         ]
 
@@ -39,7 +39,7 @@ class ModelRepository(BaseRepository[ModelResponse, ModelCreate, ModelUpdate]):
 
     #
     def get_models(self, pageable):
-        pipeline = self.pipeline + [
+        pipeline = self.root_pipeline + [
             {'$skip': pageable.skip},
             {'$limit': pageable.limit}
         ]
@@ -49,7 +49,7 @@ class ModelRepository(BaseRepository[ModelResponse, ModelCreate, ModelUpdate]):
     def get_by_area(self, start: Location, end: Location, limit):
         start = start.to_array()
         end = end.to_array()
-        pipeline = self.pipeline + [
+        pipeline = self.root_pipeline + [
             {'$match': {'location': {'$geoWithin': {'$box': [start, end]}}}},
             {'$limit': limit}
         ]
@@ -78,7 +78,7 @@ class ModelRepository(BaseRepository[ModelResponse, ModelCreate, ModelUpdate]):
         """
         Get list model has asset type keyname is "BUS_STOP"
         """
-        pipeline = self.pipeline + [
+        pipeline = self.root_pipeline + [
             {'$match': {'asset.group_id': 'BUS_STOP'}}
         ]
         return self.collection.aggregate(pipeline)
@@ -86,7 +86,7 @@ class ModelRepository(BaseRepository[ModelResponse, ModelCreate, ModelUpdate]):
     @parse_as(list[ModelResponse])
     def get_models_by_group(self, group: list[str], pageable: Pageable):
         query = {'asset.group_id': {'$in': group}}
-        pipeline = self.pipeline + [
+        pipeline = self.root_pipeline + [
             {'$match': query},
             {'$skip': pageable.skip},
             {'$limit': pageable.limit}
@@ -98,8 +98,15 @@ class ModelRepository(BaseRepository[ModelResponse, ModelCreate, ModelUpdate]):
     @parse_as(list[ModelResponse])
     def get_list_models_by_ids(self, model_ids: list[str]):
         query = {'_id': {'$in': [ObjectId(id_) for id_ in model_ids]}}
-        pipeline = self.pipeline + [
+        pipeline = self.root_pipeline + [
             {'$match': query}
         ]
 
+        return self.collection.aggregate(pipeline)
+
+    @parse_as(list[ModelResponse])
+    def find_models_by_ids_and_group(self, traffic_light_id, group_key):
+        pipeline = self.root_pipeline + [
+            {'$match': {'asset.group_id': group_key, '_id': {'$in': [ObjectId(id_) for id_ in traffic_light_id]}}}
+        ]
         return self.collection.aggregate(pipeline)
