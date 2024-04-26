@@ -69,10 +69,10 @@ class CameraRepository(BaseRepository[CameraResponse, CameraCreate, CameraUpdate
         }]
 
         #  Get street
-        pipeline += [
-            {'$lookup': {'from': 'master-street', 'localField': 'street_id', 'foreignField': '_id', 'as': 'street'}},
-            {'$unwind': '$street'}
-        ]
+        # pipeline += [
+        #     {'$lookup': {'from': 'master-street', 'localField': 'street_id', 'foreignField': '_id', 'as': 'street'}},
+        #     {'$unwind': '$street'}
+        # ]
 
         pipeline += [
             {'$lookup': {
