@@ -1,7 +1,5 @@
-import os
 from base64 import b64encode, b64decode
 
-import rsa
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import modes, algorithms, Cipher
 
@@ -26,11 +24,12 @@ class AESHelper:
         return bytes.fromhex(settings.AES_IV)
 
     def encrypt_message(self, text: str):
-        return self.encrypt(text, self.key, self.iv)
+        # return self.encrypt(text, self.key, self.iv)
+        return text
 
     def decrypt_message(self, encrypted_message):
-        return self.decrypt(encrypted_message, self.key, self.iv)
-
+        # return self.decrypt(encrypted_message, self.key, self.iv)
+        return encrypted_message
     def encrypt(self, plaintext, key, iv):
         if plaintext:
             cipher = Cipher(algorithms.AES(key), modes.CFB(iv), backend=default_backend())
