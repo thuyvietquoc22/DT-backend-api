@@ -1,6 +1,6 @@
 from typing import Literal, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app.models import BaseMongoModel
 from app.models.cms.model import Location
@@ -16,6 +16,7 @@ class StreetBase(BaseMongoModel):
     type: Literal["one-way", "two-way"]
     passage_capacity: int
     district_code: list[int]
+    number_of_lanes: int = Field(..., title="Number of lanes", gt=0)
 
 
 class StreetCreate(StreetBase):
@@ -31,6 +32,7 @@ class StreetUpdate(BaseModel):
     type: Optional[Literal["one-way", "two-way"]] = None
     passage_capacity: Optional[int] = None
     district_code: list[int] = None
+    number_of_lanes: Optional[int] = None
 
 
 class StreetResponse(StreetBase):

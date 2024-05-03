@@ -1,6 +1,7 @@
 from typing import Optional
 
-from pydantic import BaseModel
+from bson import ObjectId
+from pydantic import BaseModel, field_serializer
 
 from app.models import BaseMongoModel, PyObjectId
 from app.models.cms.model import Location
@@ -25,6 +26,10 @@ class CrossRoadUpdate(BaseModel):
     district_code: Optional[int] = None
     province_code: Optional[int] = None
     street_ids: Optional[list[PyObjectId]] = None
+
+    @field_serializer("street_ids")
+    def serialize_street_ids(self, values):
+        return [ObjectId(id_) for id_ in values]
 
 
 class CrossRoadResponse(BaseCrossRoad):
