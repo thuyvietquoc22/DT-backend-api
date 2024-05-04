@@ -19,3 +19,8 @@ class VehicleTypeRepository(BaseRepository):
     def update_vehicle_type(self, value, vehicle_type_id: str):
         return self.collection.update_one({"_id": ObjectId(vehicle_type_id)}, {"$set": {"size": value}})
 
+    @parse_as(VehicleTypeResponse, True)
+    def get_vehicle_type(self, vehicle_type_id):
+        pipeline = self.root_pipeline
+
+        return self.collection.aggregate(pipeline)

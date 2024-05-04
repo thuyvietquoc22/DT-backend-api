@@ -14,3 +14,6 @@ class VehicleTypeService:
 
     def update_vehicle_type(self, vehicle_type, vehicle_type_id):
         return self.vehicle_type_repo.update(vehicle_type_id, vehicle_type)
+
+    def get_vehicle_type(self, vehicle_type_id):
+        return self.vehicle_type_repo.get_vehicle_type(vehicle_type_id)

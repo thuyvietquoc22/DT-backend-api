@@ -24,6 +24,10 @@ class VehicleType(BaseRouter):
         def get_all_vehicle_type():
             return self.vehicle_type_service.get_all_vehicle_type()
 
+        @router.get("/{vehicle_type_id}")
+        def get_vehicle_type(vehicle_type_id: str):
+            return self.vehicle_type_service.get_vehicle_type(vehicle_type_id)
+
         @router.patch("/{vehicle_type_id}")
         def update_vehicle_size(vehicle_type_id: str, body: IntBody):
             self.vehicle_type_service.update_size_vehicle_type(body.value, vehicle_type_id)
