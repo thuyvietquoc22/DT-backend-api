@@ -15,3 +15,7 @@ class BaseMongoModel(BaseModel):
 
 class StringBody(BaseModel):
     content: str
+
+
+class IntBody(BaseModel):
+    value: int

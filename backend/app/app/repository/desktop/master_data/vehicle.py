@@ -1,3 +1,4 @@
+from bson import ObjectId
 from pymongo.collection import Collection
 
 from app.db.mongo.vehicle_type import vehicle_type_collection
@@ -14,3 +15,7 @@ class VehicleTypeRepository(BaseRepository):
     @parse_as(list[VehicleTypeResponse])
     def get_all_vehicle_type(self):
         return self.collection.find({})
+
+    def update_vehicle_type(self, value, vehicle_type_id: str):
+        return self.collection.update_one({"_id": ObjectId(vehicle_type_id)}, {"$set": {"size": value}})
+
