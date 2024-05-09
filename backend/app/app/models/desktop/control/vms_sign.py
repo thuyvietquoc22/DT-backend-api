@@ -1,9 +1,10 @@
-from typing import Literal
+from typing import Literal, Optional
 
 from pydantic import BaseModel
 
 from app.models import PyObjectId
 from app.models.desktop.control import BaseController, ControlType
+from app.models.desktop.master_data.vms_component import VMSComponentResponse
 
 
 class SimpleVMSSignItem(BaseModel):

@@ -37,3 +37,7 @@ class VMSSignRepository(BaseRepository[VMSSignResponse, VMSSignCreate, VMSSignUp
         ]
 
         return self.collection.aggregate(pipeline)
+
+    def get_vms_sign_by_model_id(self, model_id):
+        pipeline = [{'$match': {'id_model': ObjectId(model_id)}}] + self.pipeline_has_location
+        return self.collection.aggregate(pipeline)

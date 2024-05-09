@@ -23,11 +23,11 @@ class AESHelper:
     def iv(self):
         return bytes.fromhex(settings.AES_IV)
 
-    def encrypt_message(self, text: str):
+    def encrypt_message(self, text: str) -> str:
         # return self.encrypt(text, self.key, self.iv)
         return text
 
-    def decrypt_message(self, encrypted_message):
+    def decrypt_message(self, encrypted_message) -> str:
         # return self.decrypt(encrypted_message, self.key, self.iv)
         return encrypted_message
     def encrypt(self, plaintext, key, iv):

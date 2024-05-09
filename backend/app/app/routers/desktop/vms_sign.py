@@ -4,6 +4,7 @@ from app.models.desktop.control.vms_sign import VMSSignRequest
 from app.models.desktop.vms_sign import VMSSignCreate, VMSSignUpdate
 from app.models.pagination_model import Pageable
 from app.routers import BaseRouter, DesktopTag
+from app.sevices.desktop.master_data.vms_component import VMSComponentService
 from app.sevices.desktop.vms_sign import VMSSignService
 
 
@@ -12,6 +13,10 @@ class VMSSignRouter(BaseRouter):
     @property
     def vms_service(self) -> VMSSignService:
         return VMSSignService()
+
+    @property
+    def vms_component_service(self) -> VMSComponentService:
+        return VMSComponentService()
 
     @property
     def router(self) -> APIRouter:
@@ -57,5 +62,15 @@ class VMSSignRouter(BaseRouter):
         def get_last_vms_sign_control(vms_sign_id: str, page: int = 1, limit=10):
             pageable = Pageable.of(page, limit)
             return self.vms_service.get_history_vms_sign_control(vms_sign_id, pageable)
+
+        @router.get("/control/current/{vms_sign_id}")
+        def get_current_state_vms_sign_control(vms_sign_id: str):
+            result = self.vms_service.get_current_state_vms_sign_control(vms_sign_id)
+            response = result.dict()
+            for index, model_id in enumerate(result.images):
+                model = self.vms_component_service.get_vms_component_by_id(model_id.vms_component_id)
+                response.get("images")[index].update(model.dict())
+
+            return response
 
         return router

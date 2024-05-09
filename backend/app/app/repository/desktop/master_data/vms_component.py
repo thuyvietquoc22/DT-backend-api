@@ -38,8 +38,8 @@ class VMSComponentRepository(BaseRepository[VMSComponentResponse, VMSComponentCr
     def get_vms_component_by_id(self, vms_component_id):
         # return self.collection.find_one({"_id": ObjectId(vms_component_id)})
         pipeline = [
-            {"$match": {"_id": ObjectId(vms_component_id)}}
-        ] + self.root_pipeline
+                       {"$match": {"_id": ObjectId(vms_component_id)}}
+                   ] + self.root_pipeline
         return self.collection.aggregate(pipeline)
 
     def update_url_vms_component_by_id(self, vms_component_id, url):
@@ -47,11 +47,16 @@ class VMSComponentRepository(BaseRepository[VMSComponentResponse, VMSComponentCr
 
     @parse_as(response_type=list[VMSComponentResponse])
     def get_by_ids(self, ids: list[str]):
-        return self.collection.find({"_id": {"$in": [ObjectId(id_) for id_ in ids]}})
+        query = {"_id": {"$in": [ObjectId(id_) for id_ in ids]}}
+        pipeline = [
+                       {"$match": query}
+                   ] + self.root_pipeline
+
+        return self.collection.aggregate(pipeline)
 
     @parse_as(response_type=list[VMSComponentResponse])
     def get_vms_component_by_type(self, tag_name):
         pipeline = [
-            {"$match": {"type": tag_name}}
-        ] + self.root_pipeline
+                       {"$match": {"type": tag_name}}
+                   ] + self.root_pipeline
         return self.collection.aggregate(pipeline)

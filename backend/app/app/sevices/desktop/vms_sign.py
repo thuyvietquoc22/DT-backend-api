@@ -7,7 +7,7 @@ from app.decorator.parser import parse_as
 from app.exceptions.param_invalid_exception import ParamInvalidException
 from app.models.cms.model import ModelResponse
 from app.models.desktop.control.vms_sign import VMSSignController, VMSSignRequest
-from app.models.desktop.vms_sign import VMSSignCreate
+from app.models.desktop.vms_sign import VMSSignCreate, VMSSignResponse
 from app.models.pagination_model import Pageable
 from app.repository.cms.model import ModelRepository
 from app.repository.desktop.controller import ControlRepository
@@ -55,7 +55,7 @@ class VMSSignService:
             raise ParamInvalidException("Không tìm thấy Connection Source")
 
         vms_sign_create.id_model = ObjectId(model_id)
-        vms_sign_create.password = AESHelper.instance().encrypt_message(vms_sign_create.password).hex()
+        vms_sign_create.password = AESHelper.instance().encrypt_message(vms_sign_create.password)
 
         self.vms_sign_repo.create(vms_sign_create)
 
@@ -120,6 +120,9 @@ class VMSSignService:
         result = self.control_repo.get_history_control(vms_sign_id, pageable)
         return [control for control in result if control.get("control_type") == "VMS_SIGN"]
 
-    @parse_as(response_type=list[VMSSignController])
+    @parse_as(response_type=list[VMSSignResponse])
     def get_vms_sign_by_model_id(self, model_id):
         return self.vms_sign_repo.get_vms_sign_by_model_id(model_id)
+
+    def get_current_state_vms_sign_control(self, vms_sign_id: str):
+        return self.control_repo.get_last_vms_sign_control(vms_sign_id)

@@ -14,20 +14,13 @@ class VMSSignBase(BaseMongoModel):
     ip_address: str = Field(pattern=r'\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b')
     username: str
     password: str
+    protocol: str
+    endpoint: Optional[str] = None
+    port: int
 
 
 class VMSSignCreate(VMSSignBase):
-    model_config = {
-        "json_schema_extra": {
-            "example": {
-                "id_model": "660699f497fbc609d2cdf2f6",
-                "vms_sign_code": "VMS_SIGN_NHT_XVNT",
-                "resource": "Sở giao thông vận tải",
-                "ip_address": "0.0.0.0",
-                "username": "admin",
-                "password": "admin"
-            }}
-    }
+    pass
 
 
 class VMSSignUpdate(BaseModel):
@@ -35,17 +28,9 @@ class VMSSignUpdate(BaseModel):
     resource: Optional[str] = None
     ip_address: Optional[str] = Field(pattern=r'\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b', default=None)
     username: Optional[str] = None
-
-    model_config = {
-        "json_schema_extra": {
-            "example": {
-                "vms_sign_code": "VMS_SIGN_NHT_XVNT",
-                "resource": "Sở giao thông vận tải",
-                "ip_address": "0.0.0.0",
-                "username": "admin"
-            }
-        }
-    }
+    protocol: Optional[str] = None
+    endpoint: Optional[str] = None
+    port: Optional[int] = None
 
 
 class VMSSignResponse(VMSSignBase):
