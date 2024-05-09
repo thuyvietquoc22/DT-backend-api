@@ -21,6 +21,8 @@ class VehicleTypeRepository(BaseRepository):
 
     @parse_as(VehicleTypeResponse, True)
     def get_vehicle_type(self, vehicle_type_id):
-        pipeline = self.root_pipeline
+        pipeline = self.root_pipeline + [
+            {"$match": {"_id": ObjectId(vehicle_type_id)}},
+        ]
 
         return self.collection.aggregate(pipeline)

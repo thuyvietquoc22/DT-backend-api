@@ -17,7 +17,7 @@ class ModelService:
         self.repo = ModelRepository()
         self.assets_service = AssetsService()
 
-    @parse_as(ModelResponse)
+    @parse_as(ModelResponse, True)
     def create_model(self, model: ModelCreate):
 
         assets: list[AssetsResponse] = self.assets_service.find_by_ids([model.asset_id])

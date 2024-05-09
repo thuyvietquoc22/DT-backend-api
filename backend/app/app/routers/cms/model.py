@@ -46,9 +46,10 @@ class ModelRouter(BaseRouter):
             result = self.model_service.create_model(model)
             return result
 
-        @router.post("/create-models", response_model=list[ModelResponse])
+        @router.post("/create-models")
         async def create_model(model: list[ModelCreate]):
-            return [self.model_service.create_model(m) for m in model]
+            result = [self.model_service.create_model(m) for m in model]
+            return result
 
         @router.delete("/{model_id}")
         async def delete_model_by_id(model_id: str):
