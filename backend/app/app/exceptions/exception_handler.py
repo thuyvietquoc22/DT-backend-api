@@ -5,6 +5,7 @@ from bson.errors import InvalidId
 from fastapi import Request, FastAPI
 from fastapi.exceptions import ResponseValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from loguru import logger
 from starlette.middleware import Middleware
 from starlette.responses import JSONResponse
 
@@ -36,6 +37,7 @@ def __handle_exception(request: Request, ex: BaseExceptionMixin):
         status_code=ex.status.value,
         content=dict(status=ex.status, message=ex.message, path=request.url.path)
     )
+    logger.error(ex)
     return __check_cors(request, response)
 
 
